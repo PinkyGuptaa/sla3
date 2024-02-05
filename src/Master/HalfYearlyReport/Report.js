@@ -1,0 +1,150 @@
+
+import { Print, Search } from '@mui/icons-material';
+import { Box, Button, MenuItem, Select, Typography } from '@mui/material';
+import { useState, useRef } from 'react';
+import './report.css'
+import { useReactToPrint } from 'react-to-print';
+// import PDFDocument from './PDFDocument';
+
+function Report(props) {
+    const [selectedMonth, setSelectedMonth] = useState('');
+    const [selectedSLAFor, setSelectedSLAFor] = useState('');
+    const [reportDetails, setReportDetails] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const componentRef = useRef();
+    const [showPDF, setShowPDF] = useState(false);
+
+    const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+    });
+
+  const quarters = [
+    { label: 'First Quarter', months: ['01-01', '02-01', '03-01'], range: ['2023-01-01', '2023-03-01'] },
+    { label: 'Second Quarter', months: ['04-01', '05-01', '06-01'], range: ['2023-04-01', '2023-06-01'] },
+    { label: 'Third Quarter', months: ['07-01', '08-01', '09-01'], range: ['2023-07-01', '01-09-2023'] },
+    { label: 'Fourth Quarter', months: ['10-01', '11-01', '12-01'], range: ['2023-10-01', '2023-12-31'] },
+  ];
+
+  const slaTypes = ['bus', 'conductor', 'driver'];
+
+  const handleGenerateReport = async () => {
+    setLoading(true); // Set loading to true when fetching data
+
+    try {
+      if (selectedMonth && selectedSLAFor) {
+        const selectedQuarter = quarters.find((quarter) => quarter.label === selectedMonth);
+        const startDate = selectedQuarter.range[0];
+        const endDate = selectedQuarter.range[1];
+        const apiUrl = `http://10.226.33.132:9100/busperformance/getall/${startDate}/${endDate}/${selectedSLAFor}`;
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          // Other necessary configurations like headers, etc.
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await response.json();
+        setReportDetails(data);
+      } else {
+        setError('Please select both month and SLA');
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false); // Set loading back to false when data fetching is completed
+    }
+  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+      <Typography variant="h6" align="center" gutterBottom>
+        Generate Report
+      </Typography>
+      <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+        <Select style={{ width: '200px' }} value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} label="Select Quarter">
+          {quarters.map((quarter, index) => (
+            <MenuItem key={index} value={quarter.label}>
+              {quarter.label}
+            </MenuItem>
+          ))}
+        </Select>
+
+        <Select style={{ width: '200px' , marginLeft:'30px'}} value={selectedSLAFor} onChange={(e) => setSelectedSLAFor(e.target.value)} label="Select SLA For">
+          {slaTypes.map((slaType, index) => (
+            <MenuItem key={index} value={slaType}>
+              {slaType}
+            </MenuItem>
+          ))}
+        </Select>
+
+        <Search style={{marginLeft:'30px'}} variant="contained" onClick={handleGenerateReport}>
+          Generate Report
+        </Search>
+        {loading && <p>Loading...</p>}
+
+        {error && <p>Error: {error}</p>}
+        
+      </Box>
+
+      {/* {selectedMonth && selectedSLAFor && (
+      <Typography variant="subtitle1" align="center" style={{ marginTop: '10px' }}>
+        Data: {selectedMonth} SLA for {selectedSLAFor}
+      </Typography>
+    )} */}
+      <div ref={componentRef}>
+        
+      {reportDetails.length > 0 && (
+        <table   className="report-table">
+          <thead>
+            <tr>
+              <th>SL No</th>
+              <th>SLA</th>
+              {/* <th>SLA Type</th>  */}
+              {/* <th>Agency</th> */}
+              <th>Details</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportDetails.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.slaMaster ? item.slaMaster.sla : 'N/A'}</td>
+                {/* <td>{item.slaTypeMaster &&  item.slaTypeMaster.slatype ?item.slaTypeMaster.slatype : 'N/A'}</td> */}
+                <td>{item.details || 'N/A'}</td>
+                <td>{item.remarks || 'N/A'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        
+      )}
+     
+    </div>
+
+
+{selectedMonth && selectedSLAFor && (
+      <Print variant="contained" onClick={() => {
+        handlePrint();
+        setShowPDF(true);
+      }} style={{ marginLeft: '10px' ,marginTop: '30px'}}>
+               Print 
+            </Print>
+    )}
+    {/* <Print variant="contained" onClick={() => {
+    handlePrint();
+    setShowPDF(true);
+  }} style={{ marginLeft: '10px' ,marginTop: '30px'}}>
+           Print 
+        </Print> */}
+        {/* {showPDF && <PDFDocument reportDetails={reportDetails} />} */}
+    </div>
+    
+  );
+}
+export default Report;
