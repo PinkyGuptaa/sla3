@@ -195,7 +195,7 @@ try {
   setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
 
   setAllBusDetails(busData);
-
+//fetch data of dispatch 
   await fetchTripData(startDate, endDate);
 
   console.log(unavailableBuses);

@@ -413,7 +413,8 @@ useEffect(()=>{
 // }, []);
 
   const submitbutton = ()=>{
-    const fieldempty =   slaForMaster  && details 
+    const fieldempty =   slaForMaster && slaMaster && details && filedate && qualityStandardMaster 
+    // && actionMaster && genericPenaltyMaster && warningMaster
     // && actionMaster &&  penalty && penaltydetail && qualityStandardMaster && filedate && bycustomer  
     ;
     if(fieldempty){
