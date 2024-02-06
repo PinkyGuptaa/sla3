@@ -298,7 +298,7 @@ const handleEyeClick = () => {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
     <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
     <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
-   Frequency
+   Safety of Operation
       </Typography>
       
       <div style={{display:"flex",alignItems:"center"}}>
@@ -520,7 +520,7 @@ const handleEyeClick = () => {
   <div style={{ display: 'flex', marginTop: '30px', marginRight:'150px' }}>
 
     <div style={{ marginRight: '20px' }}>
-  <h2>Bus KMs Frequency</h2>
+  <h2>Minor Accident</h2>
   {/* <p>Number of Unavailable Buses: {unavailablebus}</p> */}
   <p>Total KMs To Run: {totalActualDistance}</p>
   <p>Total Distance Covered: {totalCoveredDistance}</p>
@@ -533,14 +533,10 @@ const handleEyeClick = () => {
              style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
              Incentive </button>:""}</p>
             
-             {/* {isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Frequency" frequencyper={tripFrequency}
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Frequency" frequencyper={tripFrequency} />:""
-} */}
+         
   </div>
     <div style={{ marginLeft: '20px' }}>
-      <h2>Trip Frequency</h2>
+      <h2>Major Accident</h2>
       <p>Total Scheduled Trips:{tripData.dispatch}</p>
       <p>Total Completed Trips :{tripData.waybilltrip}</p>
       <p>Trip Frequency = { tripFrequency}
