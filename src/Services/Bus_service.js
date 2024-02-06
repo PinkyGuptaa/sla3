@@ -6,9 +6,9 @@ class Bus_service {
     getAll = async() => {
         return await axios.get(`${MASTER_API_URL}/busperformance/list`)
     }
-    getAll = async() => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/list`)
-    }
+    // getAll = async() => {
+    //     return await axios.get(`${MASTER_API_URL}/busperformance/list`)
+    // }
     getslaBus = (id) => {
         return  axios.get(`${MASTER_API_URL}/busperformance/slaBus/${id}`)
     }
@@ -83,6 +83,6 @@ class Bus_service {
     getAllMergeData = async(dateto,datefrom) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/getMergeData/${dateto}/${datefrom}`);
     }
-    // http://10.226.33.132:9100/busperformance/getMergeData/2023-12-01/2023-12-31
+    
 }
 export default new Bus_service();
