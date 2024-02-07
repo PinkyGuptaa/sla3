@@ -259,6 +259,7 @@ const fetchAccidentsData = async () => {
 //   }
 // };
 
+
 const handleGenerateReport = () => {
   if (filtervalue === 'monthwise' && month && year) {
     fetchAccidentsData();
@@ -613,10 +614,14 @@ console.log(MinorAccident)
       ))}
     </tbody>
   </table>
-  {/* <p>{tripFrequency<=93?
+
+  <div>
+    sdfsfsfsfsdfsdfsfdf
+  </div>
+   {/* <p>{tripFrequency<=93?
            <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
              Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
-             Incentive </button>:""}</p> */}
+             Incentive </button>:""}</p>  */}
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 
