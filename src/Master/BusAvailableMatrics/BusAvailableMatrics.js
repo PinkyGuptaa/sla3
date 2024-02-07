@@ -373,9 +373,9 @@ function Busavailablematrics(props) {
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>
+        </button>:""}
         {loading && <p>Loading...</p>}
       </Box>:
       filtervalue==="quarterly"?
@@ -507,9 +507,9 @@ function Busavailablematrics(props) {
             </p>
            <p style={{marginLeft : '50px', marginRight: '50px' }}>
             {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)<=94?
-           <button onClick={()=>handleButtonClick("penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}> Penalty </button>:
+           <button onClick={()=>handleButtonClick("penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}> Penalty </button>:
            (((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)>=96?
-           <button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}> Incentive </button>:""}</p>
+           <button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}> Incentive </button>:""}</p>
   </>:""
 }
 

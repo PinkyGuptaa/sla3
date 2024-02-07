@@ -1,6 +1,7 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import BreakdownFormula from '../../assets/images/breakdownformula.PNG'
 import AvailabiltyFormula from '../../assets/images/availabiltyformula.PNG'
+import Safetyofoperation from '../../assets/images/safetyofoperationformula.PNG'
 
 function Formula(){
 
@@ -21,8 +22,8 @@ function Formula(){
         </Typography>
         </div>
   
-        <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'flex-start', marginTop: '20px' }}>
-        <div style={{display:"flex",flexDirection:"row",padding: "10px",width: "-webkit-fill-available",margin:"10px 0"}}>
+        <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'flex-start' }}>
+        <div style={{display:"flex",flexDirection:"row",padding: "10px 0 0 0",width: "-webkit-fill-available"}}>
             <div style={{display:"flex"}}>
                <p> View Pdf </p> 
                <Button onClick={handleClickpdf}> View </Button> 
@@ -31,8 +32,8 @@ function Formula(){
         </div>
 
         <div style={{display:"flex",flexDirection:"row"}}>
-            <div style={{display:"flex",flexDirection:"column",width:"45vw",margin:"0 10px 10px 0"}}>
-            <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
+            <div style={{display:"flex",flexDirection:"column",width:"50%",margin:"0 10px 10px 0"}}>
+             <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
     padding: "10px",width: "-webkit-fill-available",margin:"10px 0"}}>
                <div style={{display:"flex",color:"black",fontWeight:"bold",fontSize:"17px"}}>
                 <span style={{color:"black",fontWeight:"bold",fontSize:"17px",borderBottom:"1px solid"}}>For Breakdown - Clause 20.2.2 </span></div>
@@ -67,10 +68,8 @@ function Formula(){
                 
                </div>
           </div>
-            </div>
 
-            <div style={{display:"flex",flexDirection:"column",width:"45vw"}}>
-            <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
+          <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
     padding: "10px",width: "-webkit-fill-available",margin:"10px 0"}}>
                <div style={{display:"flex",color:"black",fontWeight:"bold",fontSize:"17px"}}>
                 <span style={{color:"black",fontWeight:"bold",fontSize:"17px",borderBottom:"1px solid"}}>For Availabilty - Clause 20.3.3</span>
@@ -83,6 +82,12 @@ function Formula(){
                 
                </div>
           </div>
+            </div>
+
+            <div style={{display:"flex",flexDirection:"column",width:"50%"}}>
+          
+           
+
           <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
     padding: "10px",width: "-webkit-fill-available",margin:"10px 0"}}>
                <div style={{display:"flex",color:"black",fontWeight:"bold",fontSize:"17px"}}>
@@ -93,9 +98,37 @@ function Formula(){
                    <img src={AvailabiltyFormula} width="80%"/>
                 </div>
                 */}
+              
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span><span style={{color:"black",fontWeight:"bold"}}>Guaranteed Trip or Bus Kms Frequency - </span> <span style={{color:"black"}}>shall be equal to or more than 94% </span><span>{` ( Clause 20.5.2 )`}</span></p>
+
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span> <span style={{color:"black"}}>The Operator agrees that for every 1% reduction in Trip Frequency or Bus Kms Frequency in a month, as compared to Guaranteed Trip or Bus Kms Frequency, it shall pay damages to the authority at the rate of 2% of the monthly fees. </span><span>{` ( Clause 20.5.5 )`}</span></p>
+
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span> <span style={{color:"black"}}>The authority agrees that for every 1% increase in Trip Frequency or Bus Kms Frequency in a month, as compared to Guaranteed Trip or Bus Kms Frequency, it shall pay incentive to the operator at the rate of 0.05% of the monthly fees. </span><span>{` ( Clause 20.5.6 )`}</span></p>
                 
                </div>
           </div>
+
+          <div style={{display:"flex",flexDirection:"column",border: "1px solid black",boxShadow: "1px 1px grey",
+    padding: "10px",width: "-webkit-fill-available",margin:"10px 0"}}>
+               <div style={{display:"flex",color:"black",fontWeight:"bold",fontSize:"17px"}}>
+                <span style={{color:"black",fontWeight:"bold",fontSize:"17px",borderBottom:"1px solid"}}>For Safety Of Operations- Clause 20.6</span>
+                </div>
+               <div style={{display:"flex",margin:"10px 0px",flexDirection:"column"}}>
+                <div>
+                   <img src={Safetyofoperation} width="80%"/>
+                </div>
+               
+              
+                {/* <p><span style={{color:"black",fontWeight:"bold"}}>*</span><span style={{color:"black",fontWeight:"bold"}}>Guaranteed Trip or Bus Kms Frequency - </span> <span style={{color:"black"}}>shall be equal to or more than 94% </span><span>{` ( Clause 20.5.2 )`}</span></p> */}
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span> <span style={{color:"black"}}>The Operator agrees that the Assured General Safety determined in accordance with Clause 20.6.1 and 20.6.2 shall be equal to or less than 0.01</span><span>{` ( Clause 20.6.3 )`}</span></p>
+
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span> <span style={{color:"black"}}>The Operator agrees that for every increase in number of accident by a factor of 0.01, as compared to the Assured General Safety, it shall pay damages to the authority at a rate of 2% of the monthly fees. The operator agrees that for every number of severe safety incidents occurences, it shall pay damages to the authority at a rate of 2% of monthly fees of each accident. </span><span>{` ( Clause 20.6.4 )`}</span></p>
+
+                <p><span style={{color:"black",fontWeight:"bold"}}>*</span> <span style={{color:"black"}}>The authority agrees that if the General Safety is less than 0.005, then for every 0.001 decrease in General Safety ,the authority shall pay incentive to the operator at the rate of 0.05% of the monthly fees. </span><span>{` ( Clause 20.6.5 )`}</span></p>
+                
+               </div>
+          </div>
+
             </div>
 
          

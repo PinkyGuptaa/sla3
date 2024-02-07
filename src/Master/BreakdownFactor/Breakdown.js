@@ -155,7 +155,7 @@
 // }
 // export default Report;
 
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import Select from 'react-select';
@@ -199,6 +199,7 @@ const [totalActualDistance, setTotalActualDistance] = useState(0);
   const [isAddBusOpen, setIsAddBusOpen] = useState(false);
   const [selectedRegNo, setSelectedRegNo] = useState(''); 
   const [year, setYear] = useState('');
+  const [allreadyfilled,setAllreadyfilled] = useState(false);
   const styles = {
       
     valueContainer: (css) => ({
@@ -226,85 +227,121 @@ const [totalActualDistance, setTotalActualDistance] = useState(0);
   }
   const handleGenerateReport = async () => {
     setLoading(true);
-    if(filtervalue==="buswise")
-    // {
-    //     const data = await Bus_service.getdatabybusnodate(regno,selectedDate).then((res)=>{
-    //           setReportDetails({
-    //             countWayBillTrips: data.countWayBillTrips,
-    //                   countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
-    //                   wayBillTripsList: data.wayBillTripsList,
-    //             });
-    //             console.log(regno,selectedDate,res.data)
-    //             setLoading(false);
-    //       }).catch((err)=>{
-    //           console.log(err)
-    //           setLoading(false);
-    //       })
-    //   }
-    
-  if (regno && selectedDate) {
- 
-        const apiUrl = `http://10.226.33.132:9100/busperformance/getData/${regno}/${selectedDate}`;
+    let penaltycheck;
+    let incrementcheck;
 
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-        });
+    checkiffilledalready("Reliability (BF)",month,year,aftercheck);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
+    async function checkiffilledalready(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltycheck = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
 
-        const data = await response.json();
-        setReportDetails({
-          countWayBillTrips: data.countWayBillTrips,
-          countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
-          wayBillTripsList: data.wayBillTripsList,
-        });
-      } else {
-        setError('Please select both Bus No. and Date');
-      }
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementcheck = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
 
-      else if (filtervalue === 'monthwise' || filtervalue === 'quarterly' || filtervalue === 'halfyearly') {
-        let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
-        if (month && year) {
-          let startDate = `${year}-${month.split('_')[0]}`;
-          let endDate = `${year}-${month.split('_')[1]}`;
-          console.log(startDate,endDate,year,month.split('_')[0]);
-        try {
-          // const res = await Bus_service.getAllMergeData(dateArray[0], dateArray[1]);
-          const res = await Bus_service.getAllMergeData(startDate, endDate);
-
-          let unavailableBuses = res.data[0].count
-          setUnavailablebus(unavailableBuses)
-          console.log(unavailablebus);
-          console.log(res.data[0].count)
-          console.log(res.data[1])
-          const totalCoveredDistance = allbusdetails.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
-          const calculatedBreakdownFactor =  parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(2)*10;
-          const final = Math.trunc(calculatedBreakdownFactor)/10;
-          setBreakdownFactor(parseFloat(final));
-          console.log(calculatedBreakdownFactor,final)
-          // setReportDetails({
-          //   countWayBillTrips: res.data.countWayBillTrips,
-          //   countWayBillTripsWhereTimeIsNotZero: res.data.countWayBillTripsWhereTimeIsNotZero,
-          //   wayBillTripsList: res.data.wayBillTripsList,
-          // });
-      setAllBusDetails(res.data[1])
-// setUnavailableBuses(res.data[0].count);
-
-console.log(unavailableBuses);
-      console.log(allbusdetails)
-      setAftersearch(true); 
-          setLoading(false);
-        } catch (err) {
-          console.log(err);
-          setLoading(false);
-        }
-      }else {
-        setError('Please select both Month and Year');
-      }
+      aftercheck();
     }
+
+    async function aftercheck(){
+      if(penaltycheck || incrementcheck){
+        setAllreadyfilled(true);
+        console.log(penaltycheck,incrementcheck)
+      }
+      else {
+        setAllreadyfilled(false);
+      }
+      
+    }
+
+    if(filtervalue==="buswise")
+       {
+      //     const data = await Bus_service.getdatabybusnodate(regno,selectedDate).then((res)=>{
+      //           setReportDetails({
+      //             countWayBillTrips: data.countWayBillTrips,
+      //                   countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
+      //                   wayBillTripsList: data.wayBillTripsList,
+      //             });
+      //             console.log(regno,selectedDate,res.data)
+      //             setLoading(false);
+      //       }).catch((err)=>{
+      //           console.log(err)
+      //           setLoading(false);
+      //       })
+     
+        }
+      
+    // if (regno && selectedDate) {
+   
+    //       const apiUrl = `http://10.226.33.132:9100/busperformance/getData/${regno}/${selectedDate}`;
+  
+    //       const response = await fetch(apiUrl, {
+    //         method: 'GET',
+    //       });
+  
+    //       if (!response.ok) {
+    //         throw new Error('Failed to fetch data');
+    //       }
+  
+    //       const data = await response.json();
+    //       setReportDetails({
+    //         countWayBillTrips: data.countWayBillTrips,
+    //         countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
+    //         wayBillTripsList: data.wayBillTripsList,
+    //       });
+    //     } else {
+    //       setError('Please select both Bus No. and Date');
+    //     }
+  
+        else if (filtervalue === 'monthwise' || filtervalue === 'quarterly' || filtervalue === 'halfyearly') {
+          // let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
+         
+          if (month && year) {
+            let startDate = `${year}-${month.split('_')[0]}`;
+            let endDate = `${year}-${month.split('_')[1]}`;
+            console.log(startDate,endDate,year,month.split('_')[0]);
+          try {
+            // const res = await Bus_service.getAllMergeData(dateArray[0], dateArray[1]);
+            const res = await Bus_service.getAllMergeData(startDate, endDate);
+  
+            let unavailableBuses = res.data[0].count
+            setUnavailablebus(unavailableBuses)
+            console.log(unavailablebus);
+            console.log(res.data[0].count)
+            console.log(res.data[1])
+            const totalCoveredDistance = allbusdetails.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
+            const calculatedBreakdownFactor =  parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(2)*10;
+            const final = Math.trunc(calculatedBreakdownFactor)/10;
+            setBreakdownFactor(parseFloat(final));
+            console.log(calculatedBreakdownFactor,final)
+            // setReportDetails({
+            //   countWayBillTrips: res.data.countWayBillTrips,
+            //   countWayBillTripsWhereTimeIsNotZero: res.data.countWayBillTripsWhereTimeIsNotZero,
+            //   wayBillTripsList: res.data.wayBillTripsList,
+            // });
+        setAllBusDetails(res.data[1])
+  // setUnavailableBuses(res.data[0].count);
+  
+  console.log(unavailableBuses);
+        console.log(allbusdetails)
+        setAftersearch(true); 
+            setLoading(false);
+          } catch (err) {
+            console.log(err);
+            setLoading(false);
+          }
+        }else {
+          setError('Please select both Month and Year');
+        }
+      }
+
+   
   };
+
   const handleChangeforbus = (e)=>{
     setRegNo(e.value);
     setSelectedDate(e.value);
@@ -504,9 +541,10 @@ const handleEyeClick = () => {
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>
+        </button>:""
+      }
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==="quarterly"?
@@ -588,7 +626,7 @@ const handleEyeClick = () => {
   
 
 
-{aftersearch && allbusdetails && allbusdetails.length > 0 && (
+{aftersearch && allbusdetails && allbusdetails.length > 0 ?
  
  <>
 
@@ -642,11 +680,16 @@ const handleEyeClick = () => {
 
  
            </div>
+
            <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+           <div style={{ display: 'flex', alignItems: 'center'}}>
+            {allreadyfilled?<p style={{color:"red"}}> Penalty/Increment already filled for this month. </p>:""}
+           </div>
+           <div style={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
            <p style={{marginLeft : '50px', marginRight: '50px' }}>Breakdown Factor = {breakdownFactor} </p>
            <p>{breakdownFactor>=0.6?
-           <button onClick={()=>handleButtonClick("penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:breakdownFactor<=0.4?<button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
+           <Button onClick={()=>handleButtonClick("penalty")} disabled={allreadyfilled} style={{padding:"10px",backgroundColor:allreadyfilled?"lightgrey":"maroon",color:"white",cursor:"pointer",}}>
+             Action </Button>:breakdownFactor<=0.4?<button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
              Incentive </button>:""}</p>
             
              {
@@ -658,7 +701,11 @@ const handleEyeClick = () => {
 }
       </div>
 </>
-     )}
+     :aftersearch && allbusdetails.length==0?
+     <>
+       <div style={{marginTop:"30px"}}>No Data Available</div>
+     </>:""
+    }
      </div>
    );
  }

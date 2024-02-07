@@ -435,9 +435,11 @@ const handleEyeClick = () => {
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       
+       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
           Search
-        </button>
+        </button>:""
+        } 
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==="quarterly"?
@@ -472,7 +474,7 @@ const handleEyeClick = () => {
        
        </TextField>
 
-       <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
          Search
        </button>
        {/* {loading && <p>Loading...</p>} */}
@@ -528,9 +530,9 @@ const handleEyeClick = () => {
     {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
     </p>
     <p>{BusKMsFrequency<=93?
-           <button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
+           <button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
              Action </button>:BusKMsFrequency>95?<button onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
-             style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
+             style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
              Incentive </button>:""}</p>
             
              {/* {isAddBusOpen?typeformodal==="penalty"?
@@ -546,8 +548,8 @@ const handleEyeClick = () => {
       <p>Trip Frequency = { tripFrequency}
   </p>
            <p>{tripFrequency<=93?
-           <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
+           <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
+             Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white",cursor:"pointer"}}>
              Incentive </button>:""}</p>
             
              {isAddBusOpen?typeformodal==="penalty"?

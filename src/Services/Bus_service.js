@@ -81,7 +81,18 @@ class Bus_service {
     getAllMergeData = async(dateto,datefrom) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/getMergeData/${dateto}/${datefrom}`);
     }
-    //safety operartion apis 
+
+
+    //checkifalreadyfilledformonth
+    checkifalreadyfilledpenalty = async(parameter,month,year)=>{
+        return await axios.get(`${MASTER_API_URL}/busperformance/getQualityWise/${parameter}/${month}/${year}`)
+    }  
+
+    checkifalreadyfilledincrement = async(parameter,month,year)=>{
+        return await axios.get(`${MASTER_API_URL}/pincentive/getQualityWise/${parameter}/${month}/${year}`)
+    } 
+    
+   
     
     getAllAccidentswithpto = async(pto,dateto,datefrom) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/getData/${dateto}/${datefrom}/${pto}`)

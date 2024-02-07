@@ -227,10 +227,98 @@ function Busdetails (props){
     </FormControl>
        </div>
 
+       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+      <TextField
+  style={{ width: '200px', marginRight: '10px' }}
+  id="standard-basic"
+  label="Select Bus No."
+  variant="outlined"
+  select
+  name="regno"
+  value={regno}
+  onChange={(e) => setRegNo(e.target.value)}
+  required
+  SelectProps={{
+    MenuProps: {
+      PaperProps: {
+        style: {
+          maxHeight: '200px', 
+        },
+      },
+    },
+  }}
+>
+  {allbuslist.map((option) => (
+    <MenuItem key={option.value} value={option.value}>
+      {option.value}
+    </MenuItem>
+  ))}
+</TextField>
+
+        
+<TextField
+          id="outlined-select-currency"
+          select
+          label="Month"
+          value={month}
+          onChange={(e)=>onmonthchange(e.target.value)}
+          required={true}
+          variant="filled"
+          
+
+          sx={{
+            '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+            '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+              color:"black"
+            },
+            '& .css-1wc848c-MuiFormHelperText-root':{
+              color:"black"
+            },
+            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
+          }}
+        >
+              {allmonths.map((option) => (
+                
+            <MenuItem key={option.key} value={option.value}>
+              {option.key}
+            </MenuItem>
+          ))}
+        
+        </TextField>
+      
+        <TextField
+  id="outlined-select-currency"
+  select
+  label="Year"
+  value={year}
+  onChange={(e) => setYear(e.target.value)}
+  required={true}
+  variant="filled"
+  sx={{
+    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
+    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
+      color: "black"
+    },
+    '& .css-1wc848c-MuiFormHelperText-root': {
+      color: "black"
+    },
+    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
+  }}
+>
+<MenuItem value="2023">2023</MenuItem>
+<MenuItem value="2024">2024</MenuItem>
+</TextField>
+        {
+        Boolean(regno) && Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
+          Search
+        </button>:""
+            }
+        </Box>
+
        {
         radioselected  === 'Schedule'?
         <>
-        <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+        {/* <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
       <TextField
   style={{ width: '200px', marginRight: '10px' }}
   id="standard-basic"
@@ -314,7 +402,7 @@ function Busdetails (props){
         <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
         </button>
-        </Box>
+        </Box> */}
         
         <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center', marginTop: '20px' }} >
         {aftersearch?
@@ -389,91 +477,7 @@ function Busdetails (props){
         </>:
         radioselected === 'Availability'?
         <>
-           <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
-      <TextField
-  style={{ width: '200px', marginRight: '10px' }}
-  id="standard-basic"
-  label="Select Bus No."
-  variant="outlined"
-  select
-  name="regno"
-  value={regno}
-  onChange={(e) => setRegNo(e.target.value)}
-  required
-  SelectProps={{
-    MenuProps: {
-      PaperProps: {
-        style: {
-          maxHeight: '200px', 
-        },
-      },
-    },
-  }}
->
-  {allbuslist.map((option) => (
-    <MenuItem key={option.value} value={option.value}>
-      {option.value}
-    </MenuItem>
-  ))}
-</TextField>
-
-        
-<TextField
-          id="outlined-select-currency"
-          select
-          label="Month"
-          value={month}
-          onChange={(e)=>onmonthchange(e.target.value)}
-          required={true}
-          variant="filled"
-          
-
-          sx={{
-            '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
-            '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
-              color:"black"
-            },
-            '& .css-1wc848c-MuiFormHelperText-root':{
-              color:"black"
-            },
-            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
-          }}
-        >
-              {allmonths.map((option) => (
-                
-            <MenuItem key={option.key} value={option.value}>
-              {option.key}
-            </MenuItem>
-          ))}
-        
-        </TextField>
-      
-        <TextField
-  id="outlined-select-currency"
-  select
-  label="Year"
-  value={year}
-  onChange={(e) => setYear(e.target.value)}
-  required={true}
-  variant="filled"
-  sx={{
-    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
-    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
-      color: "black"
-    },
-    '& .css-1wc848c-MuiFormHelperText-root': {
-      color: "black"
-    },
-    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
-  }}
->
-<MenuItem value="2023">2023</MenuItem>
-<MenuItem value="2024">2024</MenuItem>
-</TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
-          Search
-        </button>
-        </Box>
+         
 
         <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
   {/* <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
@@ -541,7 +545,7 @@ function Busdetails (props){
         </>:
         radioselected === "Breakdown"?
         <>
-         <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+         {/* <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
       <TextField
   style={{ width: '200px', marginRight: '10px' }}
   id="standard-basic"
@@ -625,7 +629,7 @@ function Busdetails (props){
         <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
         </button>
-        </Box>
+        </Box> */}
 
         {
             aftersearch?allbusdetails.length > 0?
