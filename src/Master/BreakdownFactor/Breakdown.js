@@ -641,7 +641,8 @@ const handleEyeClick = () => {
  
 
  
-           </div><div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+           </div>
+           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
            <p style={{marginLeft : '50px', marginRight: '50px' }}>Breakdown Factor = {breakdownFactor} </p>
            <p>{breakdownFactor>=0.6?
            <button onClick={()=>handleButtonClick("penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
