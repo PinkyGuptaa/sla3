@@ -260,67 +260,66 @@ const submitbutton = () => {
      <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '100%' },
+        '& > :not(style)': { m: 1, width: '35ch' },
       }}
       style={{width:"100%"}}
       noValidate
       autoComplete="off"
     >
 
-<div style={{display:"flex",flexDirection:"column"}}>
-  <div style={{display:"flex"}}>
+<div style={{display:"flex",flexDirection:"row",width:"100%",justifyContent:"center"}}>
+  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start"}}>
   <Typography variant="body1" style={{ marginBottom: "8px" }}>
     <strong>SLA:</strong> {props.updatedetails.slaMaster ? props.updatedetails.slaMaster.sla : 'N/A'}
   </Typography>
   <Typography variant="body1" style={{ marginBottom: "8px" }}>
     <strong>Agency Name:</strong> {props.updatedetails.slaMaster && props.updatedetails.slaMaster.agencyMaster ? props.updatedetails.slaMaster.agencyMaster.agencyname : 'N/A'}
   </Typography>
-  </div>
-  <div style={{display:"flex"}}>
-  <Typography variant="body1" style={{ marginBottom: "8px" }}>
-    <strong>SLA Type:</strong> {props.updatedetails.slaMaster && props.updatedetails.slaMaster.slaTypeMaster ? props.updatedetails.slaMaster.slaTypeMaster.slatype : 'N/A'}
-  </Typography>
-  {/* <Typography variant="body1" style={{ marginBottom: "8px" }}>
-    <strong>Bus No:</strong> {props.updatedetails.busno || 'N/A'}
-  </Typography> */}
-  <Typography variant="body1" style={{ marginBottom: "8px" }}>
-    <strong>Quality Type:</strong> {props.updatedetails.qualityStandardMaster ? props.updatedetails.qualityStandardMaster.qualitytype : 'N/A'}
-  </Typography>
-  </div>
-  <div style={{display:"flex"}}>
+
   <Typography variant="body1" style={{ marginBottom: "8px" }}>
     <strong>File Date:</strong> {props.updatedetails.filedate ? props.updatedetails.filedate : 'N/A'}
   </Typography>
-  {/* <Typography variant="body1" style={{ marginBottom: "8px" }}>
-    <strong>Reason:</strong> {props.updatedetails.reasonMaster ? props.updatedetails.reasonMaster.name : 'N/A'}
-  </Typography> */}
+ 
   <Typography variant="body1" style={{ marginBottom: "8px" }}>
     <strong>Complaint Number:</strong> {props.updatedetails.customerComplaint ? props.updatedetails.customerComplaint.complaintid : 'N/A'}
   </Typography>
   </div>
-    {/* <Typography variant="body1" style={{ marginBottom: "8px" }}>
-      <strong>Penalty:</strong> {props.updatedetails.penalty ? props.updatedetails.penalty : 'N/A'}
-    </Typography>
 
+  <div style={{display:"flex",flexDirection:"column",alignItems:"flex-start",paddingLeft:"20px"}}>
+  <Typography variant="body1" style={{ marginBottom: "8px" }}>
+    <strong>SLA Type:</strong> {props.updatedetails.slaMaster && props.updatedetails.slaMaster.slaTypeMaster ? props.updatedetails.slaMaster.slaTypeMaster.slatype : 'N/A'}
+  </Typography>
+  
+  <Typography variant="body1" style={{ marginBottom: "8px" }}>
+    <strong>Quality Type:</strong> {props.updatedetails.qualityStandardMaster ? props.updatedetails.qualityStandardMaster.qualitytype : 'N/A'}
+  </Typography>
 
-
+  {props.updatedetails.penalty && (
+    <>
     <Typography variant="body1" style={{ marginBottom: "8px" }}>
-      <strong>Incentive:</strong> {props.updatedetails.incentive ? props.updatedetails.incentive : 'N/A'}
-    </Typography> */}
- <div style={{display:"flex"}}>
- {props.updatedetails.penalty && (
-    <Typography variant="body1" style={{ marginBottom: "8px" }}>
-      <strong>Penalty:</strong> {props.updatedetails.penalty} || 
-      <strong>Penalty Percentage:</strong> {props.updatedetails.penaltypercentage}
+      <strong>Penalty:</strong> {props.updatedetails.penalty} 
     </Typography>
+     <Typography variant="body1" style={{ marginBottom: "8px" }}>
+       <strong>Penalty Percentage:</strong> {props.updatedetails.penaltypercentage}
+     </Typography>
+     </>
   )}
 
-  {/* Display Incentive if it exists */}
+
   {props.updatedetails.incentive && (
+    <>
     <Typography variant="body1" style={{ marginBottom: "8px" }}>
-      <strong>Incentive:</strong> {props.updatedetails.incentive} || <strong> Incentive Percentage:</strong> {props.updatedetails.incentivepercentage}
-    </Typography>)}
-    </div>
+    <strong>Incentive:</strong> {props.updatedetails.incentive}
+    </Typography>
+     <Typography variant="body1" style={{ marginBottom: "8px" }}>
+     <strong> Incentive Percentage:</strong> {props.updatedetails.incentivepercentage}
+     </Typography>
+     </>
+  
+    
+    )}
+  </div>
+  
 </div>
 
 

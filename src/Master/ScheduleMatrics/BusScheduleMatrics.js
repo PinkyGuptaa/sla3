@@ -1330,9 +1330,9 @@ const handleEyeClick = () => {
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>
+        </button>:""}
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==="quarterly"?
@@ -1420,25 +1420,19 @@ const handleEyeClick = () => {
   </p>
 </div>
 {
-filtervalue!=="buswise"?
+filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
 <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
 <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Start Punctuality: </span> {startpunctuality()} {startpunctuality()<=96?
   <button onClick={()=>handleButtonClick("start","penalty")} style={{backgroundColor:"#ed6e6e9c",margin:"0 15px"}}>Action</button>:startpunctuality()>=96?
   <button onClick={()=>handleButtonClick("start","incentive")} style={{backgroundColor:"lightgreen",margin:"0 15px"}}> Incentive </button>:""} 
   <span style={{marginLeft:"20px"}}>|</span> </p>
-  {/* {isAddBusOpen && (
-<Addbus open onClose={() => setIsAddBusOpen(false)} 
 
-/>)} */}
-<p style={{marginLeft : '50px', marginRight: '50px' }}>
+  <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Arrival Punctuality:</span> {arrivalpunctuality()} {arrivalpunctuality()<=79?
-  <button onClick={()=>handleButtonClick("arrival","penalty")} style={{backgroundColor:"#ebb990",margin:"0 15px"}}>Action</button>:arrivalpunctuality()>=81?
-  <button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:"#ebb990",margin:"0 15px"}}> Incentive </button>:""}</p>
-   {/* {isAddBusOpen && (
-<Addbus open onClose={() => setIsAddBusOpen(false)} 
-  punctualitypercentage={startpunctuality}
-/>)} */}
+  <button onClick={()=>handleButtonClick("arrival","penalty")} style={{backgroundColor:"#800000e0",margin:"0 15px",cursor:"pointer"}}>Action</button>:arrivalpunctuality()>=81?
+  <button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:"#188718",margin:"0 15px",cursor:"pointer"}}> Incentive </button>:""}</p>
+   
   </div>:""}
   </>:""
 }
@@ -1488,10 +1482,10 @@ filtervalue!=="buswise"?
           <td>{item.toStop}</td>
           <td>{item.etaFromStop.slice(0, 5)}</td>
           <td>{item.ataFromStop.slice(0, 5)}</td>
-          <td style={{backgroundColor:item.diffTimeFromMinute>5?"#ed6e6e9c":""}}>{item.diffTimeFrom.slice(0, 5) }</td>
+          <td style={{backgroundColor:item.diffTimeFromMinute>5?"#800000b5":""}}>{item.diffTimeFrom.slice(0, 5) }</td>
           <td>{item.etaToStop.slice(0, 5)}</td>
           <td>{item.ataToStop.slice(0, 5)}</td>
-          <td style={{backgroundColor:item.diffTimeToMinute>15?"#ebb990":""}}>{item.diffTimeTo.slice(0, 5)}</td>
+          <td style={{backgroundColor:item.diffTimeToMinute>15?"#800000b5":""}}>{item.diffTimeTo.slice(0, 5)}</td>
           {/* <td>{item.actualDistance}</td> */}
           {/* <td>{item.tripIncome}</td> */}
          
