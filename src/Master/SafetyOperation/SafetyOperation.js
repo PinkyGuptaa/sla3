@@ -11,7 +11,7 @@ import PenaltyPage from '../BusPerformanceMetrics/AddBus';
 import { Edit } from '@mui/icons-material';
 import Addbus from '../BusPerformanceMetrics/AddBus';
 import AddBusIncentive from '../BusPerformanceMetrics/AddBusIncentive';
-
+import './SO.css';
 function SafetyOperation(props) {
   const [regno, setRegNo] = useState('');
   const [busdetails, setBusDetails] = useState([]);
@@ -58,6 +58,12 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
   const [showPenaltyPage, setShowPenaltyPage] = useState(false);
   const [timeformodal,setTimeformodal] = useState("");
   const [typeformodal,setTypeformodal] = useState("");
+  const [minorIncidents, setMinorIncidents] = useState([]);
+  const [majorIncidents, setMajorIncidents] = useState([]);
+  const [majorCount, setMajorCount] = useState(0);
+  const [minorCount, setMinorCount] = useState(0);
+  const [distance, setDistance] = useState(0);
+
   const styles = {
       
     valueContainer: (css) => ({
@@ -107,119 +113,159 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       console.error('Error fetching trip data:', error);
     }
   };
-  const handleGenerateReport = async () => {
-    setLoading(true);
-    if(filtervalue==="buswise")
-    // {
-    //     const data = await Bus_service.getdatabybusnodate(regno,selectedDate).then((res)=>{
-    //           setReportDetails({
-    //             countWayBillTrips: data.countWayBillTrips,
-    //                   countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
-    //                   wayBillTripsList: data.wayBillTripsList,
-    //             });
-    //             console.log(regno,selectedDate,res.data)
-    //             setLoading(false);
-    //       }).catch((err)=>{
-    //           console.log(err)
-    //           setLoading(false);
-    //       })
-    //   }
+//   const handleGenerateReport = async () => {
+//     setLoading(true);
+//     if(filtervalue==="buswise")
     
-  if (regno && selectedDate) {
+    
+//   if (regno && selectedDate) {
  
-        const apiUrl = `http://10.226.33.132:9100/busperformance/getData/${regno}/${selectedDate}`;
+//         const apiUrl = `http://10.226.33.132:9100/busperformance/getData/${regno}/${selectedDate}`;
 
-        const response = await fetch(apiUrl, {
-          method: 'GET',
-        });
+//         const response = await fetch(apiUrl, {
+//           method: 'GET',
+//         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await response.json();
-        setReportDetails({
-          countWayBillTrips: data.countWayBillTrips,
-          countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
-          wayBillTripsList: data.wayBillTripsList,
-        });
-      } else {
-        setError('Please select both Bus No. and Date');
-      }
-
-      else if (filtervalue === 'monthwise' || filtervalue === 'quarterly' || filtervalue === 'halfyearly') {
-        let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
-        if (month && year) {
-          let startDate = `${year}-${month.split('_')[0]}`;
-          let endDate = `${year}-${month.split('_')[1]}`;
-          console.log(startDate,endDate,year,month.split('_')[0]);
-//         try {
-//           const res = await Bus_service.getAllMergeData(startDate, endDate);
-
-//           let unavailableBuses = res.data[0].count
-//           setUnavailablebus(unavailableBuses)
-//           console.log(unavailablebus);
-//           console.log(res.data[0].count)
-//           console.log(res.data[1])
-//           const totalCoveredDistance = allbusdetails.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
-//           const calculatedBreakdownFactor =  parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(3);
-//           setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
-//           console.log(calculatedBreakdownFactor)
-//           // setReportDetails({
-//           //   countWayBillTrips: res.data.countWayBillTrips,
-//           //   countWayBillTripsWhereTimeIsNotZero: res.data.countWayBillTripsWhereTimeIsNotZero,
-//           //   wayBillTripsList: res.data.wayBillTripsList,
-//           // });
-//       setAllBusDetails(res.data[1])
-// //setUnavailableBuses(res.data[0].count);
-// await fetchTripData(startDate, endDate);
-//       console.log(unavailableBuses);
-//       console.log(allbusdetails)
-//       setAftersearch(true); 
-//           setLoading(false);
-//         } catch (err) {
-//           console.log(err);
-//           setLoading(false);
+//         if (!response.ok) {
+//           throw new Error('Failed to fetch data');
 //         }
-try {
-  const res = await Bus_service.getAllData(startDate, endDate); // Replace with your new API endpoint
-  const busData = res.data;
 
-  let unavailableBuses = busData.length;
-  setUnavailablebus(unavailableBuses);
+//         const data = await response.json();
+//         setReportDetails({
+//           countWayBillTrips: data.countWayBillTrips,
+//           countWayBillTripsWhereTimeIsNotZero: data.countWayBillTripsWhereTimeIsNotZero,
+//           wayBillTripsList: data.wayBillTripsList,
+//         });
+//       } else {
+//         setError('Please select both Bus No. and Date');
+//       }
 
-  const totalActualDistance = busData.reduce((sum, bus) => sum + bus.totalActualDistance, 0);
-  const totalCoveredDistance = busData.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
+//       else if (filtervalue === 'monthwise' || filtervalue === 'quarterly' || filtervalue === 'halfyearly') {
+//         let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
+//         if (month && year) {
+//           let startDate = `${year}-${month.split('_')[0]}`;
+//           let endDate = `${year}-${month.split('_')[1]}`;
+//           console.log(startDate,endDate,year,month.split('_')[0]);
 
-  const calculatedBreakdownFactor = parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(3);
-  setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
+// try {
+//   const res = await Bus_service.getAllAccidents(startDate, endDate); 
+//   const busData = res.data;
+//   console.log(res)
+//   const minorIncidents = [];
+// const majorIncidents = [];
 
-  setAllBusDetails(busData);
+// busData.forEach(item => {
+//   if (item.incidentType === 'minor') {
+//     minorIncidents.push(item);
+//   } else if (item.incidentType === 'major') {
+//     majorIncidents.push(item);
+//   }
+// });
 
-  await fetchTripData(startDate, endDate);
+// console.log('Minor Incidents:', minorIncidents);
+// console.log('Major Incidents:', majorIncidents);
+ 
 
-  console.log(unavailableBuses);
-  console.log(allbusdetails);
-  console.log(totalActualDistance);
+//   setAftersearch(true);
+//   setLoading(false);
+// } catch (error) {
+//   console.error('Error fetching data:', error);
+//   setLoading(false);
+// }
 
-  setTotalActualDistance(totalActualDistance)
-  setTotalCoveredDistance(totalCoveredDistance)
-console.log(totalActualDistance)
-  console.log(totalCoveredDistance);
+//       }else {
+//         setError('Please select both Month and Year');
+//       }
+//     }
+//   };
 
-  setAftersearch(true);
-  setLoading(false);
-} catch (error) {
-  console.error('Error fetching data:', error);
-  setLoading(false);
-}
+const fetchAccidentsData = async () => {
+  try {
+    const startDate = `${year}-${month.split('_')[0]}`;
+    const endDate = `${year}-${month.split('_')[1]}`;
+    const res = await Bus_service.getAllAccidents(startDate, endDate);
+    console.log(res.data)
+    const accidentsData = res.data.IncidentData;
+    console.log(accidentsData)
+    let majoraccident = res.data.countMajorIncident;
+    let minoraccident = res.data.countMinorIncident;
+    let kmsRun = res.data.distance
+    setMajorCount(majoraccident);
+    setMinorCount(minoraccident);
+    
+    console.log(majorCount);
+    console.log(minorCount);
+    console.log(distance)
+    const minorIncidentsData = [];
+    const majorIncidentsData = [];
 
-      }else {
-        setError('Please select both Month and Year');
+    accidentsData.forEach(item => {
+      if (item.incidentType === 'minor') {
+        minorIncidentsData.push(item);
+      } else if (item.incidentType === 'major') {
+        majorIncidentsData.push(item);
       }
-    }
-  };
-  
+    });
+
+    setMinorIncidents(minorIncidentsData);
+    setMajorIncidents(majorIncidentsData);
+    setDistance(kmsRun)
+    setAftersearch(true);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+// const fetchAccidentsData = async () => {
+//   try {
+//     const startDate = `${year}-${month.split('_')[0]}`;
+//     const endDate = `${year}-${month.split('_')[1]}`;
+//     const res = await Bus_service.getAllAccidents(startDate, endDate);
+//     console.log(res.data)
+//     const accidentsData = res.data.IncidentData;
+//     console.log(accidentsData)
+//     let majoraccident = res.data.countMajorIncident;
+//     let minoraccident = res.data.countMinorIncident;
+//     let kmsRun = res.data.distance
+//     setMajorCount(majoraccident);
+//     setMinorCount(minoraccident);
+    
+//     console.log(majorCount);
+//     console.log(minorCount);
+//     console.log(distance)
+
+//     if (Array.isArray(accidentsData)) {
+//       const minorIncidentsData = [];
+//       const majorIncidentsData = [];
+
+//       accidentsData.forEach(item => {
+//         if (item.incidentType === 'minor') {
+//           minorIncidentsData.push(item);
+//         } else if (item.incidentType === 'major') {
+//           majorIncidentsData.push(item);
+//         }
+//       });
+
+//       setMinorIncidents(minorIncidentsData);
+//       setMajorIncidents(majorIncidentsData);
+//     } else {
+//       console.error('Accidents data is not an array:', accidentsData);
+//     }
+
+//     setDistance(kmsRun)
+//     setAftersearch(true);
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//   }
+// };
+
+const handleGenerateReport = () => {
+  if (filtervalue === 'monthwise' && month && year) {
+    fetchAccidentsData();
+  } else {
+    alert('Please select both Month and Year');
+  }
+};
   const handleChangeforbus = (e)=>{
     setRegNo(e.value);
     setSelectedDate(e.value);
@@ -244,9 +290,7 @@ console.log(totalActualDistance)
   };
   function onmonthchange(value) {
     setMonth(value);
-    // setYear(value.split('_')[0]); // Extracting the year from the selected value
-    // console.log("Selected Month:", value);
-    // console.log("Selected Year:", value.split('_')[0]);
+
   }
 
   function onquarterchange(value){
@@ -266,32 +310,11 @@ const handleEyeClick = () => {
     setIsAddBusOpen(true);
   };
  
-
-  useEffect(() => {
-   
-    const calculateBreakdownFactor = () => {
-      if (allbusdetails.length > 0) {
-        const totalCoveredDistance = allbusdetails.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
-        const calculatedBreakdownFactor = parseFloat((unavailablebus * 10000) / totalCoveredDistance).toFixed(3);
-        setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
-      }  
-    };
-
-
-    calculateBreakdownFactor();
-  }, [allbusdetails, unavailablebus]);
-//method to calculate trip freq 
-  const totalScheduledTrips = tripData.dispatch;
-  const totalCompletedTrips = tripData.waybilltrip;
-  
-  const tripFrequency = totalScheduledTrips > 0
-    ? (((totalCompletedTrips) / totalScheduledTrips) * 100).toFixed(2)
-    : 0;
-    
-  //method to calculate bus km freq
-
-  const BusKMsFrequency =  totalActualDistance > 0 
-  ? (((totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0;
+//calculate minor accident percentage 
+  const MinorAccident =  minorCount > 0 
+  ? (minorCount*10000/distance).toFixed(2) : 0;
+ 
+console.log(MinorAccident)
  
 
   return (
@@ -516,52 +539,126 @@ const handleEyeClick = () => {
      </Box>:""
 
   }
-  {aftersearch && allbusdetails && allbusdetails.length > 0 && (
-  <div style={{ display: 'flex', marginTop: '30px', marginRight:'150px' }}>
-
-    <div style={{ marginRight: '20px' }}>
-  <h2>Minor Accident</h2>
-  {/* <p>Number of Unavailable Buses: {unavailablebus}</p> */}
-  <p>Total KMs To Run: {totalActualDistance}</p>
-  <p>Total Distance Covered: {totalCoveredDistance}</p>
-  <p>Bus KMs Frequency = {BusKMsFrequency}
-    {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
-    </p>
-    <p>{BusKMsFrequency<=93?
-           <button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:BusKMsFrequency>95?<button onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
+  {aftersearch && (
+  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
+    {/* Minor Accident Table */}
+ {/* Minor Accident Table */}
+<div style={{ width: '48%' }}>
+  <Typography variant="h6" gutterBottom>
+    Minor Accidents
+  </Typography>
+  <table className="accident-table">
+    <thead>
+      <tr>
+        <th>Depot Code</th>
+        <th>Trip No.</th>
+        <th>Lot No.</th>
+        <th>Incident</th>
+        <th>Exact Location</th>
+        <th>Exact Time</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {minorIncidents.map((incident, index) => (
+        <tr key={index}>
+          <td>{incident.depotCode}</td>
+          <td>{incident.tripNo}</td>
+          <td>{incident.lotno}</td>
+          <td>{incident.incident}</td>
+          <td>{incident.exactLocation}</td>
+          <td>{incident.exactTime}</td>
+          <td>{incident.remarks}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>{MinorAccident<=0.01?
+           <button onClick={()=>handleButtonClick("minoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
+             Action </button>:MinorAccident>0.01?<button onClick={()=>handleButtonClick("minoraccident","incentive")} 
              style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
              Incentive </button>:""}</p>
-            
-         
-  </div>
-    <div style={{ marginLeft: '20px' }}>
-      <h2>Major Accident</h2>
-      <p>Total Scheduled Trips:{tripData.dispatch}</p>
-      <p>Total Completed Trips :{tripData.waybilltrip}</p>
-      <p>Trip Frequency = { tripFrequency}
-  </p>
-           <p>{tripFrequency<=93?
+</div>
+
+
+    {/* Major Accident Table */}
+    <div style={{ width: '48%' }}>
+      <Typography variant="h6" gutterBottom>
+        Major Accidents
+      </Typography>
+     
+  <table className="accident-table">
+    <thead>
+      <tr>
+      <th>Depot Code</th>
+        <th>Trip No.</th>
+        <th>Lot No.</th>
+        <th>Incident</th>
+        <th>Exact Location</th>
+        <th>Exact Time</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {majorIncidents.map((incident, index) => (
+        <tr key={index}>
+            <td>{incident.depotCode}</td>
+          <td>{incident.tripNo}</td>
+          <td>{incident.lotno}</td>
+          <td>{incident.incident}</td>
+          <td>{incident.exactLocation}</td>
+          <td>{incident.exactTime}</td>
+          <td>{incident.remarks}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  {/* <p>{tripFrequency<=93?
            <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
              Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
-             Incentive </button>:""}</p>
+             Incentive </button>:""}</p> */}
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 
-  from="Frequency"
-  buskmfrequencyper={BusKMsFrequency}  
-  frequencyper={tripFrequency}
+  from="Major"
+ 
   timeformodal={timeformodal}
 />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Frequency"
-    buskmfrequencyper={BusKMsFrequency}
-    frequencyper={tripFrequency} 
+    from="Major"
+    // buskmfrequencyper={BusKMsFrequency}
+    // frequencyper={tripFrequency} 
     timeformodal={timeformodal}
     />:""
 } 
     </div>
-    </div>
+
+    {/* Add styling for the tables */}
+    <style jsx>{`
+      .accident-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      .accident-table th, .accident-table td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      .accident-table th {
+        background-color: #f2f2f2;
+      }
+      .accident-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .accident-table tbody tr:hover {
+        background-color: #ddd;
+      }
+    `}</style>
+  </div>
 )}
+
+
+
      </div>
    );
  }
