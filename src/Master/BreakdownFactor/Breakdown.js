@@ -680,6 +680,8 @@ const handleEyeClick = () => {
 
  
            </div>
+
+           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
            <div style={{ display: 'flex', alignItems: 'center'}}>
             {allreadyfilled?<p style={{color:"red"}}> Penalty/Increment already filled for this month. </p>:""}
            </div>
