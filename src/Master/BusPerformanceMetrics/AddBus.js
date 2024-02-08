@@ -215,7 +215,6 @@ const fetchPenaltyRate = async (id) => {
    let tripfreqpenaltypercentage = tripfreqdifference<0?0:tripfreqdifference*response.data[0].penalty;
    console.log(response,response.data[0].penalty,id,busKmFrequency,tripFrequency,buskmpenaltypercentage,tripfreqpenaltypercentage);
    setpenaltyPercentage(props.timeformodal!=="tripfrequency"?buskmpenaltypercentage:tripfreqpenaltypercentage);
- 
     }
     else if(props.from==="SafetyOperation"){
       console.log(props.minorpercent,props.timeformodal)
@@ -227,6 +226,7 @@ const fetchPenaltyRate = async (id) => {
       console.log(minorpenaltypercent)
       setpenaltyPercentage(props.timeformodal!=="majoraccident"?minorpenaltypercent:majorpenaltypercent);
       }
+      
   } catch (error) {
     console.error('Error fetching penalty rate:', error);
   }

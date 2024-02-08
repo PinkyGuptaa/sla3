@@ -481,7 +481,27 @@ import Environment from '../Environment/Environment.json';
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary=" Breakdown Factor " />
+            <ListItemText primary=" Reliability " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}}>
+          <NavLink to="/busavailablematrics" style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,16)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Operational Availability " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}}>
+          <NavLink to="/schedulematrics" style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,15)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Bus Schedule Metrics " />
           </ListItemButton>
           </NavLink>
             </List>
@@ -505,26 +525,8 @@ import Environment from '../Environment/Environment.json';
           </ListItemButton>
           </NavLink>
             </List>
-      <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}}>
-          <NavLink to="/schedulematrics" style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,15)}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary=" Bus Schedule Metrics " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}}>
-          <NavLink to="/busavailablematrics" style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,16)}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary=" Bus Available Matrics " />
-          </ListItemButton>
-          </NavLink>
-            </List>
+    
+            
       {/* <List component="div" disablePadding>
           <NavLink to="/performancematrics" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,10)}>
