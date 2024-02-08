@@ -109,7 +109,6 @@ const [isGenericPenaltyChecked, setIsGenericPenaltyChecked] = useState(false);
   useEffect(()=>{
     let startpun = Math.ceil(props.startpunper);
     let arrivalpun = Math.ceil(props.arrivalpunper);
-    
     let startdiff = 90-startpun;
     let startpenaltyper = startdiff<0?0:startdiff*2;
     let arrivaldiff = 80-arrivalpun;
@@ -218,6 +217,16 @@ const fetchPenaltyRate = async (id) => {
    setpenaltyPercentage(props.timeformodal!=="tripfrequency"?buskmpenaltypercentage:tripfreqpenaltypercentage);
  
     }
+    else if(props.from==="SafetyOperation"){
+      console.log(props.minorpercent,props.timeformodal)
+      let MinorAccidents = Math.ceil(props.minorpercent);
+      let majorAccidents = Math.ceil(props.majorpercent);
+      let minordifference = (MinorAccidents-0.01)*100
+      let majorpenaltypercent = majorAccidents*2
+      let minorpenaltypercent = (minordifference)*2;
+      console.log(minorpenaltypercent)
+      setpenaltyPercentage(props.timeformodal!=="majoraccident"?minorpenaltypercent:majorpenaltypercent);
+      }
   } catch (error) {
     console.error('Error fetching penalty rate:', error);
   }

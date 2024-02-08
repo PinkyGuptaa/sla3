@@ -692,13 +692,8 @@ const handleEyeClick = () => {
              Action </Button>:breakdownFactor<=0.4?<button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
              Incentive </button>:""}</p>
             
-             {
-  isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Breakdown" breakdownper={breakdownFactor}
-
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Breakdown" breakdownper={breakdownFactor} />:""
-}
+     
+      </div>
       </div>
 </>
      :aftersearch && allbusdetails.length==0?
@@ -706,8 +701,18 @@ const handleEyeClick = () => {
        <div style={{marginTop:"30px"}}>No Data Available</div>
      </>:""
     }
+
+{
+        isAddBusOpen?typeformodal==="penalty"?
+        <Addbus open onClose={() => setIsAddBusOpen(false)} from="Breakdown" breakdownper={breakdownFactor}
+      
+      />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
+          from="Breakdown" breakdownper={breakdownFactor} />:""
+      }
      </div>
+     
    );
+  
  }
 export default BusScheduleMatrics;
 
