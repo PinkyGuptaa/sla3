@@ -574,9 +574,10 @@ console.log(MinorAccident)
       ))}
     </tbody>
   </table>
-  <p>{MinorAccident<=0.01?
+  <p> Minor Accidents Factor: {MinorAccident}</p>
+  <p>{MinorAccident>=0.01?
            <button onClick={()=>handleButtonClick("minoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:MinorAccident>0.01?<button onClick={()=>handleButtonClick("minoraccident","incentive")} 
+             Action </button>:MinorAccident<0.01?<button onClick={()=>handleButtonClick("minoraccident","incentive")} 
              style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
              Incentive </button>:""}</p>
 </div>
@@ -615,23 +616,19 @@ console.log(MinorAccident)
     </tbody>
   </table>
 
-  <div>
-    sdfsfsfsfsdfsdfsfdf
-  </div>
-   {/* <p>{tripFrequency<=93?
-           <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
-             Incentive </button>:""}</p>  */}
+   <p>No. of Major Accidents: {majorCount}   {majorCount>=1?
+           <button onClick={()=>handleButtonClick("majoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
+             Action </button>:""}</p> 
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 
-  from="Major"
- 
+  from="SafetyOperation"
+  minorpercent={MinorAccident}
+  majorpercent={majorCount}
   timeformodal={timeformodal}
 />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Major"
-    // buskmfrequencyper={BusKMsFrequency}
-    // frequencyper={tripFrequency} 
+    from="SafetyOperation"
+    majorpercent={majorCount}
     timeformodal={timeformodal}
     />:""
 } 
