@@ -207,7 +207,7 @@ const submitbutton = () => {
           size="large"
           variant="contained"
           onClick={rejectDetails}
-          style={{ marginBottom: "20px" }}
+          style={{ marginBottom: "20px",backgroundColor:"maroon" }}
         >
           Reject
         </Button>

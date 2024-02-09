@@ -1,6 +1,6 @@
 
 
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import Select from 'react-select';
@@ -377,7 +377,7 @@ const handleEyeClick = () => {
           onChange={(e) => setSelectedDate(e.target.value)}
         />
 
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
         </button>
         {/* {loading && <p>Loading...</p>} */}
@@ -436,9 +436,9 @@ const handleEyeClick = () => {
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
        
-       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>:""
+        </Button>:""
         } 
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
@@ -474,9 +474,9 @@ const handleEyeClick = () => {
        
        </TextField>
 
-       <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
+       <Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
          Search
-       </button>
+       </Button>
        {/* {loading && <p>Loading...</p>} */}
      </Box>:
      filtervalue==="halfyearly"?
@@ -530,10 +530,10 @@ const handleEyeClick = () => {
     {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
     </p>
     <p>{BusKMsFrequency<=93?
-           <button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
-             Action </button>:BusKMsFrequency>95?<button onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
+           <Button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
+             Action </Button>:BusKMsFrequency>95?<Button onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
              style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
-             Incentive </button>:""}</p>
+             Incentive </Button>:""}</p>
             
              {/* {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} from="Frequency" frequencyper={tripFrequency}
@@ -548,9 +548,9 @@ const handleEyeClick = () => {
       <p>Trip Frequency = { tripFrequency}
   </p>
            <p>{tripFrequency<=93?
-           <button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
-             Action </button>:tripFrequency>=95?<button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white",cursor:"pointer"}}>
-             Incentive </button>:""}</p>
+           <Button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
+             Action </Button>:tripFrequency>=95?<Button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white",cursor:"pointer"}}>
+             Incentive </Button>:""}</p>
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 

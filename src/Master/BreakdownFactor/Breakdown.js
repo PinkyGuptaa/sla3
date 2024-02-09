@@ -681,7 +681,7 @@ const handleEyeClick = () => {
  
            </div>
 
-           <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+           <div style={{ display: 'flex',flexDirection:"column", alignItems: 'center' }}>
            <div style={{ display: 'flex', alignItems: 'center'}}>
             {allreadyfilled?<p style={{color:"red"}}> Penalty/Increment already filled for this month. </p>:""}
            </div>
@@ -689,16 +689,13 @@ const handleEyeClick = () => {
            <p style={{marginLeft : '50px', marginRight: '50px' }}>Breakdown Factor = {breakdownFactor} </p>
            <p>{breakdownFactor>=0.6?
            <Button onClick={()=>handleButtonClick("penalty")} disabled={allreadyfilled} style={{padding:"10px",backgroundColor:allreadyfilled?"lightgrey":"maroon",color:"white",cursor:"pointer",}}>
-             Action </Button>:breakdownFactor<=0.4?<button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
-             Incentive </button>:""}</p>
+             Action </Button>:
+             breakdownFactor<=0.4?
+             <Button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
+             Incentive </Button>:""}</p>
             
-             {
-  isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Breakdown" breakdownper={breakdownFactor}
-
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Breakdown" breakdownper={breakdownFactor} />:""
-}
+     
+      </div>
       </div>
 </>
      :aftersearch && allbusdetails.length==0?
@@ -706,8 +703,18 @@ const handleEyeClick = () => {
        <div style={{marginTop:"30px"}}>No Data Available</div>
      </>:""
     }
+
+{
+        isAddBusOpen?typeformodal==="penalty"?
+        <Addbus open onClose={() => setIsAddBusOpen(false)} from="Breakdown" breakdownper={breakdownFactor}
+      
+      />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
+          from="Breakdown" breakdownper={breakdownFactor} />:""
+      }
      </div>
+     
    );
+  
  }
 export default BusScheduleMatrics;
 

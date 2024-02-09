@@ -121,16 +121,16 @@ function Dm(props) {
    
   },[modalopen,deletemodalopen])
 //remove filter and display data for bus only 
-  useEffect(()=>{
-    async function fetchData() {
-     if(slafortype==="Bus"){
-      let slaBusDataa = await getSLABus();
-      setSlaOptions(slaBusDataa);
-   console.log(slaBusDataa)
-     }
-    }
-    fetchData();
-  },[slafortype])
+  // useEffect(()=>{
+  //   async function fetchData() {
+  //    if(slafortype==="Bus"){
+  //     let slaBusDataa = await getSLABus();
+  //     setSlaOptions(slaBusDataa);
+  //  console.log(slaBusDataa)
+  //    }
+  //   }
+  //   fetchData();
+  // },[slafortype])
   // console.log(slafortype)
   
   const fetchData = async () => {

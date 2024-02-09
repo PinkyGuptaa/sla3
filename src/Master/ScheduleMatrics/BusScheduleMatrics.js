@@ -866,7 +866,7 @@
 // }
 // export default Report;
 
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { SECTION_TYPE_GRANULARITY } from '@mui/x-date-pickers/internals/utils/getDefaultReferenceDate';
 import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
@@ -1330,9 +1330,9 @@ const handleEyeClick = () => {
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-       {Boolean(month) && Boolean(year)?<button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
+       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>:""}
+        </Button>:""}
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==="quarterly"?
@@ -1424,14 +1424,14 @@ filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
 <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
 <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Start Punctuality: </span> {startpunctuality()} {startpunctuality()<=96?
-  <button onClick={()=>handleButtonClick("start","penalty")} style={{backgroundColor:"#ed6e6e9c",margin:"0 15px"}}>Action</button>:startpunctuality()>=96?
-  <button onClick={()=>handleButtonClick("start","incentive")} style={{backgroundColor:"lightgreen",margin:"0 15px"}}> Incentive </button>:""} 
+  <Button onClick={()=>handleButtonClick("start","penalty")} style={{backgroundColor:"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:startpunctuality()>=96?
+  <Button onClick={()=>handleButtonClick("start","incentive")} style={{backgroundColor:"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""} 
   <span style={{marginLeft:"20px"}}>|</span> </p>
 
   <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Arrival Punctuality:</span> {arrivalpunctuality()} {arrivalpunctuality()<=79?
-  <button onClick={()=>handleButtonClick("arrival","penalty")} style={{backgroundColor:"#800000e0",margin:"0 15px",cursor:"pointer"}}>Action</button>:arrivalpunctuality()>=81?
-  <button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:"#188718",margin:"0 15px",cursor:"pointer"}}> Incentive </button>:""}</p>
+  <Button onClick={()=>handleButtonClick("arrival","penalty")} style={{backgroundColor:"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:arrivalpunctuality()>=81?
+  <Button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""}</p>
    
   </div>:""}
   </>:""

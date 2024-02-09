@@ -11,7 +11,7 @@ import PenaltyPage from '../BusPerformanceMetrics/AddBus';
 import { Edit } from '@mui/icons-material';
 import Addbus from '../BusPerformanceMetrics/AddBus';
 import AddBusIncentive from '../BusPerformanceMetrics/AddBusIncentive';
-import './SO.css';
+// import './SO.css';
 function SafetyOperation(props) {
   const [regno, setRegNo] = useState('');
   const [busdetails, setBusDetails] = useState([]);
