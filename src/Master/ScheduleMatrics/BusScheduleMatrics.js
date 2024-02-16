@@ -869,11 +869,63 @@
 import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { SECTION_TYPE_GRANULARITY } from '@mui/x-date-pickers/internals/utils/getDefaultReferenceDate';
 import { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
 import { FaEye } from 'react-icons/fa';
 import Select from 'react-select';
 import Bus_service from '../../Services/Bus_service';
 import Addbus from '../BusPerformanceMetrics/AddBus';
 import AddBusIncentive from '../BusPerformanceMetrics/AddBusIncentive';
+
+const customStyles = {
+  header: {
+		style: {
+			fontSize: '20px',
+			color: "black",
+      textAlign:"justify",
+      fontWeight:"700 !important",
+			padding:"0px 0px 0px 10px !important",
+      paddingLeft:"10px"
+			
+		},
+	},
+  rows: {
+      style: {
+        backgroundColor:"#b6e7e1",
+        textAlign:"center !important",
+         
+      },
+  },
+  headCells: {
+      style: {
+        fontSize:'14px',
+        height:"auto",
+        backgroundColor:'#267871',
+        borderRadius: "10",
+        border: "#34ebcc 5px",
+        textAlign:"center",
+        //padding:"0px !important",
+        fontWeight:"700 !important",
+            paddingLeft:"10px",
+        width:"fit-content",
+        whiteSpace: "normal !important",
+        wordBreak: "auto-phrase !important"
+      },
+  },
+  cells: {
+      style: {
+          paddingLeft: '8px', 
+          paddingRight: '8px',
+          textAlign:"center !important", 
+      },
+      
+  },
+  columns:{
+    style:{
+         borderRight:"white 5px"  
+    },
+  },
+ 
+};
 
 function BusScheduleMatrics(props) {
   const [regno, setRegNo] = useState('');
@@ -964,6 +1016,111 @@ function BusScheduleMatrics(props) {
      .catch((err) => console.log(err));
     }
    },[props.pto])
+
+   
+   const columns = [
+        
+    {
+        name: 'Driver Id',
+        selector: row => row.driverId,
+        sortable:true,
+        center: true, 
+        wrap: true
+        // width:"250px",
+       },
+  {
+    name: 'Conductor Id',
+    selector: row => row.conductorId,
+    sortable:true,
+    center:true,
+    wrap:true,
+    width:"150px"
+},
+{
+  name: 'Bus No.',
+  selector: row => row.busNo,
+  sortable:true,
+  center:true,
+  wrap:true
+},
+{
+  name: 'From Stop',
+  selector: row => row.fromStop,
+  sortable:true,
+  center:true,
+  wrap:true
+},
+{
+  name: 'To Stop',
+  selector: row => row.toStop,
+  sortable:true,
+  center: true, 
+  wrap: true
+  // width:"250px",
+ },
+{
+name: 'ETA From Stop',
+selector: row => row.etaFromStop.slice(0, 5),
+sortable:true,
+center:true,
+wrap:true,
+width:"130px"
+},
+{
+name: 'ATA From Stop',
+selector: row => row.ataFromStop.slice(0, 5),
+sortable:true,
+center:true,
+wrap:true
+},
+{
+name: 'From Time Difference',
+selector: row => row.diffTimeFrom.slice(0, 5),
+sortable:true,
+center:true,
+wrap:true,
+width:"130px",
+conditionalCellStyles: [
+  {
+    when: row => row.diffTimeFromMinute>5,
+    style: {
+      backgroundColor: '#800000b5',
+    },
+  },
+],
+},
+{
+  name: 'ETA To Stop',
+  selector: row => row.etaToStop.slice(0, 5),
+  sortable:true,
+  center:true,
+  wrap:true
+  },
+  {
+  name: 'ATA To Stop',
+  selector: row => row.ataToStop.slice(0, 5),
+  sortable:true,
+  center:true,
+  wrap:true
+  },
+  {
+  name: 'To Time Difference',
+  selector: row => row.diffTimeTo.slice(0, 5),
+  sortable:true,
+  center:true,
+  wrap:true,
+  width:"130px",
+  conditionalCellStyles: [
+    {
+      when: row => row.diffTimeToMinute>15,
+      style: {
+        backgroundColor: '#800000b5',
+      },
+    },
+  ],
+  },
+
+];
    
   const changeFiltervalue = (e)=>{
     setFiltervalue(e);
@@ -1122,41 +1279,49 @@ const handleEyeClick = () => {
   console.log(aftersearch);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-    <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
-    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
+    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+    <div  className='pageheader'>
+    <Typography variant="h5" align="center" style={{marginLeft:'20px',fontWeight:'900'}} gutterBottom>
     Bus Schedule Metrics
       </Typography>
       
       <div style={{display:"flex",alignItems:"center"}}>
-        <div style={{marginRight:"10px",color:"#678cdc",fontWeight:'600'}}>
+        <div style={{marginRight:"10px",color:"white",fontWeight:'600'}}>
             Filter By :  
         </div>
-        <div style={{backgroundColor:"white",marginRight:"10px",borderRadius:"4px"}}>
-        <TextField
-          style={{ width: '200px', margin: '10px',background:"white" }}
-          id="standard-basic"
-          label="Select Filter"
-          variant="outlined"
-          select
-          name="filter"
-          value={filtervalue}
-          onChange={(e)=>changeFiltervalue(e.target.value)}
-          required
-        >
-            {/* <MenuItem key={1} value="buswise">
-              Bus Wise
-            </MenuItem> */}
-            <MenuItem key={2} value="monthwise">
-              Month Wise
-            </MenuItem>
-            {/* <MenuItem key={3} value="quarterly">
-              Quarterly
-            </MenuItem>
-            <MenuItem key={4} value="halfyearly">
-              Half Yearly
-            </MenuItem> */}
-            </TextField>
+        <div style={{marginRight:"10px"}}>
+          <TextField
+       style={{ margin: '10px'}}
+id="outlined-select-currency"
+select
+label="Select Filter"
+name="filter"
+value={filtervalue}
+onChange={(e)=>changeFiltervalue(e.target.value)}
+required
+variant="filled"
+sx={{
+'& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+'& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+color:"white"
+},
+'& .css-1wc848c-MuiFormHelperText-root':{
+color:"white"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+'& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+color:"white"
+},
+'& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+color:"rgb(255 255 255 / 71%)",
+fill:"rgb(255 255 255 / 71%)"
+}
+}}
+>
+<MenuItem key={1} value="monthwise">
+        Month Wise
+      </MenuItem>
+          </TextField>
         </div>
       </div>
       </div>
@@ -1278,7 +1443,8 @@ const handleEyeClick = () => {
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==='monthwise'?
-      <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+      <Box className='monthwiseform'>
+        <div style={{display:"flex"}}>
        <TextField
           id="outlined-select-currency"
           select
@@ -1287,17 +1453,24 @@ const handleEyeClick = () => {
           onChange={(e)=>onmonthchange(e.target.value)}
           required={true}
           variant="filled"
-          
+        
 
           sx={{
             '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
             '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
-              color:"black"
+              color:"white"
             },
             '& .css-1wc848c-MuiFormHelperText-root':{
-              color:"black"
+              color:"white"
             },
-            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
+            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+            '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+              color:"white"
+            },
+            '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+              color:"rgb(255 255 255 / 71%)",
+              fill:"rgb(255 255 255 / 71%)"
+            }
           }}
         >
               {allmonths.map((option) => (
@@ -1317,23 +1490,32 @@ const handleEyeClick = () => {
   required={true}
   variant="filled"
   sx={{
-    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
-    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
-      color: "black"
+    '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+      color:"white"
     },
-    '& .css-1wc848c-MuiFormHelperText-root': {
-      color: "black"
+    '& .css-1wc848c-MuiFormHelperText-root':{
+      color:"white"
     },
-    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
+    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+    '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+      color:"white"
+    },
+    '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+      color:"rgb(255 255 255 / 71%)",
+      fill:"rgb(255 255 255 / 71%)"
+    }
   }}
 >
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
+       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} className="monthwiseformbutton">
           Search
-        </Button>:""}
-        {/* {loading && <p>Loading...</p>} */}
+        </Button>:""
+      }
+      
+     </div>
       </Box>:
       filtervalue==="quarterly"?
       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
@@ -1412,8 +1594,76 @@ const handleEyeClick = () => {
 
     } 
 
-    {aftersearch?<>
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+  
+
+
+{reportDetails.wayBillTripsList && reportDetails.wayBillTripsList.length > 0 && (
+  <>
+  {/* <table className="report-table">
+    <thead>
+      <tr>
+    
+        <th>Driver Id</th>
+        <th>Conductor Id</th>
+        {filtervalue === 'monthwise' && <th>Bus No.</th>}
+      
+        <th>From Stop</th>
+        <th>To Stop</th>
+        <th>ETA From Stop</th>
+        <th>ATA From Stop</th>
+        <th>From Time Difference</th>
+        <th>ETA To Stop</th>
+        <th>ATA To Stop</th>
+      
+        <th>To Time Difference</th>
+       
+     
+      </tr>
+    </thead>
+    <tbody>
+      {reportDetails.wayBillTripsList.map((item, index) => (
+        <tr key={index}>
+            <td>{item.driverId}</td>
+          <td>{item.conductorId}</td>
+          {filtervalue === 'monthwise' && <td>{item.busNo}</td>}
+       
+          <td>{item.fromStop}</td>
+          <td>{item.toStop}</td>
+          <td>{item.etaFromStop.slice(0, 5)}</td>
+          <td>{item.ataFromStop.slice(0, 5)}</td>
+          <td style={{backgroundColor:item.diffTimeFromMinute>5?"#800000b5":""}}>{item.diffTimeFrom.slice(0, 5) }</td>
+          <td>{item.etaToStop.slice(0, 5)}</td>
+          <td>{item.ataToStop.slice(0, 5)}</td>
+          <td style={{backgroundColor:item.diffTimeToMinute>15?"#800000b5":""}}>{item.diffTimeTo.slice(0, 5)}</td>
+          
+  
+        </tr>
+      ))}
+    </tbody>
+  </table> */}
+
+<DataTable
+columns={columns}
+data={reportDetails.wayBillTripsList}
+fixedHeader
+fixedHeaderScrollHeight="600px"
+pagination
+responsive
+// striped
+subHeaderAlign="right"
+subHeaderWrap
+// subHeader
+// subHeaderComponent={<input type="text" placeholder="Search here"  style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
+customStyles={customStyles}
+highlightOnHover
+desnse
+
+/>
+</>
+)}
+
+{aftersearch?<>
+      <div style={{ display: 'flex',justifyContent:"center", alignItems: 'center', marginTop: '5px' }}>
   <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
   <p style={{ color: reportDetails.countWayBillTripsWhereTimeIsNotZero > 0 ? 'red' : 'inherit' }}>
     Number of Trips Violated: {reportDetails.countWayBillTripsWhereTimeIsNotZero}
@@ -1421,7 +1671,7 @@ const handleEyeClick = () => {
 </div>
 {
 filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
-<div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+<div style={{ display: 'flex', alignItems: 'center',justifyContent:"center", marginTop: '10px' }}>
 <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Start Punctuality: </span> {startpunctuality()} {startpunctuality()<=96?
   <Button onClick={()=>handleButtonClick("start","penalty")} style={{backgroundColor:"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:startpunctuality()>=96?
@@ -1437,89 +1687,18 @@ filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
   </>:""
 }
 
-
-{reportDetails.wayBillTripsList && reportDetails.wayBillTripsList.length > 0 && (
-  
-  <table className="report-table">
-    <thead>
-      <tr>
-    
-        
-        {/* <th>Route Name</th> */}
-        {/* <th>Conductor Name</th> */}
-        <th>Driver Id</th>
-        <th>Conductor Id</th>
-        {filtervalue === 'monthwise' && <th>Bus No.</th>}
-        {/* <th>waybillNo</th> */}
-        <th>From Stop</th>
-        <th>To Stop</th>
-        <th>ETA From Stop</th>
-        <th>ATA From Stop</th>
-        <th>From Time Difference</th>
-        <th>ETA To Stop</th>
-        <th>ATA To Stop</th>
-        {/* <th>Actual Distance</th> */}
-        <th>To Time Difference</th>
-        {/* <th>Trip Income</th> */}
-        
-    
-        {/* <th>Action</th> */}
-        {/* <th>busNo</th> */}
-     
-      </tr>
-    </thead>
-    <tbody>
-      {reportDetails.wayBillTripsList.map((item, index) => (
-        <tr key={index}>
-  
-          {/* <td>{item.routeName}</td> */}
-          {/* <td>{item.conductorName}</td> */}
-          <td>{item.driverId}</td>
-          <td>{item.conductorId}</td>
-          {filtervalue === 'monthwise' && <td>{item.busNo}</td>}
-          {/* <td>{item.waybillNo}</td> */}
-          <td>{item.fromStop}</td>
-          <td>{item.toStop}</td>
-          <td>{item.etaFromStop.slice(0, 5)}</td>
-          <td>{item.ataFromStop.slice(0, 5)}</td>
-          <td style={{backgroundColor:item.diffTimeFromMinute>5?"#800000b5":""}}>{item.diffTimeFrom.slice(0, 5) }</td>
-          <td>{item.etaToStop.slice(0, 5)}</td>
-          <td>{item.ataToStop.slice(0, 5)}</td>
-          <td style={{backgroundColor:item.diffTimeToMinute>15?"#800000b5":""}}>{item.diffTimeTo.slice(0, 5)}</td>
-          {/* <td>{item.actualDistance}</td> */}
-          {/* <td>{item.tripIncome}</td> */}
-         
-         
-          {/* <td> */}
-  {/* <FaEye
-    onClick={() => updatedata(item.id)}
-    style={{ cursor: 'pointer', color: 'black', marginLeft: '20px' }}
-  /> */}
-   {/* <FaEye style={{ cursor: 'pointer', marginLeft: '20px' }} onClick={handleEyeClick} />
-
-{isAddBusOpen && (
-<Addbus open onClose={() => setIsAddBusOpen(false)} 
- defaultRegNo={selectedRegNo}
-/>)}
-
-</td> */}
-  
-        </tr>
-      ))}
-    </tbody>
-  </table>
-)}
 {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 
   timeformodal={timeformodal} 
   from="Schedule"
+  month={month.substring(0,2)} year={year}
 />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 
   timeformodal={timeformodal} 
-  from="Schedule" />:""
+  from="Schedule" month={month.substring(0,2)} year={year} />:""
 }
     </div>
   );

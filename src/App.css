@@ -136,3 +136,12 @@
     transform: rotate(360deg);
   }
 }
+
+.pageheader{
+  display:flex;
+  width:-webkit-fill-available;
+  justify-content:space-between;
+  background:lightgrey;
+  height:100px;
+  align-items:center;
+}

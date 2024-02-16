@@ -1,5 +1,5 @@
 import { Check, Close, Delete, Edit, Label } from '@mui/icons-material';
-import { FormControl, FormControlLabel, Radio, RadioGroup, Snackbar } from '@mui/material';
+import { FormControl, FormControlLabel, Radio, RadioGroup, Snackbar, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Checkbox, Grid, MenuItem, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import Conductor_service from '../../Services/Conductor_service';
 import Driver_service from '../../Services/Driver_service';
 import Approval from './Approval';
 import Incentivemaster_service from '../../Services/Incentivemaster_service';
+import { teal } from '@mui/material/colors';
 import IncentiveMaster from '../IncentiveMaster/IncentiveMaster';
 const customStyles = {
   header: {
@@ -37,7 +38,7 @@ const customStyles = {
       style: {
         fontSize:'14px',
         height:"auto",
-        backgroundColor:'#3a9d91',
+        backgroundColor:'#267871',
         borderRadius: "10",
         border: "#34ebcc 5px",
         textAlign:"center",
@@ -495,27 +496,59 @@ return (
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     />
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center"}}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center",background:"lightgrey"}}>
+      <div className='pageheader' style={{marginLeft:"20px"}}>
+    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"white",fontWeight:'900'}} gutterBottom>
+    Approval 
+      </Typography>
+      
+      <div style={{display:"flex",alignItems:"center"}}>
+        <div style={{marginRight:"10px",color:"white",fontWeight:'600'}}>
+            Select Type :  
+        </div>
+        <div style={{marginRight:"10px"}}>
+        <FormControl component="fieldset">
+             <RadioGroup
+        row
+        aria-label="approval-type"
+        name="approval-type"
+        value={approvalType}
+        onChange={handleApprovalTypeChange}
+        color="white"
+      >
+        <FormControlLabel value="penalty" control={<Radio   sx={{
+          color: teal[800],
+          '&.Mui-checked': {
+            color: teal[900],
+          },
+        }} />} label="Penalty" />
+        <FormControlLabel value="incentive" control={<Radio sx={{
+          color: teal[800],
+          '&.Mui-checked': {
+            color: teal[900],
+          },
+        }} />} label="Incentive" />
+      </RadioGroup>
+      </FormControl>
+      
+  </div>
+      </div>
+      </div>
+
+        {/* <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center",background:"lightgrey"}}>
           <Grid item xs={3}>
            
           </Grid>
           <Grid item xs={6}>
-              {/* <AddDm open={modalopen} onClose={handlemodalclose} updateid={updateid} /> */}
-            <Deletecomponent open={deletemodalopen} onClose={handledeletemodalclose} deleteid={deleteid} servicename="deletebusbyid" />
+            
             <div className='masterHeading'><h2 className='centerContent'> Approval </h2> </div>
           </Grid>
           <Grid item xs={3}>
           </Grid>
-        </Grid>
+        </Grid> */}
 
-  <Grid item xs={12} style={{marginRight:"10px",marginLeft:"10px"}}>
+  <Grid item xs={12} style={{marginTop:"-8px"}}>
   
-  {/* <FormControl component="fieldset">
-            <RadioGroup row aria-label="approvalType" name="approvalType" value={approvalType} onChange={handleApprovalTypeChange}>
-              <FormControlLabel value="Penalty" control={<Radio />} label="Penalty" />
-              <FormControlLabel value="Incentive" control={<Radio />} label="Incentive" />
-            </RadioGroup>
-          </FormControl> */}
+{/*  
           <FormControl component="fieldset" style={{marginTop:'30px'}}>
              <RadioGroup
         row
@@ -527,7 +560,7 @@ return (
         <FormControlLabel value="penalty" control={<Radio />} label="Penalty" />
         <FormControlLabel value="incentive" control={<Radio />} label="Incentive" />
       </RadioGroup>
-      </FormControl>
+      </FormControl> */}
   <DataTable
             columns={columns}
             data={slaOptions}
@@ -538,7 +571,7 @@ return (
             // striped
             subHeaderAlign="right"
             subHeaderWrap
-            subHeader
+            // subHeader
             // subHeaderComponent={<input type="text" placeholder="Search here"  style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
             
             customStyles={customStyles}

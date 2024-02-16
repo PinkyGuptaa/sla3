@@ -56,16 +56,18 @@ import DateWiseReport from '../Master/Report/DateWiseReport';
 import Busavailablematrics from "../Master/BusAvailableMatrics/BusAvailableMatrics";
 import Busdetails from "../Master/Busdetails/Busdetails";
 import Formula from "../Master/Formulas/Formula";
-import { AccountCircle, ChevronLeft, ChevronRight, MenuBook, MenuOutlined, StarBorder ,Home, Build, PersonRounded} from "@mui/icons-material";
+import { AccountCircle, ChevronLeft, ChevronRight, MenuBook, MenuOutlined, StarBorder ,Home, Build, PersonRounded, LabelImportant} from "@mui/icons-material";
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import Environment from '../Environment/Environment.json'; 
+import { ToastContainer } from 'react-toastify';
 
   const drawerWidth = 240;
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       ({ theme, open }) => ({
         flexGrow: 1,
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
+        padding:"0px",
         transition: theme.transitions.create("margin", {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen
@@ -101,7 +103,7 @@ import Environment from '../Environment/Environment.json';
     const DrawerHeader = styled("div")(({ theme }) => ({
       display: "flex",
       alignItems: "center",
-      padding: theme.spacing(0, 1),
+      // padding: theme.spacing(0, 1),
       // necessary for content to be below app bar
       ...theme.mixins.toolbar,
       justifyContent: "flex-end"
@@ -185,6 +187,7 @@ import Environment from '../Environment/Environment.json';
     
       return (
         <BrowserRouter>
+       
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar position="fixed" 
@@ -447,7 +450,7 @@ import Environment from '../Environment/Environment.json';
                         onClick={changeactiveid.bind(this, 24)}
                       >
                         <ListItemIcon>
-                          <StarBorder />
+                          <LabelImportant />
                         </ListItemIcon>
                         <ListItemText primary="All Formulas Used " />
                       </ListItemButton>
@@ -467,7 +470,7 @@ import Environment from '../Environment/Environment.json';
                         onClick={changeactiveid.bind(this, 23)}
                       >
                         <ListItemIcon>
-                          <StarBorder />
+                        <LabelImportant />
                         </ListItemIcon>
                         <ListItemText primary=" Bus Details " />
                       </ListItemButton>
@@ -479,47 +482,51 @@ import Environment from '../Environment/Environment.json';
           <NavLink to="/breakdownfactor" style={{color:"black",textDecoration:"None",background:activeid===14?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,14)}>
             <ListItemIcon>
-              <StarBorder />
+            <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Reliability " />
           </ListItemButton>
           </NavLink>
             </List>
+
             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}}>
           <NavLink to="/busavailablematrics" style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,16)}>
             <ListItemIcon>
-              <StarBorder />
+                <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Operational Availability " />
           </ListItemButton>
           </NavLink>
             </List>
+
             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}}>
           <NavLink to="/schedulematrics" style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,15)}>
             <ListItemIcon>
-              <StarBorder />
+               <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Bus Schedule Metrics " />
           </ListItemButton>
           </NavLink>
             </List>
+
             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}}>
           <NavLink to="/frequency" style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,19)}>
             <ListItemIcon>
-              <StarBorder />
+              <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Frequency " />
           </ListItemButton>
           </NavLink>
             </List>
+
             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}}>
           <NavLink to="/safetyoperation" style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,20)}>
             <ListItemIcon>
-              <StarBorder />
+               <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Safety of Operation " />
           </ListItemButton>
@@ -541,7 +548,7 @@ import Environment from '../Environment/Environment.json';
           <NavLink to="/dmapproval" style={{color:"black",textDecoration:"None",background:activeid===17?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,17)}>
             <ListItemIcon>
-              <StarBorder />
+            <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Approval " />
           </ListItemButton>
@@ -561,7 +568,7 @@ import Environment from '../Environment/Environment.json';
           <NavLink to="/customercomplaint" style={{color:"black",textDecoration:"None",background:activeid===18?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,18)}>
             <ListItemIcon>
-              <StarBorder />
+            <LabelImportant />
             </ListItemIcon>
             <ListItemText primary=" Customer Complaint " />
           </ListItemButton>
@@ -678,7 +685,7 @@ import Environment from '../Environment/Environment.json';
           sx={{ flexGrow: 1, padding: "20px", 
           transition: "margin-left 0.3s ease-in-out" }}>
             <DrawerHeader />
- 
+         
             <Routes>
             <Route path="/" exact element={<HomePage />} />
                <Route path="home" exact element={<HomePage />} />

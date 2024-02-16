@@ -31,7 +31,7 @@ const customStyles = {
       style: {
         fontSize:'14px',
         height:"auto",
-        backgroundColor:'#3a9d91',
+        backgroundColor:'#267871',
         borderRadius: "10",
         border: "#34ebcc 5px",
         textAlign:"center",
@@ -144,21 +144,22 @@ const handledeletemodalclose = () =>{
 return (
      <Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center"}}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center",background:"lightgrey"}}>
-          <Grid item xs={3}>
-            <Button size='large' variant="contained" startIcon={<AddIcon />} onClick={handlemodal}>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"}  className='pageheader'>
+          <Grid item xs={4} style={{marginTop:"10px "}}>
+          <div className='masterHeading'><h2 className='centerContent' style={{color:'white',fontSize: '24px'}}> Agency Master </h2> </div>
+          </Grid>
+          <Grid item xs={5}>
+            <AddAgency open={modalopen} onClose={handlemodalclose} updateid={updateid} />
+            <Deletecomponent open={deletemodalopen} onClose={handledeletemodalclose} deleteid={deleteid} servicename="deleteagencybyid" />
+           
+          </Grid>
+          <Grid item xs={3} style={{marginTop:"10px "}}>
+          <Button variant="contained" style={{backgroundColor:'#136a8a', marginRight:'50px'}} startIcon={<AddIcon />} onClick={handlemodal}>
                 Add Agency
             </Button>
           </Grid>
-          <Grid item xs={6}>
-            <AddAgency open={modalopen} onClose={handlemodalclose} updateid={updateid} />
-            <Deletecomponent open={deletemodalopen} onClose={handledeletemodalclose} deleteid={deleteid} servicename="deleteagencybyid" />
-            <div className='masterHeading'><h2 className='centerContent'> Agency Master </h2> </div>
-          </Grid>
-          <Grid item xs={3}>
-          </Grid>
         </Grid>
-  <Grid item xs={12} style={{marginRight:"10px",marginLeft:"10px"}}>
+  <Grid item xs={12}  style={{marginTop:"-10px"}}>
   <DataTable
             columns={columns}
             data={agencydetailsfiltered}
@@ -167,10 +168,10 @@ return (
             pagination
             responsive
             subHeaderAlign="right"
-            subHeaderWrap
-            subHeader
-            subHeaderComponent={<input type="text" placeholder="Search here"  
-            style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
+            // subHeaderWrap
+            // subHeader
+            // subHeaderComponent={<input type="text" placeholder="Search here"  
+            // style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
             customStyles={customStyles}
             highlightOnHover
             desnse

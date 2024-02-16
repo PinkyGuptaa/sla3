@@ -1,6 +1,6 @@
 
 
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Snackbar, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import Select from 'react-select';
@@ -58,6 +58,12 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
   const [showPenaltyPage, setShowPenaltyPage] = useState(false);
   const [timeformodal,setTimeformodal] = useState("");
   const [typeformodal,setTypeformodal] = useState("");
+  const [allreadyfilledbuskm,setAllreadyfilledbuskm] = useState("");
+  const [allreadyfilledtripfeq,setAllreadyfilledtripfrq] =useState("");
+  const [opensnack,setOpensnack] = useState(false)
+  const [errormessage,setErrormessage] = useState('');
+  const [snackcolor,setSnackcolor] = useState('');
+
   const styles = {
       
     valueContainer: (css) => ({
@@ -75,6 +81,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       })
       .catch((err) => console.log(err));
   }, []);
+
   const changeFiltervalue = (e)=>{
     setFiltervalue(e);
     setReportDetails({
@@ -109,6 +116,66 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
   };
   const handleGenerateReport = async () => {
     setLoading(true);
+    let penaltycheckbuskm;
+    let incrementcheckbuskm;
+    let penaltychecktripfrq;
+    let incrementchecktripfrq;
+
+    checkiffilledalreadybuskm("Bus KMs Frequency",month,year,aftercheck);
+    checkiffilledalreadytripfrq("Trip Frequency",month,year,afterchecktrip);
+
+    async function checkiffilledalreadybuskm(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltycheckbuskm = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementcheckbuskm = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      aftercheck();
+    }
+
+    async function checkiffilledalreadytripfrq(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltychecktripfrq = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementchecktripfrq = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      afterchecktrip();
+    }
+
+    async function aftercheck(){
+      if(penaltycheckbuskm || incrementcheckbuskm){
+        setAllreadyfilledbuskm(true);
+        
+      }
+      else {
+        setAllreadyfilledbuskm(false);
+      }
+      
+    }
+
+    async function afterchecktrip(){
+      if(penaltychecktripfrq || incrementchecktripfrq){
+        setAllreadyfilledtripfrq(true);
+        
+      }
+      else {
+        setAllreadyfilledtripfrq(false);
+      }
+      
+    }
+
     if(filtervalue==="buswise")
     // {
     //     const data = await Bus_service.getdatabybusnodate(regno,selectedDate).then((res)=>{
@@ -293,44 +360,74 @@ const handleEyeClick = () => {
   const BusKMsFrequency =  totalActualDistance > 0 
   ? (((totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0;
  
+  const handleSnackClose = ()=>{
+    setOpensnack(false);
+  }; 
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-    <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
-    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
+         <Snackbar  ContentProps={{
+    sx: {
+      background: snackcolor,
+      color:'white',
+      padding:"15px",
+      letterSpacing:"1.5px",
+      fontWeight:"500",
+      textAlign:"center",
+      
+    }
+  }}
+  anchorOrigin={{vertical:'top',horizontal:'center'}}
+  open={opensnack}
+  autoHideDuration={6000}
+  onClose={handleSnackClose}
+  message={errormessage}
+  />
+
+    <div className='pageheader'>
+    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"white",fontWeight:'900'}} gutterBottom>
    Frequency
       </Typography>
       
       <div style={{display:"flex",alignItems:"center"}}>
-        <div style={{marginRight:"10px",color:"#678cdc",fontWeight:'600'}}>
+        <div style={{marginRight:"10px",color:"white",fontWeight:'600'}}>
             Filter By :  
         </div>
-        <div style={{backgroundColor:"white",marginRight:"10px",borderRadius:"4px"}}>
-        <TextField
-          style={{ width: '200px', margin: '10px',background:"white" }}
-          id="standard-basic"
-          label="Select Filter"
-          variant="outlined"
-          select
-          name="filter"
-          value={filtervalue}
-          onChange={(e)=>changeFiltervalue(e.target.value)}
-          required
-        >
-            {/* <MenuItem key={1} value="buswise">
-              Bus Wise
-            </MenuItem> */}
-            <MenuItem key={1} value="monthwise">
-              Month Wise
-            </MenuItem>
-            {/* <MenuItem key={3} value="quarterly">
-              Quarterly
-            </MenuItem>
-            <MenuItem key={4} value="halfyearly">
-              Half Yearly
-            </MenuItem> */}
-            </TextField>
-        </div>
+        <div style={{marginRight:"10px"}}>
+      
+      <TextField
+       style={{ margin: '10px'}}
+id="outlined-select-currency"
+select
+label="Select Filter"
+name="filter"
+value={filtervalue}
+onChange={(e)=>changeFiltervalue(e.target.value)}
+required
+variant="filled"
+sx={{
+'& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+'& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+color:"white"
+},
+'& .css-1wc848c-MuiFormHelperText-root':{
+color:"white"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+'& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+color:"white"
+},
+'& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+color:"rgb(255 255 255 / 71%)",
+fill:"rgb(255 255 255 / 71%)"
+}
+}}
+>
+<MenuItem key={1} value="monthwise">
+        Month Wise
+      </MenuItem>
+</TextField>
+  </div>
       </div>
       </div>
      
@@ -383,65 +480,87 @@ const handleEyeClick = () => {
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==='monthwise'?
-      <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
-       <TextField
-          id="outlined-select-currency"
-          select
-          label="Month"
-          value={month}
-          onChange={(e)=>onmonthchange(e.target.value)}
-          required={true}
-          variant="filled"
-          
+      <Box className='monthwiseform'>
+      <div style={{display:"flex"}}>
+     <TextField
+        id="outlined-select-currency"
+        select
+        label="Month"
+        value={month}
+        onChange={(e)=>onmonthchange(e.target.value)}
+        required={true}
+        variant="filled"
+      
 
-          sx={{
-            '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
-            '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
-              color:"black"
-            },
-            '& .css-1wc848c-MuiFormHelperText-root':{
-              color:"black"
-            },
-            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
-          }}
-        >
-              {allmonths.map((option) => (
-                
-            <MenuItem key={option.key} value={option.value}>
-              {option.key}
-            </MenuItem>
-          ))}
-        
-        </TextField>
-        <TextField
-  id="outlined-select-currency"
-  select
-  label="Year"
-  value={year}
-  onChange={(e) => setYear(e.target.value)}
-  required={true}
-  variant="filled"
-  sx={{
-    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
-    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
-      color: "black"
-    },
-    '& .css-1wc848c-MuiFormHelperText-root': {
-      color: "black"
-    },
-    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
-  }}
+        sx={{
+          '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+          '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+            color:"white"
+          },
+          '& .css-1wc848c-MuiFormHelperText-root':{
+            color:"white"
+          },
+          '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+          '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+            color:"white"
+          },
+          '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+            color:"rgb(255 255 255 / 71%)",
+            fill:"rgb(255 255 255 / 71%)"
+          },
+          '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+            color:"white"
+          },
+        }}
+      >
+            {allmonths.map((option) => (
+              
+          <MenuItem key={option.key} value={option.value}>
+            {option.key}
+          </MenuItem>
+        ))}
+      
+      </TextField>
+      <TextField
+id="outlined-select-currency"
+select
+label="Year"
+value={year}
+onChange={(e) => setYear(e.target.value)}
+required={true}
+variant="filled"
+sx={{
+  '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+  '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+    color:"white"
+  },
+  '& .css-1wc848c-MuiFormHelperText-root':{
+    color:"white"
+  },
+  '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+  '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+    color:"white"
+  },
+  '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+    color:"rgb(255 255 255 / 71%)",
+    fill:"rgb(255 255 255 / 71%)"
+  },
+  '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+    color:"white"
+  },
+}}
 >
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-       
-       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
-          Search
-        </Button>:""
-        } 
-        {/* {loading && <p>Loading...</p>} */}
-      </Box>:
+     {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} className="monthwiseformbutton">
+        Search
+      </Button>:""
+    }
+    
+   </div>
+    </Box>
+      :
       filtervalue==="quarterly"?
       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
       <TextField
@@ -519,9 +638,11 @@ const handleEyeClick = () => {
 
   }
   {aftersearch && allbusdetails && allbusdetails.length > 0 && (
-  <div style={{ display: 'flex', marginTop: '30px', marginRight:'150px' }}>
+  <div style={{ display: 'flex',width: "100%",justifyContent: "center",backgroundColor: "#267871",paddingBottom: "50px",
+  paddingTop: "20px", }}>
 
-    <div style={{ marginRight: '20px' }}>
+    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
+    backgroundColor: "#136a8a54"}}>
   <h2>Bus KMs Frequency</h2>
   {/* <p>Number of Unavailable Buses: {unavailablebus}</p> */}
   <p>Total KMs To Run: {totalActualDistance}</p>
@@ -529,10 +650,11 @@ const handleEyeClick = () => {
   <p>Bus KMs Frequency = {BusKMsFrequency}
     {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
     </p>
+    {allreadyfilledbuskm?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
     <p>{BusKMsFrequency<=93?
-           <Button onClick={()=>handleButtonClick("buskmfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
+           <Button onClick={()=>handleButtonClick("buskmfrequency","penalty")} disabled={allreadyfilledbuskm} style={{padding:"10px",backgroundColor:allreadyfilledbuskm?"lightgrey":"maroon",color:"white",cursor:"pointer"}}>
              Action </Button>:BusKMsFrequency>95?<Button onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
-             style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}>
+             disabled={allreadyfilledbuskm} style={{padding:"10px",backgroundColor:allreadyfilledbuskm?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
              Incentive </Button>:""}</p>
             
              {/* {isAddBusOpen?typeformodal==="penalty"?
@@ -541,28 +663,56 @@ const handleEyeClick = () => {
     from="Frequency" frequencyper={tripFrequency} />:""
 } */}
   </div>
-    <div style={{ marginLeft: '20px' }}>
+    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
+    backgroundColor: "#136a8a54" }}>
       <h2>Trip Frequency</h2>
-      <p>Total Scheduled Trips:{tripData.dispatch}</p>
-      <p>Total Completed Trips :{tripData.waybilltrip}</p>
+      <p>Total Scheduled Trips: {tripData.dispatch}</p>
+      <p>Total Completed Trips:{tripData.waybilltrip}</p>
       <p>Trip Frequency = { tripFrequency}
   </p>
+  {allreadyfilledtripfeq?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
            <p>{tripFrequency<=93?
-           <Button onClick={()=>handleButtonClick("tripfrequency","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
-             Action </Button>:tripFrequency>=95?<Button onClick={()=>handleButtonClick("tripfrequency","incentive")} style={{padding:"10px",backgroundColor:"lightgreen",color:"white",cursor:"pointer"}}>
+           <Button onClick={()=>handleButtonClick("tripfrequency","penalty")} disabled={allreadyfilledtripfeq} style={{padding:"10px",backgroundColor:allreadyfilledtripfeq?"lightgrey":"maroon",color:"white",cursor:"pointer"}}>
+             Action </Button>:tripFrequency>=95?<Button onClick={()=>handleButtonClick("tripfrequency","incentive")}   
+             disabled={allreadyfilledtripfeq} style={{padding:"10px",backgroundColor:allreadyfilledtripfeq?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
              Incentive </Button>:""}</p>
             
              {isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} 
+  <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
+    setOpensnack(true);
+    setErrormessage("Not able to submit now. Please try again later"); 
+    setSnackcolor("#e34242"); 
+   }
+ } 
+ onClose={() => {setIsAddBusOpen(false)
+   setSnackcolor("#458a32");
+   setErrormessage(" Data Saved Successfully ")
+   setOpensnack(true);
+  }
+ } 
   from="Frequency"
   buskmfrequencyper={BusKMsFrequency}  
   frequencyper={tripFrequency}
   timeformodal={timeformodal}
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
+  month={month.substring(0,2)} year={year}
+/>:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
+   setOpensnack(true);
+   setErrormessage("Not able to submit now. Please try again later"); 
+   setSnackcolor("#e34242"); 
+  }
+} 
+onClose={() => {setIsAddBusOpen(false)
+  setSnackcolor("#458a32");
+  setErrormessage(" Data Saved Successfully ")
+  setOpensnack(true);
+  handleGenerateReport();
+ }
+} 
     from="Frequency"
     buskmfrequencyper={BusKMsFrequency}
     frequencyper={tripFrequency} 
     timeformodal={timeformodal}
+    month={month.substring(0,2)} year={year}
     />:""
 } 
     </div>

@@ -11,7 +11,8 @@ import Slaformaster_service from '../../Services/Slaformaster_service';
 import Driver_service from '../../Services/Driver_service';
 import Conductor_service from '../../Services/Conductor_service';
 import Slamaster_service from '../../Services/Slamaster_service';
-
+import Environment from '../../Environment/Environment.json'; 
+import {toast} from 'react-toastify';
 
 
 const style = {
@@ -86,6 +87,10 @@ function Addincentive(props) {
   const [isWarningChecked, setIsWarningChecked] = useState(false);
 const [isActionChecked, setIsActionChecked] = useState(false);
 const [isGenericPenaltyChecked, setIsGenericPenaltyChecked] = useState(false);
+const Base_Url = Environment.Base_Url;
+const [pto,setPto] = useState('');
+const [ptodetails,setPtodetails] = useState([]);
+
 
   useEffect(()=>{
     if(cleanform){
@@ -103,6 +108,16 @@ const [isGenericPenaltyChecked, setIsGenericPenaltyChecked] = useState(false);
 
     }
   },[cleanform])
+
+  useEffect(()=>{
+    axios.get(`${Base_Url}/busperformance/getpto`).then((res)=>{
+        setPtodetails(res.data);
+        
+    }).catch((err)=>{
+     console.log(err);
+    })
+  },[])
+
   useEffect(()=>{
     if(props.updateid){
 
@@ -368,7 +383,7 @@ useEffect(()=>{
 },[])
 
   const submitbutton = ()=>{
-    const fieldempty =   slaForMaster && slaMaster && details && filedate; 
+    const fieldempty =   slaForMaster && slaMaster && details && filedate && pto; 
     // && actionMaster &&  penalty && penaltydetail && qualityStandardMaster && filedate && bycustomer  
     ;
     if(fieldempty){
@@ -411,7 +426,7 @@ else return "";
      else 
      {
       
-      const busdetails = { slaMaster,details, qualityStandardMaster, filedate,incentive,"incentivepercentage":incentivePercentage,
+      const busdetails = { slaMaster,details, qualityStandardMaster, filedate,incentive,"incentivepercentage":incentivePercentage,"month":props.month,"year":props.year,"ptoid":pto,
         // bycustomer: bycustomer === 'Yes',
         // customerComplaint: bycustomer === 'Yes' ? customerComplaint : null,
         entryby};
@@ -423,19 +438,34 @@ else return "";
       console.log(busdetails);
       (slafortype==="Bus"?Bus_service:slafortype==="Conductor"?Conductor_service:Driver_service).addincentive(busdetails).then((res)=>{
         // Bus_service.add(busdetails).then((res)=>{  
-      props.onClose();
+     
         setLoading(false);
-        setSnackcolor("#458a32");
-        setErrormessage(" Data Saved Successfully ")
-        setOpensnack(true);
+        // setSnackcolor("#458a32");
+        // setErrormessage(" Data Saved Successfully ")
+        // setOpensnack(true);
         console.log(slafortype)
+        props.onClose();
       }).catch((err)=>{
         console.log(slafortype)
         console.log(err)
-        setSnackcolor("#e34242");
-         setErrormessage("Not able to submit data. Please try again later!")
-         setOpensnack(true);      
+       
+        // setSnackcolor("#e34242");
+        //  setErrormessage("Not able to submit data. Please try again later!")
+        //  setOpensnack(true);      
          setLoading(false);
+         toast.error("Not able to submit now. Please try again later",{position:"top-center",
+         hideProgressBar:false,
+         autoClose:60000,
+         newestOnTop:true,
+         closeOnClick:true,
+         draggable:false,
+         rtl:false,
+         theme: "colored",});
+         props.onCloseerror(); 
+        //  setTimeout(() => {
+        //   props.onClose();  
+        //  }, 2000);
+        
       })
 
       // if(slafortype==="Bus"){
@@ -482,9 +512,17 @@ else return "";
       // }
   }
 }
+
+const handleptoChange = (e)=>{
+  setPto(e.target.value)
+ //  console.log(e.target.value);
+  sessionStorage.setItem("pto",e.target.value);
+}
+
   const handleSnackClose = ()=>{
     setOpensnack(false);
   };
+
   const uniqueSlaNames = Array.from(new Set(slaNames.map(option => option.id)))
   .map(id => {
     return slaNames.find(option => option.id === id);
@@ -521,15 +559,15 @@ else return "";
   // };
   return (
         <div>
-          <Snackbar  ContentProps={{
+          {/* <Snackbar  ContentProps={{
     sx: {
       background: snackcolor,
       color:'white',
       padding:"15px",
       letterSpacing:"1.5px",
       fontWeight:"500",
-      textAlign:"center"
-
+      textAlign:"center",
+      
     }
   }}
   anchorOrigin={{vertical:'top',horizontal:'center'}}
@@ -537,7 +575,7 @@ else return "";
   autoHideDuration={6000}
   onClose={handleSnackClose}
   message={errormessage}
-  />
+  /> */}
       <Modal
             // onClose={handlemodalclose}
             // open={modalopen}
@@ -719,6 +757,29 @@ else return "";
       InputLabelProps={{
             shrink: true,
           }}/>
+
+                   <TextField
+                    id="standard-basic"
+                    select
+                    label="Select PTO"
+                    variant="standard"
+                    name="pto"
+                    value={pto}
+                    onChange={handleptoChange}
+                    // onChange={(e)=>setSlafor(e.target.value)}
+                    required
+                    sx={{ width: "20ch", margin: "20px" }}
+                  >
+                    {
+                     ptodetails.map((data)=>(
+                      <MenuItem key={data.ptoid} value={data.ptoid}>
+                      {data.ptostname}:{data.ptoid}
+                    </MenuItem>
+                     ))
+                  }
+                   
+                   
+                  </TextField>
 
     </Box>
     <Grid item xs={12} sx={{mt:2}}>

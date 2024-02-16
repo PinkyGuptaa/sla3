@@ -61,7 +61,7 @@ function Report(props) {
   //   window.print();
   // };
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column',marginTop:"40px" }}>
       <Typography variant="h6" align="center" gutterBottom>
         Generate Report
       </Typography>

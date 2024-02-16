@@ -21,7 +21,7 @@ const customStyles = {
 	},
   rows: {
       style: {
-        backgroundColor:"#b6e7e1",
+        backgroundColor:"#A5D8DD",
         textAlign:"center !important",
          
       },
@@ -30,13 +30,13 @@ const customStyles = {
       style: {
         fontSize:'14px',
         height:"auto",
-        backgroundColor:'#3a9d91',
+        backgroundColor:'#267871',
         borderRadius: "10",
         border: "#34ebcc 5px",
         textAlign:"center",
         //padding:"0px !important",
         fontWeight:"700 !important",
-      
+        color:'white',
         paddingLeft:"10px"
         
       },
@@ -182,25 +182,26 @@ const handledeletemodalclose = () =>{
 return (
      <Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center"}}>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"} style={{textAlign:"center",background:"lightgrey"}}>
-          <Grid item xs={3}>
-            <Button size='large' variant="contained" startIcon={<AddIcon />} onClick={handlemodal}>
-                Add SLA 
-            </Button>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"}   className='pageheader'>
+          <Grid item xs={3} style={{marginTop:"10px"}}>
+          <div className='masterHeading'><h2 className='centerContent' style={{color:'white',fontSize: '24px'}}> SLA Master </h2> </div>
+           
           </Grid>
           <Grid item xs={6}>
               <Addsla open={modalopen} onClose={handlemodalclose} updateid={updateid} />
 
             <Deletecomponent open={deletemodalopen} onClose={handledeletemodalclose} deleteid={deleteid} servicename="deleteslabyid" />
-            <div className='masterHeading'><h2 className='centerContent'> SLA Master </h2> </div>
+            {/* <div className='masterHeading'><h2 className='centerContent'> SLA Master </h2> </div> */}
           </Grid>
-          <Grid item xs={3}>
-
+          <Grid item xs={3}  style={{marginTop:"10px "}}>
+          <Button size='large' variant="contained" style={{backgroundColor:'#136a8a', marginRight:'50px'}} startIcon={<AddIcon />} onClick={handlemodal}>
+                Add SLA 
+            </Button>
           </Grid>
         </Grid>
   
 
-  <Grid item xs={12} style={{marginRight:"10px",marginLeft:"10px"}}>
+  <Grid item xs={12}  style={{marginTop:"-10px"}}>
   <DataTable
             columns={columns}
             data={slafordetailsfiltered}
@@ -210,9 +211,9 @@ return (
             responsive
             // striped
             subHeaderAlign="right"
-            subHeaderWrap
-            subHeader
-            subHeaderComponent={<input type="text" placeholder="Search here"  style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
+            // subHeaderWrap
+            // subHeader
+            // subHeaderComponent={<input type="text" placeholder="Search here"  style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
             customStyles={customStyles}
             highlightOnHover
             desnse

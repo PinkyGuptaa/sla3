@@ -15,14 +15,14 @@ function Formula(){
 
     return (
         <div style={{ display: 'flex',flexDirection:"column", justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
+        <div className='pageheader'>
           
-        <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
+        <Typography variant="h5" align="center" style={{display:"flex",marginLeft:'20px',fontWeight:'900'}} gutterBottom>
           All Formulas Used
         </Typography>
         </div>
   
-        <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'flex-start' }}>
+        <Box className='pagecontent'>
         <div style={{display:"flex",flexDirection:"row",padding: "10px 0 0 0",width: "-webkit-fill-available"}}>
             <div style={{display:"flex"}}>
                <p> View Pdf </p> 

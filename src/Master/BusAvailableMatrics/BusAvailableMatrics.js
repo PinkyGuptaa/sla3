@@ -5,6 +5,57 @@ import Select from 'react-select';
 import Busavailability_service from '../../Services/Busavailability_service';
 import Addbus from '../BusPerformanceMetrics/AddBus';
 import AddBusIncentive from '../BusPerformanceMetrics/AddBusIncentive';
+import DataTable from 'react-data-table-component';
+
+const customStyles = {
+  header: {
+		style: {
+			fontSize: '20px',
+			color: "black",
+      textAlign:"justify",
+      fontWeight:"700 !important",
+			padding:"0px 0px 0px 10px !important",
+      paddingLeft:"10px"
+			
+		},
+	},
+  rows: {
+      style: {
+        backgroundColor:"#b6e7e1",
+        textAlign:"center !important",
+         
+      },
+  },
+  headCells: {
+      style: {
+        fontSize:'14px',
+        height:"auto",
+        backgroundColor:'#267871',
+        borderRadius: "10",
+        border: "#34ebcc 5px",
+        textAlign:"center",
+        //padding:"0px !important",
+        fontWeight:"700 !important",
+      
+        paddingLeft:"10px"
+        
+      },
+  },
+  cells: {
+      style: {
+          paddingLeft: '8px', 
+          paddingRight: '8px',
+          textAlign:"center !important", 
+      },
+      
+  },
+  columns:{
+    style:{
+         borderRight:"white 5px"  
+    },
+  },
+ 
+};
 
 function Busavailablematrics(props) {
   const [regno, setRegNo] = useState('');
@@ -36,6 +87,7 @@ function Busavailablematrics(props) {
   const [typeformodal,setTypeformodal] = useState("");
   const [isAddBusOpen, setIsAddBusOpen] = useState(false);
   const [year, setYear] = useState('');
+  const [allreadyfilled,setAllreadyfilled] = useState(false);
 
   const styles = {
       
@@ -86,6 +138,40 @@ function Busavailablematrics(props) {
    }
   },[props.pto])
 
+  const columns = [
+        
+    {
+        name: 'Reg No.',
+        selector: row => row.regnNo,
+        sortable:true,
+        center: true, 
+        wrap: true
+        // width:"250px",
+       },
+  {
+    name: 'Reg Dt',
+    selector: row => row.regnDt,
+    sortable:true,
+    center:true,
+    wrap:true
+},
+{
+  name: 'Inactive Dt',
+  selector: row => row.inactiveDt,
+  sortable:true,
+  center:true,
+  wrap:true
+},
+{
+  name: 'Fuel Type',
+  selector: row => row.fuelType,
+  sortable:true,
+  center:true,
+  wrap:true
+},
+
+];
+
 //   useEffect(() => {
 //     Bus_service.getAllBus()
 //       .then((res) => {
@@ -111,7 +197,37 @@ function Busavailablematrics(props) {
 
   const handleGenerateReport = async () => {
     setLoading(true);
-   console.log(regno)
+    let penaltycheck;
+    let incrementcheck;
+
+    checkiffilledalready("Operational Availability",month,year,aftercheck);
+
+    async function checkiffilledalready(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltycheck = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementcheck = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      aftercheck();
+    }
+
+    async function aftercheck(){
+      if(penaltycheck || incrementcheck){
+        setAllreadyfilled(true);
+        console.log(penaltycheck,incrementcheck)
+      }
+      else {
+        setAllreadyfilled(false);
+      }
+      
+    }
+  
     if(filtervalue==="buswise"){
       await Busavailability_service.buswisedata(regno).then((res)=>{
             setReportDetails({
@@ -128,7 +244,9 @@ function Busavailablematrics(props) {
         })
     }
     else if(filtervalue==='monthwise' || filtervalue==='quarterly' || filtervalue==='halfyearly' || filtervalue==='yearly'){
-        let datearray = filtervalue==='monthwise'?month.split('_'):filtervalue==='quarterly'?quarter.split('_'):filtervalue==='halfyearly'?halfyearly.split('_'):yearly.split('_');
+
+        // let datearray = filtervalue==='monthwise'?month.split('_'):filtervalue==='quarterly'?quarter.split('_'):filtervalue==='halfyearly'?halfyearly.split('_'):yearly.split('_');
+
         if (month && year) {
           let startDate = `${year}-${month.split('_')[0]}`;
           let endDate = `${year}-${month.split('_')[1]}`;
@@ -240,46 +358,52 @@ function Busavailablematrics(props) {
   // console.log(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100)
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-      <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
+    <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+      <div className='pageheader'>
         
-      <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
+      <Typography variant="h5" align="center" style={{marginLeft:'20px',fontWeight:'900'}} gutterBottom>
         Bus Available Matrix
       </Typography>
 
       <div style={{display:"flex",alignItems:"center"}}>
-        <div style={{marginRight:"10px",color:"#678cdc",fontWeight:'600'}}>
+        <div style={{marginRight:"10px",color:"white",fontWeight:'600'}}>
             Filter By :  
         </div>
-        <div style={{backgroundColor:"white",marginRight:"10px",borderRadius:"4px"}}>
-        <TextField
-          style={{ width: '200px', margin: '10px',background:"white" }}
-          id="standard-basic"
-          label="Select Filter"
-          variant="outlined"
-          select
-          name="filter"
-          value={filtervalue}
-          onChange={(e)=>changeFiltervalue(e.target.value)}
-          required
-        >
-            {/* <MenuItem key={1} value="buswise">
-              Bus Wise
-            </MenuItem> */}
-            <MenuItem key={2} value="monthwise">
-              Month Wise
-            </MenuItem>
-            {/* <MenuItem key={3} value="quarterly">
-              Quarterly
-            </MenuItem>
-            <MenuItem key={4} value="halfyearly">
-              Half Yearly
-            </MenuItem>
-            <MenuItem key={5} value="yearly">
-              Yearly
-            </MenuItem> */}
-            </TextField>
-        </div>
+        <div style={{marginRight:"10px"}}>
+      
+      <TextField
+       style={{ margin: '10px'}}
+id="outlined-select-currency"
+select
+label="Select Filter"
+name="filter"
+value={filtervalue}
+onChange={(e)=>changeFiltervalue(e.target.value)}
+required
+variant="filled"
+sx={{
+'& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+'& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+color:"white"
+},
+'& .css-1wc848c-MuiFormHelperText-root':{
+color:"white"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+'& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+color:"white"
+},
+'& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+color:"rgb(255 255 255 / 71%)",
+fill:"rgb(255 255 255 / 71%)"
+}
+}}
+>
+<MenuItem key={1} value="monthwise">
+        Month Wise
+      </MenuItem>
+</TextField>
+  </div>
       </div>
       </div>
      {filtervalue==='buswise'?
@@ -321,7 +445,8 @@ function Busavailablematrics(props) {
         {loading && <p>Loading...</p>}
       </Box>:
       filtervalue==='monthwise'?
-      <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+      <Box className='monthwiseform'>
+        <div style={{display:"flex"}}>
        <TextField
           id="outlined-select-currency"
           select
@@ -330,17 +455,24 @@ function Busavailablematrics(props) {
           onChange={(e)=>onmonthchange(e.target.value)}
           required={true}
           variant="filled"
-          
+        
 
           sx={{
             '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
             '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
-              color:"black"
+              color:"white"
             },
             '& .css-1wc848c-MuiFormHelperText-root':{
-              color:"black"
+              color:"white"
             },
-            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
+            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+            '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+              color:"white"
+            },
+            '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+              color:"rgb(255 255 255 / 71%)",
+              fill:"rgb(255 255 255 / 71%)"
+            }
           }}
         >
               {allmonths.map((option) => (
@@ -360,24 +492,34 @@ function Busavailablematrics(props) {
   required={true}
   variant="filled"
   sx={{
-    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
-    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
-      color: "black"
+    '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+      color:"white"
     },
-    '& .css-1wc848c-MuiFormHelperText-root': {
-      color: "black"
+    '& .css-1wc848c-MuiFormHelperText-root':{
+      color:"white"
     },
-    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
+    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+    '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+      color:"white"
+    },
+    '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+      color:"rgb(255 255 255 / 71%)",
+      fill:"rgb(255 255 255 / 71%)"
+    }
   }}
 >
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
+       {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} className="monthwiseformbutton">
           Search
-        </Button>:""}
-        {loading && <p>Loading...</p>}
-      </Box>:
+        </Button>:""
+      }
+      
+     </div>
+      </Box>
+      :
       filtervalue==="quarterly"?
       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
       <TextField
@@ -492,84 +634,102 @@ function Busavailablematrics(props) {
 
     } 
 
-      <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
-  {/* <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
-  <p style={{ color: reportDetails.countWayBillTripsWhereTimeIsNotZero > 0 ? 'red' : 'inherit' }}>
-    Number of Trips Violated: {reportDetails.countWayBillTripsWhereTimeIsNotZero}
-  </p> */}
-
-{
-  aftersearch?<>
-           <p>Total Buses : {allbuslist.length}</p>  
-           <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Inactive Buses: {reportDetails.countWayBillTrips}</p>
-           <p >Availability Percentage : 
-            {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} 
-            </p>
-           <p style={{marginLeft : '50px', marginRight: '50px' }}>
-            {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)<=94?
-           <Button onClick={()=>handleButtonClick("penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}> Penalty </Button>:
-           (((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)>=96?
-           <Button onClick={()=>handleButtonClick("incentive")} style={{padding:"10px",backgroundColor:"#188718",color:"white",cursor:"pointer"}}> Incentive </Button>:""}</p>
-  </>:""
-}
-
-</div>
+   
 
 
       {reportDetails.wayBillTripsList.length > 0 ? 
-  <table className="report-table">
-    <thead>
-      <tr>
-    
+  <>
+  {/* // <table className="report-table">
+  //   <thead>
+  //     <tr>
         
-        {/* <th>Route Name</th> */}
-        {/* <th>Conductor Name</th> */}
-        <th>Reg No.</th>
-        <th>Reg Date</th>
-        {/* <th>waybillNo</th> */}
-        <th>Inactive Date</th>
-        <th>Fuel Type</th>
-       
-        {/* <th>Action</th> */}
-        {/* <th>busNo</th> */}
-     
-      </tr>
-    </thead>
-    <tbody>
-      {reportDetails.wayBillTripsList.map((item, index) => (
-        <tr key={index}>
+      
+  //       <th>Reg No.</th>
+  //       <th>Reg Date</th>
   
-          {/* <td>{item.routeName}</td> */}
-          {/* <td>{item.conductorName}</td> */}
-          <td>{item.regnNo}</td>
-          <td>{item.regnDt}</td>
-          {/* <td>{item.waybillNo}</td> */}
-          <td>{item.inactiveDt}</td>
-          <td>{item.fuelType}</td>
-          
-          {/* <td>
-            <button onClick={() => window.location.href = '/performancematrics'}>View Performance</button>
-        </td> */}
+  //       <th>Inactive Date</th>
+  //       <th>Fuel Type</th>
+       
         
-     
+  //     </tr>
+  //   </thead>
+  //   <tbody>
+  //     {reportDetails.wayBillTripsList.map((item, index) => (
+  //       <tr key={index}>
+  //           <td>{item.regnNo}</td>
+  //         <td>{item.regnDt}</td>
+  //         <td>{item.inactiveDt}</td>
+  //         <td>{item.fuelType}</td>
           
-        </tr>
-      ))}
-    </tbody>
-  </table>:reportDetails.wayBillTripsList.length==0 && checktabledata?
-  <div>
+  //       </tr>
+  //     ))}
+  //   </tbody>
+  // </table> */}
+
+  <DataTable
+            columns={columns}
+            data={reportDetails.wayBillTripsList}
+            fixedHeader
+            fixedHeaderScrollHeight="600px"
+            pagination
+            responsive
+            // striped
+            subHeaderAlign="right"
+            subHeaderWrap
+            // subHeader
+            // subHeaderComponent={<input type="text" placeholder="Search here"  style={{paddingLeft:"10px"}} value={search} onChange={(e)=>setSearch(e.target.value)}/>}
+            customStyles={customStyles}
+            highlightOnHover
+            desnse
+            
+            />
+
+         
+          </>
+  :reportDetails.wayBillTripsList.length==0 && checktabledata?
+  <div style={{display:"flex",justifyContent:"center",marginTop:"10px"}}>
     No Data Available
   </div>:""
 }
 
+<div style={{ display: 'flex',justifyContent:"center", alignItems: 'center', marginTop: '20px',flexDirection:'column' }}>
+            {/* <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
+            <p style={{ color: reportDetails.countWayBillTripsWhereTimeIsNotZero > 0 ? 'red' : 'inherit' }}>
+              Number of Trips Violated: {reportDetails.countWayBillTripsWhereTimeIsNotZero}
+            </p> */}
+            {
+              <div style={{ display: 'flex', alignItems: 'center'}}>
+              {aftersearch && allreadyfilled?<p style={{color:"red"}}> Penalty/Increment already filled for this month. </p>:""}
+             </div>
+            }
+          
+          {
+            aftersearch?<>
+                   <div style={{ display: 'flex', alignItems: 'center'}}>
+                     <p> <span style={{fontWeight:"bold"}}> Total Buses : </span> {allbuslist.length}</p>  
+                     <p style={{marginLeft : '50px', marginRight: '50px' }}> <span style={{fontWeight:"bold"}}> Total Inactive Buses : </span> {reportDetails.countWayBillTrips}</p>
+                     <p> <span style={{fontWeight:"bold"}}> Availability Percentage : </span> 
+                      {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} 
+                      </p>
+                     <p style={{marginLeft : '50px', marginRight: '50px' }}>
+                      {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)<=94?
+                     <Button onClick={()=>handleButtonClick("penalty")} disabled={allreadyfilled} style={{padding:"10px",backgroundColor:allreadyfilled?"lightgrey":"maroon",color:"white",cursor:"pointer"}}> Penalty </Button>:
+                     (((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)>=96?
+                     <Button onClick={()=>handleButtonClick("incentive")} disabled={allreadyfilled} style={{padding:"10px",backgroundColor:allreadyfilled?"lightgrey":"#188718",color:"white",cursor:"pointer"}}> Incentive </Button>:""}</p>
+                     </div>
+            </>:""
+          }
+          
+          </div>
+
 
 {
   isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)}
+  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year}
 
 />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
   // startpunper={startpunctuality()} arrivalpunper={arrivalpunctuality()}
-    from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} />:""
+    from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year} />:""
 }
 
     </div>

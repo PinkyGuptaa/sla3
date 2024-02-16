@@ -1,6 +1,6 @@
 
 
-import { Box, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import Select from 'react-select';
@@ -320,41 +320,53 @@ console.log(MinorAccident)
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-    <div style={{display:"flex",width:"-webkit-fill-available",justifyContent:'space-between',background:'lightgrey',height:"100px",alignItems:'center'}}>
-    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"#678cdc",fontWeight:'900'}} gutterBottom>
+      <div className='pageheader'>
+    <Typography variant="h5" align="center" style={{marginLeft:'20px',color:"white",fontWeight:'900'}} gutterBottom>
    Safety of Operation
       </Typography>
       
       <div style={{display:"flex",alignItems:"center"}}>
-        <div style={{marginRight:"10px",color:"#678cdc",fontWeight:'600'}}>
+        <div style={{marginRight:"10px",color:"white",fontWeight:'600'}}>
             Filter By :  
         </div>
-        <div style={{backgroundColor:"white",marginRight:"10px",borderRadius:"4px"}}>
-        <TextField
-          style={{ width: '200px', margin: '10px',background:"white" }}
-          id="standard-basic"
-          label="Select Filter"
-          variant="outlined"
-          select
-          name="filter"
-          value={filtervalue}
-          onChange={(e)=>changeFiltervalue(e.target.value)}
-          required
-        >
-            {/* <MenuItem key={1} value="buswise">
-              Bus Wise
-            </MenuItem> */}
-            <MenuItem key={1} value="monthwise">
-              Month Wise
-            </MenuItem>
-            {/* <MenuItem key={3} value="quarterly">
-              Quarterly
-            </MenuItem>
-            <MenuItem key={4} value="halfyearly">
-              Half Yearly
-            </MenuItem> */}
-            </TextField>
-        </div>
+        <div style={{marginRight:"10px"}}>
+      
+      <TextField
+       style={{ margin: '10px'}}
+id="outlined-select-currency"
+select
+label="Select Filter"
+name="filter"
+value={filtervalue}
+onChange={(e)=>changeFiltervalue(e.target.value)}
+required
+variant="filled"
+sx={{
+'& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+'& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+color:"white"
+},
+'& .css-1wc848c-MuiFormHelperText-root':{
+color:"white"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+'& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+color:"white"
+},
+'& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+color:"rgb(255 255 255 / 71%)",
+fill:"rgb(255 255 255 / 71%)"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+  color:"white"
+}
+}}
+>
+<MenuItem key={1} value="monthwise">
+        Month Wise
+      </MenuItem>
+</TextField>
+  </div>
       </div>
       </div>
      
@@ -401,69 +413,92 @@ console.log(MinorAccident)
           onChange={(e) => setSelectedDate(e.target.value)}
         />
 
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
+        <Button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600',cursor:"pointer" }}>
           Search
-        </button>
+        </Button>
         {/* {loading && <p>Loading...</p>} */}
       </Box>:
       filtervalue==='monthwise'?
-      <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
-       <TextField
-          id="outlined-select-currency"
-          select
-          label="Month"
-          value={month}
-          onChange={(e)=>onmonthchange(e.target.value)}
-          required={true}
-          variant="filled"
-          
-
-          sx={{
-            '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
-            '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
-              color:"black"
-            },
-            '& .css-1wc848c-MuiFormHelperText-root':{
-              color:"black"
-            },
-            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"black"}
-          }}
-        >
-              {allmonths.map((option) => (
-                
-            <MenuItem key={option.key} value={option.value}>
-              {option.key}
-            </MenuItem>
-          ))}
-        
-        </TextField>
-        <TextField
-  id="outlined-select-currency"
-  select
-  label="Year"
-  value={year}
-  onChange={(e) => setYear(e.target.value)}
-  required={true}
-  variant="filled"
-  sx={{
-    '& > :not(style)': { width: '25ch', marginRight: "20px", textAlign: "left !important" },
-    '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root': {
-      color: "black"
-    },
-    '& .css-1wc848c-MuiFormHelperText-root': {
-      color: "black"
-    },
-    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root': { color: "black" }
-  }}
+      <Box className='monthwiseform'>
+      <div style={{display:"flex"}}>
+     <TextField
+        id="outlined-select-currency"
+        select
+        label="Month"
+        value={month}
+        onChange={(e)=>onmonthchange(e.target.value)}
+        required={true}
+        variant="filled"
+      
+        sx={{
+          '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+          '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+            color:"white"
+          },
+          '& .css-1wc848c-MuiFormHelperText-root':{
+            color:"white"
+          },
+          '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+          '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+            color:"white"
+          },
+          '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+            color:"rgb(255 255 255 / 71%)",
+            fill:"rgb(255 255 255 / 71%)"
+          },
+          '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+            color:"white"
+          },
+        }}
+      >
+            {allmonths.map((option) => (
+              
+          <MenuItem key={option.key} value={option.value}>
+            {option.key}
+          </MenuItem>
+        ))}
+      
+      </TextField>
+      <TextField
+id="outlined-select-currency"
+select
+label="Year"
+value={year}
+onChange={(e) => setYear(e.target.value)}
+required={true}
+variant="filled"
+sx={{
+  '& > :not(style)': {  width: '25ch',marginRight:"20px",textAlign:"left !important" },
+  '& .css-e4w4as-MuiFormLabel-root-MuiInputLabel-root':{
+    color:"white"
+  },
+  '& .css-1wc848c-MuiFormHelperText-root':{
+    color:"white"
+  },
+  '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root':{color:"white"},
+  '& .css-19mk8g1-MuiInputBase-root-MuiFilledInput-root':{
+    color:"white"
+  },
+  '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
+    color:"rgb(255 255 255 / 71%)",
+    fill:"rgb(255 255 255 / 71%)"
+  },
+  '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+    color:"white"
+  },
+}}
 >
 <MenuItem value="2023">2023</MenuItem>
 <MenuItem value="2024">2024</MenuItem>
 </TextField>
-        <button onClick={handleGenerateReport} style={{ marginLeft: '30px',padding:"15px",background:"#136a8a",color:"white",borderRadius:"5px",fontWeight:'600' }}>
-          Search
-        </button>
-        {/* {loading && <p>Loading...</p>} */}
-      </Box>:
+     {Boolean(month) && Boolean(year)?<Button onClick={handleGenerateReport} className="monthwiseformbutton">
+        Search
+      </Button>:""
+    }
+    
+   </div>
+    </Box>
+    :
       filtervalue==="quarterly"?
       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
       <TextField
@@ -576,10 +611,12 @@ console.log(MinorAccident)
   </table>
   <p> Minor Accidents Factor: {MinorAccident}</p>
   <p>{MinorAccident>=0.01?
-           <button onClick={()=>handleButtonClick("minoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:MinorAccident<0.01?<button onClick={()=>handleButtonClick("minoraccident","incentive")} 
-             style={{padding:"10px",backgroundColor:"lightgreen",color:"white"}}>
-             Incentive </button>:""}</p>
+           <Button onClick={()=>handleButtonClick("minoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer"}}>
+             Action </Button>
+             :MinorAccident<0.01?
+             <Button onClick={()=>handleButtonClick("minoraccident","incentive")} 
+             style={{padding:"10px",backgroundColor:"lightgreen",color:"white",cursor:"pointer"}}>
+             Incentive </Button>:""}</p>
 </div>
 
 
@@ -616,9 +653,10 @@ console.log(MinorAccident)
     </tbody>
   </table>
 
-   <p>No. of Major Accidents: {majorCount}   {majorCount>=1?
-           <button onClick={()=>handleButtonClick("majoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white"}}>
-             Action </button>:""}</p> 
+   <p>No. of Major Accidents: {majorCount}   
+   {majorCount>=1?
+           <Button onClick={()=>handleButtonClick("majoraccident","penalty")} style={{padding:"10px",backgroundColor:"maroon",color:"white",cursor:"pointer",marginLeft:"10px"}}>
+             Action </Button>:""}</p> 
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onClose={() => setIsAddBusOpen(false)} 
@@ -626,10 +664,12 @@ console.log(MinorAccident)
   minorpercent={MinorAccident}
   majorpercent={majorCount}
   timeformodal={timeformodal}
+  month={month.substring(0,2)} year={year}
 />:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
     from="SafetyOperation"
     majorpercent={majorCount}
     timeformodal={timeformodal}
+    month={month.substring(0,2)} year={year}
     />:""
 } 
     </div>

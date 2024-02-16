@@ -16,7 +16,9 @@ import Genericpenaltymaster_service from '../../Services/Genericpenaltymaster_se
 import Qualitycheckmaster_service from '../../Services/Qualitycheckmaster_service';
 import Reasonmaster_service from '../../Services/Reasonmaster_service';
 import Penaltymaster_service from '../../Services/Penaltymaster_service';
+import Environment from '../../Environment/Environment.json'; 
 const Api_URL = 'http://10.226.33.132:9100';
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -63,7 +65,8 @@ function Addbus(props) {
   const [penaltydetail,setpenaltydetail] = useState([]);
   const [remarks,setremarks] = useState('');
   const [agencyname,setagencyname] = useState('');
-  
+  const [pto,setPto] = useState('');
+  const [ptodetails,setPtodetails] = useState([]);
   const [sladetails,setsladetails] = useState([]);
   const [slaBus, setSlaBus] = useState([]);
  const [selectedSla, setSelectedSla] = useState('');
@@ -88,6 +91,7 @@ function Addbus(props) {
   const [isWarningChecked, setIsWarningChecked] = useState(false);
 const [isActionChecked, setIsActionChecked] = useState(false);
 const [isGenericPenaltyChecked, setIsGenericPenaltyChecked] = useState(false);
+const Base_Url = Environment.Base_Url;
 
   useEffect(()=>{
     if(cleanform){
@@ -238,6 +242,15 @@ useEffect(() => {
     fetchPenaltyRate(qualitytype);
   }
 }, [qualitytype]);
+
+useEffect(()=>{
+  axios.get(`${Base_Url}/busperformance/getpto`).then((res)=>{
+      setPtodetails(res.data);
+      
+  }).catch((err)=>{
+   console.log(err);
+  })
+},[])
 // const handleSlaforChange = async (event) => {
 //   setSlafor(event.target.value)
 //   slafordetails.map((data)=>{
@@ -413,6 +426,12 @@ useEffect(()=>{
   }).catch(err=>console.log(err))
 },[]);
 
+const handleptoChange = (e)=>{
+  setPto(e.target.value)
+ //  console.log(e.target.value);
+  sessionStorage.setItem("pto",e.target.value);
+}
+
 // useEffect(()=>{
 //   Slamaster_service.getslabyBus().then((res)=>{
 //     setsladetails(res.data);
@@ -422,7 +441,7 @@ useEffect(()=>{
 // }, []);
 
   const submitbutton = ()=>{
-    const fieldempty =   slaForMaster && slaMaster && details && filedate && qualityStandardMaster 
+    const fieldempty =   slaForMaster && slaMaster && details && filedate && qualityStandardMaster && pto
     // && actionMaster && genericPenaltyMaster && warningMaster
     // && actionMaster &&  penalty && penaltydetail && qualityStandardMaster && filedate && bycustomer  
     ;
@@ -436,7 +455,7 @@ else return "";
   const busmasterdetails = (e) =>{
     e.preventDefault();
     setLoading(true);
-    let entryby = sessionStorage.getItem("entryby") ; 
+    let entryby = sessionStorage.getItem("entryby"); 
      
     if(props.updateid){
       const busdetails = {
@@ -467,8 +486,8 @@ else return "";
      else 
      {
       
-      const busdetails2 = { slaMaster,details, penalty:parseFloat(penalty),"penaltypercentage":penaltyPercentage,qualityStandardMaster, filedate, 
-        
+      const busdetails2 = { slaMaster,details, penalty:parseFloat(penalty),"penaltypercentage":penaltyPercentage,qualityStandardMaster, filedate,"ptoid":pto,
+       "month":props.month,"year":props.year, 
       // bycustomer: bycustomer === 'Yes',
         // customerComplaint: bycustomer === 'Yes' ? customerComplaint : null,
         entryby};
@@ -481,19 +500,21 @@ else return "";
       (slafortype==="Bus"?Bus_service:slafortype==="Conductor"?Conductor_service:Driver_service).add(busdetails).then((res)=>{
         console.log(res)
         // Bus_service.add(busdetails).then((res)=>{  
-      props.onClose();
+    
         setLoading(false);
-        setSnackcolor("#458a32");
-        setErrormessage(" Data Saved Successfully ")
-        setOpensnack(true);
-        console.log(slafortype)
+        // setSnackcolor("#458a32");
+        // setErrormessage(" Data Saved Successfully ")
+        // setOpensnack(true);
+        // console.log(slafortype)
+        props.onClose();
       }).catch((err)=>{
         console.log(slafortype)
         console.log(err)
-        setSnackcolor("#e34242");
-         setErrormessage("Not able to submit data. Please try again later!")
-         setOpensnack(true);      
+        // setSnackcolor("#e34242");
+        //  setErrormessage("Not able to submit data. Please try again later!")
+        //  setOpensnack(true);      
          setLoading(false);
+         props.onCloseerror();
       })
 
       // if(slafortype==="Bus"){
@@ -722,6 +743,29 @@ else return "";
       onChange={(e)=>Setbusno(e.target.value)} 
       required
        /> */}
+
+<TextField
+                    id="standard-basic"
+                    select
+                    label="Select PTO"
+                    variant="standard"
+                    name="pto"
+                    value={pto}
+                    onChange={handleptoChange}
+                    // onChange={(e)=>setSlafor(e.target.value)}
+                    required
+                    sx={{ width: "20ch", margin: "20px" }}
+                  >
+                    {
+                     ptodetails.map((data)=>(
+                      <MenuItem key={data.ptoid} value={data.ptoid}>
+                      {data.ptostname}:{data.ptoid}
+                    </MenuItem>
+                     ))
+                  }
+                   
+                   
+                  </TextField>
             
           
 
