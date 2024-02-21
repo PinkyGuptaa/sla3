@@ -866,7 +866,7 @@
 // }
 // export default Report;
 
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Snackbar, TextField, Typography } from '@mui/material';
 import { SECTION_TYPE_GRANULARITY } from '@mui/x-date-pickers/internals/utils/getDefaultReferenceDate';
 import { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
@@ -959,6 +959,11 @@ function BusScheduleMatrics(props) {
   const [selectedRegNo, setSelectedRegNo] = useState(''); // This is the selected regno from your logic
   const [aftersearch,setAfterseacrch] = useState(false);
   const [year, setYear] = useState('');
+  const [allreadyfilledstartpun,setAllreadyfilledstartpun] = useState("");
+  const [allreadyfilledarrivepun,setAllreadyfilledarrivepun] =useState("");
+  const [opensnack,setOpensnack] = useState(false)
+  const [errormessage,setErrormessage] = useState('');
+  const [snackcolor,setSnackcolor] = useState('');
 
   const styles = {
       
@@ -969,6 +974,7 @@ function BusScheduleMatrics(props) {
     })
   };
 
+ 
   // useEffect(() => {
   //   Bus_service.getAllBus()
   //     .then((res) => {
@@ -1133,6 +1139,66 @@ conditionalCellStyles: [
   }
   const handleGenerateReport = async () => {
     setLoading(true);
+    let penaltycheckstartpun;
+    let incrementcheckstartpun;
+    let penaltycheckarrivepun;
+    let incrementcheckarrivepun;
+
+    checkiffilledalreadystartpun("Start Punctuality",month,year,aftercheck);
+    checkiffilledalreadyarrivepun("Arrival Punctuality",month,year,aftercheckarrive);
+
+    async function checkiffilledalreadystartpun(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltycheckstartpun = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementcheckstartpun = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      aftercheck();
+    }
+
+    async function checkiffilledalreadyarrivepun(a,m,y){
+      let monthnum = m.substr(0,2);
+      await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+        penaltycheckarrivepun = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+        incrementcheckarrivepun = res.data;
+        console.log(res.data);
+      }).catch(err=>console.log(err));
+
+      aftercheckarrive();
+    }
+
+    async function aftercheck(){
+      if(penaltycheckstartpun || incrementcheckstartpun){
+        setAllreadyfilledstartpun(true);
+        
+      }
+      else {
+        setAllreadyfilledstartpun(false);
+      }
+      
+    }
+
+    async function aftercheckarrive(){
+      if(penaltycheckarrivepun || incrementcheckarrivepun){
+        setAllreadyfilledarrivepun(true);
+        
+      }
+      else {
+        setAllreadyfilledarrivepun(false);
+      }
+      
+    }
+
     if(filtervalue==="buswise"){
       let dateArray = filtervalue === 'buswise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
 
@@ -1276,10 +1342,30 @@ const handleEyeClick = () => {
     return percentage.toFixed(2);
   }
 
-  console.log(aftersearch);
+  const handleSnackClose = ()=>{
+    setOpensnack(false);
+  }; 
 
+ 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+        <Snackbar  ContentProps={{
+    sx: {
+      background: snackcolor,
+      color:'white',
+      padding:"15px",
+      letterSpacing:"1.5px",
+      fontWeight:"500",
+      textAlign:"center",
+      
+    }
+  }}
+  anchorOrigin={{vertical:'top',horizontal:'center'}}
+  open={opensnack}
+  autoHideDuration={6000}
+  onClose={handleSnackClose}
+  message={errormessage}
+  />
     <div  className='pageheader'>
     <Typography variant="h5" align="center" style={{marginLeft:'20px',fontWeight:'900'}} gutterBottom>
     Bus Schedule Metrics
@@ -1315,6 +1401,9 @@ color:"white"
 '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
 color:"rgb(255 255 255 / 71%)",
 fill:"rgb(255 255 255 / 71%)"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+  color:"white"
 }
 }}
 >
@@ -1470,6 +1559,9 @@ fill:"rgb(255 255 255 / 71%)"
             '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
               color:"rgb(255 255 255 / 71%)",
               fill:"rgb(255 255 255 / 71%)"
+            },
+            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+              color:"white"
             }
           }}
         >
@@ -1504,6 +1596,9 @@ fill:"rgb(255 255 255 / 71%)"
     '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
       color:"rgb(255 255 255 / 71%)",
       fill:"rgb(255 255 255 / 71%)"
+    },
+    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+      color:"white"
     }
   }}
 >
@@ -1673,28 +1768,52 @@ desnse
 filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
 <div style={{ display: 'flex', alignItems: 'center',justifyContent:"center", marginTop: '10px' }}>
 <p style={{marginLeft : '50px', marginRight: '50px' }}>
-  <span style={{fontWeight:"bold"}}> Start Punctuality: </span> {startpunctuality()} {startpunctuality()<=96?
-  <Button onClick={()=>handleButtonClick("start","penalty")} style={{backgroundColor:"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:startpunctuality()>=96?
-  <Button onClick={()=>handleButtonClick("start","incentive")} style={{backgroundColor:"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""} 
+  <span style={{fontWeight:"bold"}}> Start Punctuality: </span> {startpunctuality()} {startpunctuality()<=89?
+  <Button onClick={()=>handleButtonClick("start","penalty")} disabled={allreadyfilledstartpun} style={{backgroundColor:allreadyfilledstartpun?"lightgrey":"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:startpunctuality()>=91?
+  <Button onClick={()=>handleButtonClick("start","incentive")} disabled={allreadyfilledstartpun} style={{backgroundColor:allreadyfilledstartpun?"lightgrey":"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""} 
   <span style={{marginLeft:"20px"}}>|</span> </p>
 
   <p style={{marginLeft : '50px', marginRight: '50px' }}>
   <span style={{fontWeight:"bold"}}> Arrival Punctuality:</span> {arrivalpunctuality()} {arrivalpunctuality()<=79?
-  <Button onClick={()=>handleButtonClick("arrival","penalty")} style={{backgroundColor:"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:arrivalpunctuality()>=81?
-  <Button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""}</p>
+  <Button onClick={()=>handleButtonClick("arrival","penalty")} disabled={allreadyfilledarrivepun} style={{backgroundColor:allreadyfilledarrivepun?"lightgrey":"maroon",color:"white",margin:"0 15px",cursor:"pointer"}}>Action</Button>:arrivalpunctuality()>=81?
+  <Button onClick={()=>handleButtonClick("arrival","incentive")} style={{backgroundColor:allreadyfilledarrivepun?"lightgrey":"#188718",color:"white",margin:"0 15px",cursor:"pointer"}}> Incentive </Button>:""}</p>
    
   </div>:""}
   </>:""
 }
 
 {isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} 
+  <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
+    setOpensnack(true);
+    setErrormessage("Not able to submit now. Please try again later"); 
+    setSnackcolor("#e34242"); 
+   }
+ } 
+ onClose={() => {setIsAddBusOpen(false)
+   setSnackcolor("#458a32");
+   setErrormessage(" Data Saved Successfully ")
+   setOpensnack(true);
+   handleGenerateReport();
+  }
+ } 
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 
   timeformodal={timeformodal} 
   from="Schedule"
   month={month.substring(0,2)} year={year}
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
+/>:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
+   setOpensnack(true);
+   setErrormessage("Not able to submit now. Please try again later"); 
+   setSnackcolor("#e34242"); 
+  }
+} 
+onClose={() => {setIsAddBusOpen(false)
+  setSnackcolor("#458a32");
+  setErrormessage(" Data Saved Successfully ")
+  setOpensnack(true);
+  handleGenerateReport();
+ }
+}  
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 
   timeformodal={timeformodal} 

@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Snackbar, TextField, Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Bus_service from '../../Services/Bus_service';
 import Select from 'react-select';
@@ -88,6 +88,9 @@ function Busavailablematrics(props) {
   const [isAddBusOpen, setIsAddBusOpen] = useState(false);
   const [year, setYear] = useState('');
   const [allreadyfilled,setAllreadyfilled] = useState(false);
+  const [opensnack,setOpensnack] = useState(false)
+  const [errormessage,setErrormessage] = useState('');
+  const [snackcolor,setSnackcolor] = useState('');
 
   const styles = {
       
@@ -97,6 +100,10 @@ function Busavailablematrics(props) {
          textAlign:"left !important" }
     })
   };
+
+  useEffect(()=>{
+    handleGenerateReport()
+  },[isAddBusOpen])
 
   useEffect(()=>{
    console.log(props.pto)
@@ -356,9 +363,29 @@ function Busavailablematrics(props) {
   // console.log((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips)))
 
   // console.log(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100)
+  const handleSnackClose = ()=>{
+    setOpensnack(false);
+  }; 
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+       <Snackbar ContentProps={{
+    sx: {
+      background: snackcolor,
+      color:'white',
+      padding:"15px",
+      letterSpacing:"1.5px",
+      fontWeight:"500",
+      textAlign:"center",
+      
+    }
+  }}
+  anchorOrigin={{vertical:'top',horizontal:'center'}}
+  open={opensnack}
+  autoHideDuration={6000}
+  onClose={handleSnackClose}
+  message={errormessage}
+  />
       <div className='pageheader'>
         
       <Typography variant="h5" align="center" style={{marginLeft:'20px',fontWeight:'900'}} gutterBottom>
@@ -396,6 +423,9 @@ color:"white"
 '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
 color:"rgb(255 255 255 / 71%)",
 fill:"rgb(255 255 255 / 71%)"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+  color:"white"
 }
 }}
 >
@@ -472,6 +502,9 @@ fill:"rgb(255 255 255 / 71%)"
             '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
               color:"rgb(255 255 255 / 71%)",
               fill:"rgb(255 255 255 / 71%)"
+            },
+            '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+              color:"white"
             }
           }}
         >
@@ -506,6 +539,9 @@ fill:"rgb(255 255 255 / 71%)"
     '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
       color:"rgb(255 255 255 / 71%)",
       fill:"rgb(255 255 255 / 71%)"
+    },
+    '& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+      color:"white"
     }
   }}
 >
@@ -725,9 +761,33 @@ fill:"rgb(255 255 255 / 71%)"
 
 {
   isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year}
+  <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
+    setOpensnack(true);
+    setErrormessage("Not able to submit now. Please try again later"); 
+    setSnackcolor("#e34242"); 
+   }
+ } 
+ onClose={() => {setIsAddBusOpen(false)
+   setSnackcolor("#458a32");
+   setErrormessage(" Data Saved Successfully ")
+   setOpensnack(true);
+   handleGenerateReport();
+  }
+ } from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year}
 
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
+/>:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
+   setOpensnack(true);
+   setErrormessage("Not able to submit now. Please try again later"); 
+   setSnackcolor("#e34242"); 
+  }
+} 
+onClose={() => {setIsAddBusOpen(false)
+  setSnackcolor("#458a32");
+  setErrormessage(" Data Saved Successfully ")
+  setOpensnack(true);
+  handleGenerateReport();
+ }
+}
   // startpunper={startpunctuality()} arrivalpunper={arrivalpunctuality()}
     from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year} />:""
 }

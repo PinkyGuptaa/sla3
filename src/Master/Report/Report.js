@@ -112,6 +112,7 @@ function Report(props) {
                 <th>Penalty Detail</th>
                 <th>Quality Type</th>
                 <th>Complaint</th>
+                
             </tr>
           </thead>
           <tbody>

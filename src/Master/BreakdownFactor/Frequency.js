@@ -73,6 +73,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
     })
   };
 
+ 
   useEffect(() => {
     Bus_service.getAllBus()
       .then((res) => {
@@ -420,6 +421,9 @@ color:"white"
 '& .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon':{
 color:"rgb(255 255 255 / 71%)",
 fill:"rgb(255 255 255 / 71%)"
+},
+'& .css-o943dk-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+  color:"white"
 }
 }}
 >
@@ -688,6 +692,7 @@ sx={{
    setSnackcolor("#458a32");
    setErrormessage(" Data Saved Successfully ")
    setOpensnack(true);
+   handleGenerateReport();
   }
  } 
   from="Frequency"

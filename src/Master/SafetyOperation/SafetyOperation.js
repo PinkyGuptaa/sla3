@@ -73,6 +73,10 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
     })
   };
 
+  useEffect(()=>{
+    handleGenerateReport()
+  },[isAddBusOpen])
+
   useEffect(() => {
     Bus_service.getAllBus()
       .then((res) => {

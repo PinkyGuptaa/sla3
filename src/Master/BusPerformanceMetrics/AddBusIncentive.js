@@ -453,14 +453,7 @@ else return "";
         //  setErrormessage("Not able to submit data. Please try again later!")
         //  setOpensnack(true);      
          setLoading(false);
-         toast.error("Not able to submit now. Please try again later",{position:"top-center",
-         hideProgressBar:false,
-         autoClose:60000,
-         newestOnTop:true,
-         closeOnClick:true,
-         draggable:false,
-         rtl:false,
-         theme: "colored",});
+      
          props.onCloseerror(); 
         //  setTimeout(() => {
         //   props.onClose();  
