@@ -136,12 +136,12 @@ code {
 }
 
 .homecard:nth-child(odd):hover {
-  background-color:#1e75a7d1 ;
+  background-color:#267871;
   color: white !important;
 }
 
 .homecard:nth-child(even):hover {
-  background-color:#1e75a7d1 ;
+  background-color:#267871 ;
   color: white !important;
 }
 
@@ -149,7 +149,7 @@ code {
   display: flex;
   padding: 20px 10px;
   color: white;
-  background: #1e67a7e0 !important; 
+  background: #097089e8 !important; 
 }
 
 
