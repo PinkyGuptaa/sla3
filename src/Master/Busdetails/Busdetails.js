@@ -35,6 +35,15 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
     const [errormessage,setErrormessage] = useState('');
     const [snackcolor,setSnackcolor] = useState('');
   
+    const [minorIncidents, setMinorIncidents] = useState([]);
+    const [majorIncidents, setMajorIncidents] = useState([]);
+    const [majorCount, setMajorCount] = useState(0);
+    const [minorCount, setMinorCount] = useState(0);
+    const [distance, setDistance] = useState(0);
+    const [alreadyfilledMinor,setAlreadyfilledMinor] = useState("");
+    const [alreadyfilledMajor,setAlreadyfilledMajor] =useState("");
+
+
     // const allmonths = [{key:"January",value:"2023-01-01_2023-01-31"},{key:"February",value:"2023-02-01_2023-02-28"},{key:"March",value:"2023-03-01_2023-03-31"},{key:"April",value:"2023-04-01_2023-04-30"},{key:"May",value:"2023-05-01_2023-05-31"},{key:"June",value:"2023-06-01_2023-06-30"},{key:"July",value:"2023-07-01_2023-07-31"},{key:"August",value:"2023-08-01_2023-08-31"},{key:"September",value:"2023-09-01_2023-09-30"},{key:"October",value:"2023-10-01_2023-10-31"},{key:"November",value:"2023-11-01_2023-11-30"},{key:"December",value:"2023-12-01_2023-12-31"}];
     const allmonths = [{key:"January",value:"01-01_01-31"},{key:"February",value:"02-01_02-28"},{key:"March",value:"03-01_03-31"},{key:"April",value:"04-01_04-30"},{key:"May",value:"05-01_05-31"},{key:"June",value:"06-01_06-30"},{key:"July",value:"07-01_07-31"},{key:"August",value:"08-01_08-31"},{key:"September",value:"09-01_09-30"},{key:"October",value:"10-01_10-31"},{key:"November",value:"11-01_11-30"},{key:"December",value:"12-01_12-31"}];
  const [year, setYear] = useState('');
@@ -306,6 +315,118 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
                 setLoading(false);
               }
             }
+
+
+
+            else if (radioselected === "Safety of Operation") {
+              let penaltycheckminor;
+              let incrementcheckminor;
+              let penaltycheckmajor;
+              let incrementchecktripfrq;
+          
+              checkiffilledalreadyminor("Minor Accident (Safety of Operation)",month,year,aftercheck);
+              checkiffilledalreadymajor("Major Accident (Safety of Operation)",month,year,aftercheckmajor);
+          
+              async function checkiffilledalreadyminor(a,m,y){
+                let monthnum = m.substr(0,2);
+                await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+                  penaltycheckminor = res.data;
+                  console.log(res.data);
+                }).catch(err=>console.log(err));
+          
+                await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+                  incrementcheckminor = res.data;
+                  console.log(res.data);
+                }).catch(err=>console.log(err));
+          
+                aftercheck();
+              }
+          
+              async function checkiffilledalreadymajor(a,m,y){
+                let monthnum = m.substr(0,2);
+                await Bus_service.checkifalreadyfilledpenalty(a,monthnum,y).then((res)=>{
+                  penaltycheckmajor = res.data;
+                  console.log(res.data);
+                }).catch(err=>console.log(err));
+          
+                // await Bus_service.checkifalreadyfilledincrement(a,monthnum,y).then((res)=>{
+                //   incrementchecktripfrq = res.data;
+                //   console.log(res.data);
+                // }).catch(err=>console.log(err));
+          
+                aftercheckmajor();
+              }
+          
+              async function aftercheck(){
+                if(penaltycheckminor || incrementcheckminor){
+                  setAlreadyfilledMinor(true);
+                  
+                }
+                else {
+                  setAlreadyfilledMinor(false);
+                }
+                
+              }
+          
+              async function aftercheckmajor(){
+                if(penaltycheckmajor){
+                  setAlreadyfilledMajor(true);
+                  
+                }
+                else {
+                  setAlreadyfilledMajor(false);
+                }
+                
+              }
+  async function afterchecktrip(){
+    if(penaltycheckmajor){
+      setAllreadyfilledtripfrq(true);
+      
+    }
+    else {
+      setAllreadyfilledtripfrq(false);
+    }
+    
+  }
+              let startDate = `${year}-${month.split('_')[0]}`;
+                let endDate = `${year}-${month.split('_')[1]}`;
+                console.log(startDate,endDate,year,month.split('_')[0]);
+                try{
+              const res = await Bus_service.getFrequencyData(regno, startDate, endDate)
+              const  busData = res.data;
+                  
+              let unavailableBuses = busData.length;
+              setUnavailablebus(unavailableBuses);
+            
+              const totalActualDistance = busData.reduce((sum, bus) => sum + bus.totalActualDistance, 0);
+              const totalCoveredDistance = busData.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
+            
+              const calculatedBreakdownFactor = parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(3);
+              setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
+            
+              setAllBusDetails(busData);
+            //fetch data of dispatch 
+              await fetchTripData(regno, startDate, endDate);
+            
+              console.log(unavailableBuses);
+              console.log(allbusdetails);
+              console.log(totalActualDistance);
+            
+              setTotalActualDistance(totalActualDistance)
+              setTotalCoveredDistance(totalCoveredDistance)
+            console.log(totalActualDistance)
+              console.log(totalCoveredDistance);
+            
+              setAftersearch(true);
+              setLoading(false);
+            } catch (error) {
+              console.error('Error fetching data:', error);
+              setLoading(false);
+            }
+          }
+
+
+
               else {
                 setError('Please select both Month and Year');
               }
@@ -354,6 +475,8 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
 
   const BusKMsFrequency =  totalActualDistance > 0 
   ? (((totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0;
+  const MinorAccident =  minorCount > 0 
+  ? (minorCount*10000/distance).toFixed(2) : 0;
  
   return (  
   <div style={{ display: 'flex',flexDirection:"column", justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -913,6 +1036,182 @@ onClose={() => {setIsAddBusOpen(false)
         }
         </>
         
+
+
+        :radioselected === "Safety of Operation"?
+        <>
+         
+      <div style={{marginTop:"20px"}}></div>
+      {aftersearch && (
+  <div style={{ display: 'flex',width: "100%",justifyContent: "center",
+  // backgroundColor: "#267871",
+  paddingBottom: "50px",
+  paddingTop: "20px", }}>
+
+    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
+    backgroundColor: "#136a8a54"}}>
+     <h2>Minor Accidents</h2>
+     {minorIncidents.length==0?<div> No Data </div>:
+      <table className="accident-table">
+      <thead>
+        <tr>
+          <th>Depot Code</th>
+          <th>Trip No.</th>
+          <th>Lot No.</th>
+          <th>Incident</th>
+          <th>Exact Location</th>
+          <th>Exact Time</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {minorIncidents.map((incident, index) => (
+          <tr key={index}>
+            <td>{incident.depotCode}</td>
+            <td>{incident.tripNo}</td>
+            <td>{incident.lotno}</td>
+            <td>{incident.incident}</td>
+            <td>{incident.exactLocation}</td>
+            <td>{incident.exactTime}</td>
+            <td>{incident.remarks}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>}
+ 
+  <p> Minor Accidents Factor: {MinorAccident}</p>
+  {alreadyfilledMinor?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
+  <p>{MinorAccident>=0.01?
+           <Button onClick={()=>handleButtonClick("minoraccident","penalty")}
+           disabled={alreadyfilledMinor}
+           style={{padding:"10px",
+           backgroundColor:alreadyfilledMinor?"lightgrey":"maroon",
+           color:"white",cursor:"pointer"}}>
+             Action </Button>
+             :MinorAccident<0.01?
+             <Button 
+             onClick={()=>handleButtonClick("minoraccident","incentive")}
+             disabled={alreadyfilledMinor} 
+             style={{padding:"10px",backgroundColor:alreadyfilledMinor?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
+             Incentive </Button>:""}</p>
+</div>
+
+
+    {/* Major Accident Table */}
+    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
+    backgroundColor: "#136a8a54" }}>
+   <h2>Major Accidents</h2>
+     {majorIncidents.length==0?<div>No Data</div>:
+ <table className="accident-table">
+ <thead>
+   <tr>
+   <th>Depot Code</th>
+     <th>Trip No.</th>
+     <th>Lot No.</th>
+     <th>Incident</th>
+     <th>Exact Location</th>
+     <th>Exact Time</th>
+     <th>Remarks</th>
+   </tr>
+ </thead>
+ <tbody>
+   {majorIncidents.map((incident, index) => (
+     <tr key={index}>
+         <td>{incident.depotCode}</td>
+       <td>{incident.tripNo}</td>
+       <td>{incident.lotno}</td>
+       <td>{incident.incident}</td>
+       <td>{incident.exactLocation}</td>
+       <td>{incident.exactTime}</td>
+       <td>{incident.remarks}</td>
+     </tr>
+   ))}
+ </tbody>
+</table>
+     
+    }
+ 
+
+   <p>No. of Major Accidents: {majorCount}  </p> 
+   {alreadyfilledMajor?<p style={{color:"red"}}>Penalty already filled.</p>:""}
+<p>
+   {majorCount>=1?
+           <Button onClick={()=>handleButtonClick("majoraccident","penalty")} 
+           disabled={alreadyfilledMajor}
+           style={{padding:"10px",
+           backgroundColor:alreadyfilledMajor?"lightgrey":"maroon",
+           color:"white",cursor:"pointer",marginLeft:"10px"}}>
+             Action </Button>:""}</p> 
+            
+             {isAddBusOpen?typeformodal==="penalty"?
+  <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
+    setOpensnack(true);
+    setErrormessage("Not able to submit now. Please try again later"); 
+    setSnackcolor("#e34242"); 
+   }
+ } 
+ onClose={() => {setIsAddBusOpen(false)
+   setSnackcolor("#458a32");
+   setErrormessage(" Data Saved Successfully ")
+   setOpensnack(true);
+   handleGenerateReport();
+  }
+ } 
+  from="SafetyOperation"
+  minorpercent={MinorAccident}
+  majorpercent={majorCount}
+  timeformodal={timeformodal}
+  month={month.substring(0,2)} year={year}
+/>:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
+    setOpensnack(true);
+    setErrormessage("Not able to submit now. Please try again later"); 
+    setSnackcolor("#e34242"); 
+   }
+ } 
+ onClose={() => {setIsAddBusOpen(false)
+   setSnackcolor("#458a32");
+   setErrormessage(" Data Saved Successfully ")
+   setOpensnack(true);
+   handleGenerateReport();
+  }
+ } 
+    from="SafetyOperation"
+    minorpercent={MinorAccident}
+    majorpercent={majorCount}
+    timeformodal={timeformodal}
+    month={month.substring(0,2)} year={year}
+    />:""
+} 
+    </div>
+
+    {/* Add styling for the tables */}
+    <style jsx>{`
+      .accident-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      .accident-table th, .accident-table td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      .accident-table th {
+        background-color: #f2f2f2;
+      }
+      .accident-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .accident-table tbody tr:hover {
+        background-color: #ddd;
+      }
+    `}</style>
+  </div>
+)}
+        </>
+
+
+
         :""
        }
       </Box>

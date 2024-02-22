@@ -194,7 +194,7 @@ import { ToastContainer } from 'react-toastify';
           open={sidebar} 
           sx={{height:"80px",
           // background: rgb(4,6,108),
-// background: linear-gradient(90deg, rgba(4,6,108,1) 0%, rgba(69,71,159,1) 50%, rgba(0,1,59,1) 100%);
+          // background: linear-gradient(90deg, rgba(4,6,108,1) 0%, rgba(69,71,159,1) 50%, rgba(0,1,59,1) 100%);
           backgroundImage: 'linear-gradient(to right, #267871, #136a8a);',
           // backgroundImage: 'linear-gradient(180deg, rgba(66,140,198,1) 8%, rgba(3,62,108,1) 35%, rgba(2,31,71,1) 70%, rgba(21,45,78,1) 76%)',
           // width: `calc(100% - ${drawerWidth}px)`,
