@@ -73,7 +73,8 @@ code {
   display:flex;
   width:100%;
   justify-content:space-between;
-  background:#267871;
+  /* background:#267871; */
+  background: linear-gradient(to right, #267871, #136a8a);
   color: white;
   height:120px;
   align-items:center;
@@ -93,7 +94,8 @@ code {
   display:flex;
  align-items: center;
  padding:0 10px 20px 0;
- background:#267871;
+ /* background:#267871; */
+ background: linear-gradient(to right, #267871, #136a8a);
  width:100%;
  justify-content:center
 }
@@ -136,12 +138,12 @@ code {
 }
 
 .homecard:nth-child(odd):hover {
-  background-color:#1e75a7d1 ;
+  background-color:#267871 ;
   color: white !important;
 }
 
 .homecard:nth-child(even):hover {
-  background-color:#1e75a7d1 ;
+  background-color:#267871 ;
   color: white !important;
 }
 
@@ -149,7 +151,7 @@ code {
   display: flex;
   padding: 20px 10px;
   color: white;
-  background: #1e67a7e0 !important; 
+  background: #097089e8 !important; 
 }
 
 

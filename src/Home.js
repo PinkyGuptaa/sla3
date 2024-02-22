@@ -95,11 +95,11 @@ export default function Home() {
       <div style={{display:"flex",width:"-webkit-fill-available",
     justifyContent: "space-between"}}>
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#a7911ee0"}}>
+        <div className="homecardheading" style={{background:"#064741"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
-          <p style={{margin:"0px",fontWeight:"600",fontSize:"18px"}}>Reliability</p> 
+          <p style={{margin:"0px",fontWeight:"600",fontSize:"18px"}}>Reliabilityy</p> 
         </div>
         <div className="homecarddetails">
           <div style={{display:"flex",width:"inherit"}}>
@@ -124,7 +124,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#1e67a7e0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -153,7 +153,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#a7911ee0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -182,7 +182,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#1e67a7e0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -215,7 +215,7 @@ export default function Home() {
       <div style={{display:"flex",width:"-webkit-fill-available",
     justifyContent: "space-between",marginTop:"30px"}}>
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#a7911ee0"}} >
+        <div className="homecardheading" style={{background:"#136a8a"}} >
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -244,7 +244,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#1e67a7e0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -273,7 +273,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#a7911ee0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 
@@ -302,7 +302,7 @@ export default function Home() {
       </div>
 
       <div className="homecard">
-        <div className="homecardheading" style={{background:"#1e67a7e0"}}>
+        <div className="homecardheading" style={{background:"#136a8a"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
           
           </p> 

@@ -364,7 +364,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       </Typography>
       </div>
 
-      <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',background:"#267871",width:"100%" }}>
+      <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',background:"linear-gradient(to right, #267871, #136a8a)",width:"100%" }}>
        
        <div style={{display:'flex',color:"white"}}>
        <FormControl style={{color:"white"}}>
