@@ -258,6 +258,16 @@ const fetchIncentiveRate = (id)=>{
       );
       console.log(busKmFrequency,tripFrequency,buskmdifference,buskmincentivepercentage,tripfreqdifference,tripfreqincentivepercentage)
       }
+      else if(props.from==="SafetyOperation"){
+        console.log(props.minorpercent,props.timeformodal)
+        let MinorAccidents = Math.floor(props.minorpercent);
+        let majorAccidents = Math.floor(props.majorpercent);
+        let minordifference = (0.005-MinorAccidents)*1000;
+        let majorpenaltypercent = majorAccidents*0.05;
+        let minorpenaltypercent = (minordifference)*0.05;
+        console.log(minorpenaltypercent)
+        setIncentivepercentage(props.timeformodal!=="majoraccident"?minorpenaltypercent:majorpenaltypercent);
+        }
     }
   })
 }

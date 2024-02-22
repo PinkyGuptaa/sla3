@@ -643,10 +643,10 @@ sx={{
   }
   {aftersearch && allbusdetails && allbusdetails.length > 0 && (
   <div style={{ display: 'flex',width: "100%",justifyContent: "center",backgroundColor: "#267871",paddingBottom: "50px",
-  paddingTop: "20px", }}>
+  paddingTop: "20px",color:"white" }}>
 
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54"}}>
+    backgroundColor: "#136a8a54",color:"white"}}>
   <h2>Bus KMs Frequency</h2>
   {/* <p>Number of Unavailable Buses: {unavailablebus}</p> */}
   <p>Total KMs To Run: {totalActualDistance}</p>
@@ -673,7 +673,7 @@ sx={{
 } */}
   </div>
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54" }}>
+    backgroundColor: "#136a8a54",color:"white" }}>
       <h2>Trip Frequency</h2>
       <p>Total Scheduled Trips: {tripData.dispatch}</p>
       <p>Total Completed Trips:{tripData.waybilltrip}</p>

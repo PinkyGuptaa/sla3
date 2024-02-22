@@ -105,9 +105,21 @@ class Bus_service {
     getFrequencyData = async(busno, dateto,datefrom) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/ByBusNo/${busno}/${dateto}/${datefrom}`);
     }
-    // http://10.226.33.132:9100/busperformance/getMergeMultipleApi/UP14KT5935/2024-01-01/2024-01-31
+    
     getTripFrequencyData = async(regno, dateto,datefrom) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/getMergeMultipleApi/${regno}/${dateto}/${datefrom}`);
     }
+
+   
+    //for safety of operation
+    getSafetyOperationData = async(regno, startDate,endDate) => {
+        return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}`);
+    }
+
+    getSafetyOperationDatawithpto = async(regno, startDate,endDate,pto) => {
+        return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}/${pto}`);
+    }
+
+
 }
 export default new Bus_service();
