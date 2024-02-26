@@ -19,6 +19,7 @@ function Busdetails (props){
     const [checktabledata,setChecktabledata] = useState(false);
     const [breakdownFactor, setBreakdownFactor] = useState(0);
     const [month,setMonth] = useState("")
+    const [filtervalue,setFiltervalue] = useState('monthwise');
 
     const [totalActualDistance, setTotalActualDistance] = useState(0);
 const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
@@ -121,7 +122,42 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         }
       };
       
+      const fetchAccidentsData = async () => {
+        try {
+          const startDate = `${year}-${month.split('_')[0]}`;
+          const endDate = `${year}-${month.split('_')[1]}`;
+          const res = await Bus_service.getAllAccidents(startDate, endDate);
+          console.log(res.data)
+          const accidentsData = res.data.IncidentData;
+          console.log(accidentsData)
+          let majoraccident = res.data.countMajorIncident;
+          let minoraccident = res.data.countMinorIncident;
+          let kmsRun = res.data.distance
+          setMajorCount(majoraccident);
+          setMinorCount(minoraccident);
+          
+          console.log(majorCount);
+          console.log(minorCount);
+          console.log(distance)
+          const minorIncidentsData = [];
+          const majorIncidentsData = [];
       
+          accidentsData.forEach(item => {
+            if (item.incidentType === 'minor') {
+              minorIncidentsData.push(item);
+            } else if (item.incidentType === 'major') {
+              majorIncidentsData.push(item);
+            }
+          });
+      
+          setMinorIncidents(minorIncidentsData);
+          setMajorIncidents(majorIncidentsData);
+          setDistance(kmsRun)
+          setAftersearch(true);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
 
        const handleGenerateReport = async () => {
         setLoading(true);
@@ -376,53 +412,16 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
                 else {
                   setAlreadyfilledMajor(false);
                 }
-                
               }
-  async function afterchecktrip(){
-    if(penaltycheckmajor){
-      setAllreadyfilledtripfrq(true);
-      
-    }
-    else {
-      setAllreadyfilledtripfrq(false);
-    }
-    
-  }
-              let startDate = `${year}-${month.split('_')[0]}`;
-                let endDate = `${year}-${month.split('_')[1]}`;
-                console.log(startDate,endDate,year,month.split('_')[0]);
-                try{
-              const res = await Bus_service.getFrequencyData(regno, startDate, endDate)
-              const  busData = res.data;
-                  
-              let unavailableBuses = busData.length;
-              setUnavailablebus(unavailableBuses);
-            
-              const totalActualDistance = busData.reduce((sum, bus) => sum + bus.totalActualDistance, 0);
-              const totalCoveredDistance = busData.reduce((sum, bus) => sum + bus.totalCoveredDistance, 0);
-            
-              const calculatedBreakdownFactor = parseFloat((unavailableBuses * 10000) / totalCoveredDistance).toFixed(3);
-              setBreakdownFactor(parseFloat(calculatedBreakdownFactor));
-            
-              setAllBusDetails(busData);
-            //fetch data of dispatch 
-              await fetchTripData(regno, startDate, endDate);
-            
-              console.log(unavailableBuses);
-              console.log(allbusdetails);
-              console.log(totalActualDistance);
-            
-              setTotalActualDistance(totalActualDistance)
-              setTotalCoveredDistance(totalCoveredDistance)
-            console.log(totalActualDistance)
-              console.log(totalCoveredDistance);
-            
-              setAftersearch(true);
-              setLoading(false);
-            } catch (error) {
-              console.error('Error fetching data:', error);
-              setLoading(false);
+          
+            if (filtervalue === 'monthwise' && month && year) {
+              fetchAccidentsData();
+            } else {
+              // alert('Please select both Month and Year');
             }
+          
+          
+          
           }
 
 

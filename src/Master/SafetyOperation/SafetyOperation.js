@@ -225,48 +225,6 @@ const fetchAccidentsData = async () => {
   }
 };
 
-// const fetchAccidentsData = async () => {
-//   try {
-//     const startDate = `${year}-${month.split('_')[0]}`;
-//     const endDate = `${year}-${month.split('_')[1]}`;
-//     const res = await Bus_service.getAllAccidents(startDate, endDate);
-//     console.log(res.data)
-//     const accidentsData = res.data.IncidentData;
-//     console.log(accidentsData)
-//     let majoraccident = res.data.countMajorIncident;
-//     let minoraccident = res.data.countMinorIncident;
-//     let kmsRun = res.data.distance
-//     setMajorCount(majoraccident);
-//     setMinorCount(minoraccident);
-    
-//     console.log(majorCount);
-//     console.log(minorCount);
-//     console.log(distance)
-
-//     if (Array.isArray(accidentsData)) {
-//       const minorIncidentsData = [];
-//       const majorIncidentsData = [];
-
-//       accidentsData.forEach(item => {
-//         if (item.incidentType === 'minor') {
-//           minorIncidentsData.push(item);
-//         } else if (item.incidentType === 'major') {
-//           majorIncidentsData.push(item);
-//         }
-//       });
-
-//       setMinorIncidents(minorIncidentsData);
-//       setMajorIncidents(majorIncidentsData);
-//     } else {
-//       console.error('Accidents data is not an array:', accidentsData);
-//     }
-
-//     setDistance(kmsRun)
-//     setAftersearch(true);
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// };
 
 
 const handleGenerateReport = () => {
