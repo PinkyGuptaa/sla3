@@ -1794,12 +1794,16 @@ filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
    }
  } 
  onClose={() => {setIsAddBusOpen(false)
-   setSnackcolor("#458a32");
-   setErrormessage(" Data Saved Successfully ")
-   setOpensnack(true);
-   handleGenerateReport();
-  }
- } 
+ }
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
+} 
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 
   timeformodal={timeformodal} 
@@ -1812,11 +1816,15 @@ filtervalue!=="buswise" && reportDetails.wayBillTripsList.length > 0?
   }
 } 
 onClose={() => {setIsAddBusOpen(false)
-  setSnackcolor("#458a32");
-  setErrormessage(" Data Saved Successfully ")
-  setOpensnack(true);
-  handleGenerateReport();
- }
+}
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
 }  
   startpunper={startpunctuality()}   
   arrivalpunper={arrivalpunctuality()} 

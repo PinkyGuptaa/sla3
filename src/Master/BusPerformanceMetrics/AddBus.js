@@ -506,7 +506,7 @@ else return "";
         // setErrormessage(" Data Saved Successfully ")
         // setOpensnack(true);
         // console.log(slafortype)
-        props.onClose();
+        props.onClosesuccess();
       }).catch((err)=>{
         console.log(slafortype)
         console.log(err)

@@ -181,24 +181,31 @@ const customStyles = {
 	},
   rows: {
       style: {
-        backgroundColor:"#b6e7e1",
+        backgroundColor:"white",
         textAlign:"center !important",
-         
+        '&:hover': {
+          backgroundColor: '#267871 !important',
+          color:"white !important",
+          fontWeight:"500 !important"
+        },
       },
   },
   headCells: {
       style: {
         fontSize:'14px',
         height:"auto",
-        backgroundColor:'#267871',
+        backgroundColor:'#136a8a',
         borderRadius: "10",
         border: "#34ebcc 5px",
         textAlign:"center",
         //padding:"0px !important",
         fontWeight:"700 !important",
       
-        paddingLeft:"10px"
-        
+        paddingLeft:"10px",
+        width:"fit-content",
+          whiteSpace: "normal !important",
+          wordBreak: "auto-phrase !important",
+          color:"white"
       },
   },
   cells: {
@@ -508,15 +515,7 @@ const handleEyeClick = () => {
     setOpensnack(false);
   }; 
 
-  const ExpandedComponent = (({ data }) =>
-  <>
-  <div style={{display:"flex",background:"blue",color:"white"}}>
-    {year}
-  </div>
-  <pre>{JSON.stringify(data, null, 2)}</pre>
-  </>
   
-  )
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
        <Snackbar ContentProps={{
@@ -816,8 +815,7 @@ const handleEyeClick = () => {
             customStyles={customStyles}
             highlightOnHover
             desnse
-            expandableRows
-            expandableRowsComponent={ExpandedComponent}
+           
             />
 
 <table className="report-table" style={{marginTop:"-115px",width:"100%", backgroundColor:"#b6e7e1"}}>
@@ -884,12 +882,17 @@ const handleEyeClick = () => {
          }
        } 
        onClose={() => {setIsAddBusOpen(false)
-         setSnackcolor("#458a32");
-         setErrormessage(" Data Saved Successfully ")
-         setOpensnack(true);
-         handleGenerateReport();
-        }
-       } from="Breakdown" breakdownper={breakdownFactor} month={month.substring(0,2)} year={year}
+       }
+      } 
+      
+      onClosesuccess={() => {setIsAddBusOpen(false)
+      setSnackcolor("#458a32");
+      setErrormessage(" Data Saved Successfully ")
+      setOpensnack(true);
+      handleGenerateReport();
+      }
+      } 
+       from="Breakdown" breakdownper={breakdownFactor} month={month.substring(0,2)} year={year}
       
       />:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
         setOpensnack(true);
@@ -898,12 +901,16 @@ const handleEyeClick = () => {
        }
      } 
      onClose={() => {setIsAddBusOpen(false)
-       setSnackcolor("#458a32");
-       setErrormessage(" Data Saved Successfully ")
-       setOpensnack(true);
-       handleGenerateReport();
-      }
-     } 
+     }
+    } 
+    
+    onClosesuccess={() => {setIsAddBusOpen(false)
+    setSnackcolor("#458a32");
+    setErrormessage(" Data Saved Successfully ")
+    setOpensnack(true);
+    handleGenerateReport();
+    }
+    } 
           from="Breakdown" breakdownper={breakdownFactor} month={month.substring(0,2)} year={year} />:""
       }
      </div>

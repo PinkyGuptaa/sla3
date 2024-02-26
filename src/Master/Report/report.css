@@ -1,26 +1,32 @@
 
-.report-table {
+ .report-table {
     border-collapse: collapse;
-    /* width: 100%; */
-    margin-top: 20px;
+     width: 100%; 
+     margin-top: 20px; 
   }
-  
-  .report-table th, .report-table td {
+   
+   .report-table th, .report-table td {
     border: 1px solid #dddddd;
     padding: 8px;
     text-align: left;
-  }
+  } 
   
-  .report-table th {
-    background-color: #f2f2f2;
+  /* .report-table th {
+    background: linear-gradient(to right, rgb(38, 120, 113), rgb(19, 106, 138));
     font-weight: bold;
+  } */
+
+  .report-table thead tr{
+    background:linear-gradient(to right, rgb(38, 120, 113), rgb(19, 106, 138));
+    color:white
   }
   
-  .report-table tr:nth-child(even) {
+  .report-table tr {
     background-color: #f9f9f9;
   }
   
-  .report-table tr:hover {
-    background-color: #f1f1f1;
-  }
+  .report-table tbody tr:hover {
+    background-color: rgba(19, 106, 138, 0.821);
+    color: white;
+  }  
   

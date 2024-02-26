@@ -487,9 +487,10 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       </Typography>
       </div>
 
-      <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',background:"linear-gradient(to right, #267871, #136a8a)",width:"100%" }}>
-       
-       <div style={{display:'flex',color:"white"}}>
+      <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',width:"100%" }}>
+        <div style={{width:"100%",background:"linear-gradient(to right, #267871, #136a8a)",display:"flex",flexDirection: "column",
+    alignItems: "center",paddingBottom: "20px"}}> 
+       <div style={{display:'flex',color:"white",}}>
        <FormControl style={{color:"white"}}>
       <FormLabel id="demo-row-radio-buttons-group-label"></FormLabel>
       <RadioGroup
@@ -536,7 +537,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
     </FormControl>
        </div>
 
-       <Box style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+       <Box style={{ display: 'flex', alignItems: 'center'}}>
       {/* <TextField
       id="outlined-select-currency"
       select
@@ -698,13 +699,13 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       </Button>:""
             }
         </Box>
-
+    </div>
        {
         radioselected  === 'Schedule'?
         <>
        
         
-        <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center', marginTop: '20px' }} >
+        <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',background:"linear-gradient(to right, #267871, #136a8a)",width:"100%" }} >
         {aftersearch?
       <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
   <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
@@ -717,8 +718,9 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         {reportDetails.wayBillTripsList && reportDetails.wayBillTripsList.length > 0 && (
   
   <table className="report-table">
-    <thead>
-      <tr>
+    <thead >
+      <tr style={{background:"linear-gradient(to right, rgb(38, 120, 113), rgb(19, 106, 138))",
+    color:"white"}}>
     
         
         {/* <th>Route Name</th> */}
@@ -815,10 +817,11 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         radioselected === "Breakdown"?
         <>
          
-      <div style={{marginTop:"20px"}}></div>
+      
         {
             aftersearch?allbusdetails.length > 0?
             <>
+            <div style={{background:"linear-gradient(to right, #267871, #136a8a)",width:"100%"}}>
              <table className="report-table">
           <thead>
             <tr>
@@ -853,6 +856,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       </tr>
           </tbody>
         </table>
+        </div>
            <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
            <p style={{marginLeft : '50px', marginRight: '50px' }}>Breakdown Factor = {breakdownFactor} </p>
         
@@ -890,7 +894,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
             aftersearch?allbusdetails.length > 0?
             <>
               <div style={{ display: 'flex',width: "100%",justifyContent: "center",backgroundColor: "#267871",paddingBottom: "50px",
-  paddingTop: "20px", }}>
+  paddingTop: "20px",color:"white" }}>
 
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
     backgroundColor: "#136a8a54"}}>
@@ -901,8 +905,8 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
   <p>Bus KMs Frequency = {BusKMsFrequency}
     {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
     </p>
-    {allreadyfilledbuskm?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
-    <p>{BusKMsFrequency<=93?
+    {/* {allreadyfilledbuskm?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""} */}
+    {/* <p>{BusKMsFrequency<=93?
            <Button onClick={()=>handleButtonClick("buskmfrequency","penalty")} 
            disabled={allreadyfilledbuskm}
             style={{padding:"10px",
@@ -911,13 +915,9 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
              Action </Button>:BusKMsFrequency>95?<Button 
              onClick={()=>handleButtonClick("buskmfrequency","incentive")} 
              disabled={allreadyfilledbuskm} style={{padding:"10px",backgroundColor:allreadyfilledbuskm?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
-             Incentive </Button>:""}</p>
+             Incentive </Button>:""}</p> */}
             
-             {/* {isAddBusOpen?typeformodal==="penalty"?
-  <Addbus open onClose={() => setIsAddBusOpen(false)} from="Frequency" frequencyper={tripFrequency}
-/>:<AddBusIncentive open onClose={() => setIsAddBusOpen(false)} 
-    from="Frequency" frequencyper={tripFrequency} />:""
-} */}
+      
   </div>
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
     backgroundColor: "#136a8a54" }}>
@@ -926,12 +926,12 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       <p>Total Completed Trips:{tripData.waybilltrip}</p>
       <p>Trip Frequency = { tripFrequency}
   </p>
-  {allreadyfilledtripfeq?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
-           <p>{tripFrequency<=93?
+  {/* {allreadyfilledtripfeq?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""} */}
+           {/* <p>{tripFrequency<=93?
            <Button onClick={()=>handleButtonClick("tripfrequency","penalty")} disabled={allreadyfilledtripfeq} style={{padding:"10px",backgroundColor:allreadyfilledtripfeq?"lightgrey":"maroon",color:"white",cursor:"pointer"}}>
              Action </Button>:tripFrequency>=95?<Button onClick={()=>handleButtonClick("tripfrequency","incentive")}   
              disabled={allreadyfilledtripfeq} style={{padding:"10px",backgroundColor:allreadyfilledtripfeq?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
-             Incentive </Button>:""}</p>
+             Incentive </Button>:""}</p> */}
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
@@ -1080,8 +1080,8 @@ onClose={() => {setIsAddBusOpen(false)
     </table>}
  
   <p> Minor Accidents Factor: {MinorAccident}</p>
-  {alreadyfilledMinor?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
-  <p>{MinorAccident>=0.01?
+  {/* {alreadyfilledMinor?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""} */}
+  {/* <p>{MinorAccident>=0.01?
            <Button onClick={()=>handleButtonClick("minoraccident","penalty")}
            disabled={alreadyfilledMinor}
            style={{padding:"10px",
@@ -1093,7 +1093,7 @@ onClose={() => {setIsAddBusOpen(false)
              onClick={()=>handleButtonClick("minoraccident","incentive")}
              disabled={alreadyfilledMinor} 
              style={{padding:"10px",backgroundColor:alreadyfilledMinor?"lightgrey":"#188718",color:"white",cursor:"pointer"}}>
-             Incentive </Button>:""}</p>
+             Incentive </Button>:""}</p> */}
 </div>
 
 
@@ -1133,15 +1133,15 @@ onClose={() => {setIsAddBusOpen(false)
  
 
    <p>No. of Major Accidents: {majorCount}  </p> 
-   {alreadyfilledMajor?<p style={{color:"red"}}>Penalty already filled.</p>:""}
-<p>
+   {/* {alreadyfilledMajor?<p style={{color:"red"}}>Penalty already filled.</p>:""} */}
+{/* <p>
    {majorCount>=1?
            <Button onClick={()=>handleButtonClick("majoraccident","penalty")} 
            disabled={alreadyfilledMajor}
            style={{padding:"10px",
            backgroundColor:alreadyfilledMajor?"lightgrey":"maroon",
            color:"white",cursor:"pointer",marginLeft:"10px"}}>
-             Action </Button>:""}</p> 
+             Action </Button>:""}</p>  */}
             
              {isAddBusOpen?typeformodal==="penalty"?
   <Addbus open onCloseerror={() => {setIsAddBusOpen(false)
@@ -1191,17 +1191,20 @@ onClose={() => {setIsAddBusOpen(false)
         border-collapse: collapse;
         margin-top: 10px;
       }
-      .accident-table th, .accident-table td {
+      .accident-table th {
         border: 1px solid #dddddd;
         text-align: left;
         padding: 8px;
-      }
-      .accident-table th {
         background-color: #f2f2f2;
       }
-      .accident-table tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
+
+      .accident-table td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        
       }
+     
       .accident-table tbody tr:hover {
         background-color: #ddd;
       }

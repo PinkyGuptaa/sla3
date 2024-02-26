@@ -6,56 +6,56 @@ import DataTable from 'react-data-table-component';
 import Deletecomponent from '../../Components/Deletecomponent';
 import Actionmaster_service from '../../Services/Actionmaster_service';
 import Addaction from './Addaction';
+import { customStyles } from '../../datatable';
 
-
-const customStyles = {
-  header: {
-		style: {
-			fontSize: '20px',
-			color: "black",
-      textAlign:"justify",
-      fontWeight:"700 !important",
-			padding:"0px 0px 0px 10px !important",
-      paddingLeft:"10px"
+// const customStyles = {
+//   header: {
+// 		style: {
+// 			fontSize: '20px',
+// 			color: "black",
+//       textAlign:"justify",
+//       fontWeight:"700 !important",
+// 			padding:"0px 0px 0px 10px !important",
+//       paddingLeft:"10px"
 			
-		},
-	},
-  rows: {
-      style: {
-        backgroundColor:"#A5D8DD",
-        textAlign:"center !important",
+// 		},
+// 	},
+//   rows: {
+//       style: {
+//         backgroundColor:"#A5D8DD",
+//         textAlign:"center !important",
          
-      },
-  },
-  headCells: {
-      style: {
-        fontSize:'14px',
-        height:"auto",
-        backgroundColor:'#267871',
-        borderRadius: "10",
-        border: "#34ebcc 5px",
-        textAlign:"center",
-        //padding:"0px !important",
-        fontWeight:"700 !important",
-        color:'white',
-        paddingLeft:"10px"
+//       },
+//   },
+//   headCells: {
+//       style: {
+//         fontSize:'14px',
+//         height:"auto",
+//         backgroundColor:'#267871',
+//         borderRadius: "10",
+//         border: "#34ebcc 5px",
+//         textAlign:"center",
+//         //padding:"0px !important",
+//         fontWeight:"700 !important",
+//         color:'white',
+//         paddingLeft:"10px"
         
-      },
-  },
-  cells: {
-      style: {
-          paddingLeft: '8px', 
-          paddingRight: '8px',
-          textAlign:"center !important", 
-      },
+//       },
+//   },
+//   cells: {
+//       style: {
+//           paddingLeft: '8px', 
+//           paddingRight: '8px',
+//           textAlign:"center !important", 
+//       },
       
-  },
-  columns:{
-    style:{
-         borderRight:"white 5px"  
-    },
-  },
-};
+//   },
+//   columns:{
+//     style:{
+//          borderRight:"white 5px"  
+//     },
+//   },
+// };
 
 function ActionMaster(props) {
 

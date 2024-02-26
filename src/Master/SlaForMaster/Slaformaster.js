@@ -6,58 +6,59 @@ import DataTable from 'react-data-table-component';
 import Deletecomponent from '../../Components/Deletecomponent';
 import Addslafor from './Addslafor'
 import Slaformaster_service from '../../Services/Slaformaster_service';
+import { customStyles } from '../../datatable';
 
-const customStyles = {
-  header: {
-		style: {
-			fontSize: '20px',
-			color: "black",
-      textAlign:"justify",
-      fontWeight:"700 !important",
-			padding:"0px 0px 0px 10px !important",
-      paddingLeft:"10px",
+// const customStyles = {
+//   header: {
+// 		style: {
+// 			fontSize: '20px',
+// 			color: "black",
+//       textAlign:"justify",
+//       fontWeight:"700 !important",
+// 			padding:"0px 0px 0px 10px !important",
+//       paddingLeft:"10px",
       
-		},
-	},
-  rows: {
-      style: {
-        backgroundColor:"#A5D8DD",
-        textAlign:"center !important",
+// 		},
+// 	},
+//   rows: {
+//       style: {
+//         backgroundColor:"#A5D8DD",
+//         textAlign:"center !important",
          
-      },
-  },
-  headCells: {
-      style: {
-        fontSize:'14px',
-        height:"auto",
-        backgroundColor:'#267871',
-        borderRadius: "10",
-        border: "#34ebcc 5px",
-        textAlign:"center",
-        //padding:"0px !important",
-        fontWeight:"700 !important",
-      color:'white',
-        paddingLeft:"10px"
+//       },
+//   },
+//   headCells: {
+//       style: {
+//         fontSize:'14px',
+//         height:"auto",
+//         backgroundColor:'#267871',
+//         borderRadius: "10",
+//         border: "#34ebcc 5px",
+//         textAlign:"center",
+//         //padding:"0px !important",
+//         fontWeight:"700 !important",
+//       color:'white',
+//         paddingLeft:"10px"
         
-      },
-  },
-  cells: {
-      style: {
-          paddingLeft: '8px', 
-          paddingRight: '8px',
-          textAlign:"center !important", 
-          // color: '#1d1f61'
-      },
+//       },
+//   },
+//   cells: {
+//       style: {
+//           paddingLeft: '8px', 
+//           paddingRight: '8px',
+//           textAlign:"center !important", 
+//           // color: '#1d1f61'
+//       },
       
-  },
-  columns:{
-    style:{
-         borderRight:"white 5px"  ,
+//   },
+//   columns:{
+//     style:{
+//          borderRight:"white 5px"  ,
 
   
-    },
-  },
-};
+//     },
+//   },
+// };
 
 function Slaformaster(props) {
 

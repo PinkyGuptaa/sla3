@@ -671,7 +671,7 @@ sx={{
   paddingTop: "20px", }}>
 
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54"}}>
+        background: "linear-gradient(to right, #267871bd, #136a8a)",color: "aliceblue"}}>
      <h2>Minor Accidents</h2>
      {minorIncidents.length==0?<div> No Data </div>:
       <table className="accident-table">
@@ -721,7 +721,7 @@ sx={{
 
     {/* Major Accident Table */}
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54" }}>
+     background: "linear-gradient(to right, #267871bd, #136a8a)",color: "aliceblue" }}>
    <h2>Major Accidents</h2>
      {majorIncidents.length==0?<div>No Data</div>:
  <table className="accident-table">
@@ -773,12 +773,16 @@ sx={{
    }
  } 
  onClose={() => {setIsAddBusOpen(false)
-   setSnackcolor("#458a32");
-   setErrormessage(" Data Saved Successfully ")
-   setOpensnack(true);
-   handleGenerateReport();
-  }
- } 
+ }
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
+}
   from="SafetyOperation"
   minorpercent={MinorAccident}
   majorpercent={majorCount}
@@ -791,12 +795,16 @@ sx={{
    }
  } 
  onClose={() => {setIsAddBusOpen(false)
-   setSnackcolor("#458a32");
-   setErrormessage(" Data Saved Successfully ")
-   setOpensnack(true);
-   handleGenerateReport();
-  }
+    }
  } 
+
+ onClosesuccess={() => {setIsAddBusOpen(false)
+  setSnackcolor("#458a32");
+  setErrormessage(" Data Saved Successfully ")
+  setOpensnack(true);
+  handleGenerateReport();
+ }
+}
     from="SafetyOperation"
     minorpercent={MinorAccident}
     majorpercent={majorCount}

@@ -17,7 +17,7 @@ export const customStyles = {
           '&:hover': {
             backgroundColor: '#267871 !important',
             color:"white !important",
-            fontWeight:"500 !important"
+            fontWeight:"900 !important"
           },
         },
     },

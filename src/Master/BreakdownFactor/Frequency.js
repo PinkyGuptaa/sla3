@@ -642,7 +642,7 @@ sx={{
 
   }
   {aftersearch && allbusdetails && allbusdetails.length > 0 && (
-  <div style={{ display: 'flex',width: "100%",justifyContent: "center",backgroundColor: "#267871",paddingBottom: "50px",
+  <div style={{ display: 'flex',width: "100%",justifyContent: "center",background: "linear-gradient(to right, #267871, #136a8a)",paddingBottom: "50px",
   paddingTop: "20px",color:"white" }}>
 
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
@@ -654,7 +654,7 @@ sx={{
   <p>Bus KMs Frequency = {BusKMsFrequency}
     {/* {totalActualDistance > 0 ? (((totalActualDistance - totalCoveredDistance) / totalActualDistance) * 100).toFixed(2) : 0} % */}
     </p>
-    {allreadyfilledbuskm?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
+    {allreadyfilledbuskm?<p style={{color:"red",fontWeight: "900",letterSpacing: ".5px"}}>Incentive/Penalty already filled.</p>:""}
     <p>{BusKMsFrequency<=93?
            <Button onClick={()=>handleButtonClick("buskmfrequency","penalty")} 
            disabled={allreadyfilledbuskm}
@@ -679,7 +679,7 @@ sx={{
       <p>Total Completed Trips:{tripData.waybilltrip}</p>
       <p>Trip Frequency = { tripFrequency}
   </p>
-  {allreadyfilledtripfeq?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
+  {allreadyfilledtripfeq?<p style={{color:"red",fontWeight: "900",letterSpacing: ".5px"}}>Incentive/Penalty already filled.</p>:""}
            <p>{tripFrequency<=93?
            <Button onClick={()=>handleButtonClick("tripfrequency","penalty")} disabled={allreadyfilledtripfeq} style={{padding:"10px",backgroundColor:allreadyfilledtripfeq?"lightgrey":"maroon",color:"white",cursor:"pointer"}}>
              Action </Button>:tripFrequency>=95?<Button onClick={()=>handleButtonClick("tripfrequency","incentive")}   
@@ -694,12 +694,16 @@ sx={{
    }
  } 
  onClose={() => {setIsAddBusOpen(false)
-   setSnackcolor("#458a32");
-   setErrormessage(" Data Saved Successfully ")
-   setOpensnack(true);
-   handleGenerateReport();
-  }
- } 
+ }
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
+} 
   from="Frequency"
   buskmfrequencyper={BusKMsFrequency}  
   frequencyper={tripFrequency}
@@ -712,11 +716,15 @@ sx={{
   }
 } 
 onClose={() => {setIsAddBusOpen(false)
-  setSnackcolor("#458a32");
-  setErrormessage(" Data Saved Successfully ")
-  setOpensnack(true);
-  handleGenerateReport();
- }
+}
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
 } 
     from="Frequency"
     buskmfrequencyper={BusKMsFrequency}

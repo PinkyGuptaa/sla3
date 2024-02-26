@@ -769,12 +769,17 @@ fill:"rgb(255 255 255 / 71%)"
    }
  } 
  onClose={() => {setIsAddBusOpen(false)
-   setSnackcolor("#458a32");
-   setErrormessage(" Data Saved Successfully ")
-   setOpensnack(true);
-   handleGenerateReport();
-  }
- } from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year}
+ }
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
+} 
+ from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year}
 
 />:<AddBusIncentive open onCloseerror={() => {setIsAddBusOpen(false)
    setOpensnack(true);
@@ -783,11 +788,15 @@ fill:"rgb(255 255 255 / 71%)"
   }
 } 
 onClose={() => {setIsAddBusOpen(false)
-  setSnackcolor("#458a32");
-  setErrormessage(" Data Saved Successfully ")
-  setOpensnack(true);
-  handleGenerateReport();
- }
+}
+} 
+
+onClosesuccess={() => {setIsAddBusOpen(false)
+setSnackcolor("#458a32");
+setErrormessage(" Data Saved Successfully ")
+setOpensnack(true);
+handleGenerateReport();
+}
 }
   // startpunper={startpunctuality()} arrivalpunper={arrivalpunctuality()}
     from="Availability" availableper={(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} month={month.substring(0,2)} year={year} />:""

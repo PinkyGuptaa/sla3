@@ -422,15 +422,15 @@ else return "";
       };
       console.log(busdetails);
       (slafortype==="Bus"?Bus_service:slafortype==="Conductor"?Conductor_service:Driver_service).update(busdetails).then((res)=>{
-        props.onClose();
-        setSnackcolor("#458a32");
-        setErrormessage(" Data Updated Successfully ")
-        setOpensnack(true);
+        props.onClosesuccess();
+        // setSnackcolor("#458a32");
+        // setErrormessage(" Data Updated Successfully ")
+        // setOpensnack(true);
       }).catch(err=>{console.log(err)
-        setSnackcolor("#e34242");
-        setErrormessage("Not able to update data. Please try again later !")
-        setOpensnack(true);
-        props.onClose();
+        // setSnackcolor("#e34242");
+        // setErrormessage("Not able to update data. Please try again later !")
+        // setOpensnack(true);
+        props.onCloseerror();
       })
      }
      else 
@@ -454,7 +454,7 @@ else return "";
         // setErrormessage(" Data Saved Successfully ")
         // setOpensnack(true);
         console.log(slafortype)
-        props.onClose();
+        props.onClosesuccess();
       }).catch((err)=>{
         console.log(slafortype)
         console.log(err)
