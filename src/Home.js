@@ -93,7 +93,7 @@ export default function Home() {
         </CardContent>
       </Card> */}
       <div style={{display:"flex",width:"-webkit-fill-available",
-    justifyContent: "space-between"}}>
+    justifyContent: "space-around"}}>
       <div className="homecard">
         <div className="homecardheading" style={{background:"#064741"}}>
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>
@@ -213,7 +213,7 @@ export default function Home() {
       </div>
 
       <div style={{display:"flex",width:"-webkit-fill-available",
-    justifyContent: "space-between",marginTop:"30px"}}>
+    justifyContent: "space-around",marginTop:"30px"}}>
       <div className="homecard">
         <div className="homecardheading" style={{background:"#136a8a"}} >
           <p style={{margin:"0px"}}> <span><DepartureBoard style={{width:"35px"}}/></span>

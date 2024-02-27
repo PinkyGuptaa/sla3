@@ -626,10 +626,10 @@ sx={{
   <div style={{ display: 'flex',width: "100%",justifyContent: "center",
   // backgroundColor: "#267871",
   paddingBottom: "50px",
-  paddingTop: "20px", }}>
+  paddingTop: "20px",background:"linear-gradient(to right, #267871, #136a8a)" }}>
 
-    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-        background: "linear-gradient(to right, #267871bd, #136a8a)",color: "aliceblue"}}>
+    <div style={{display: "flex",marginRight: "20px",width: "50%",flexDirection: "column", alignItems: "center",
+        color: "aliceblue"}}>
      <h2>Minor Accidents</h2>
      {minorIncidents.length==0?<div> No Data </div>:
       <table className="accident-table">
@@ -660,7 +660,7 @@ sx={{
     </table>}
  
   <p> Minor Accidents Factor: {MinorAccident}</p>
-  {alreadyfilledMinor?<p style={{color:"red"}}>Incentive/Penalty already filled.</p>:""}
+  {alreadyfilledMinor?<p style={{color:"red",fontWeight:"900",background:'white'}}>Incentive/Penalty already filled.</p>:""}
   <p>{MinorAccident>=0.01?
            <Button onClick={()=>handleButtonClick("minoraccident","penalty")}
            disabled={alreadyfilledMinor}
@@ -678,8 +678,8 @@ sx={{
 
 
     {/* Major Accident Table */}
-    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-     background: "linear-gradient(to right, #267871bd, #136a8a)",color: "aliceblue" }}>
+    <div style={{display: "flex",marginRight: "20px",width: "50%",flexDirection: "column", alignItems: "center",
+    color: "aliceblue" }}>
    <h2>Major Accidents</h2>
      {majorIncidents.length==0?<div>No Data</div>:
  <table className="accident-table">
@@ -713,7 +713,7 @@ sx={{
  
 
    <p>No. of Major Accidents: {majorCount}  </p> 
-   {alreadyfilledMajor?<p style={{color:"red"}}>Penalty already filled.</p>:""}
+   {alreadyfilledMajor?<p style={{color:"red",fontWeight:"900",background:"white"}}>Penalty already filled.</p>:""}
 <p>
    {majorCount>=1?
            <Button onClick={()=>handleButtonClick("majoraccident","penalty")} 
@@ -786,12 +786,12 @@ handleGenerateReport();
       }
       .accident-table th {
         background-color: #f2f2f2;
+        color:black
       }
-      .accident-table tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
+     
       .accident-table tbody tr:hover {
         background-color: #ddd;
+        color:black;
       }
     `}</style>
   </div>

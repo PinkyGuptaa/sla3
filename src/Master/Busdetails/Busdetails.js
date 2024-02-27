@@ -707,8 +707,8 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         <Box style={{ display: 'flex',flexDirection:"column", alignItems: 'center',background:"linear-gradient(to right, #267871, #136a8a)",width:"100%" }} >
         {aftersearch?
       <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
-  <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
-  <p style={{ color: reportDetails.countWayBillTripsWhereTimeIsNotZero > 0 ? 'red' : 'inherit' }}>
+  <p style={{marginLeft : '50px', marginRight: '50px',color:"white" }}>Total Trips Count: {reportDetails.countWayBillTrips}</p>
+  <p style={{ color: reportDetails.countWayBillTripsWhereTimeIsNotZero > 0 ? 'white' : 'white' }}>
     Number of Trips Violated: {reportDetails.countWayBillTripsWhereTimeIsNotZero}
   </p>
 </div>:"" 
@@ -778,7 +778,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         </>:
         radioselected === 'Availability'?
         <>
-        <div style={{ display: 'flex', alignItems: 'center', marginTop: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', paddingTop: '20px',paddingBottom:"20px",background:"linear-gradient(to right, #267871, #136a8a)",width:"100%",justifyContent:'center',color:"white" }}>
 {aftersearch?<>
            <p style={{marginLeft : '50px', marginRight: '50px' }}>Total Inactive Count: {reportDetails.countWayBillTrips}</p>
            <p style={{marginLeft : '50px', marginRight: '50px' }} >Availabilty Percentage : {(((Number(allbuslist.length)-Number(reportDetails.countWayBillTrips))/Number(allbuslist.length))*100).toFixed(2)} </p>
@@ -787,7 +787,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
 }
 </div>
       {reportDetails.wayBillTripsList.length > 0 ? 
-  <table className="report-table">
+  <table className="report-table" style={{marginTop:"-20px",paddingTop:"20px"}}>
     <thead>
       <tr>
         <th>Reg No.</th>
@@ -888,11 +888,11 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
         :radioselected === "Frequency"?
         <>
          
-      <div style={{marginTop:"20px"}}></div>
+      
         {
             aftersearch?allbusdetails.length > 0?
             <>
-              <div style={{ display: 'flex',width: "100%",justifyContent: "center",backgroundColor: "#267871",paddingBottom: "50px",
+              <div style={{ display: 'flex',width: "100%",justifyContent: "center",background: "linear-gradient(to right, #267871, #136a8a)",paddingBottom: "50px",
   paddingTop: "20px",color:"white" }}>
 
     <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
@@ -1040,15 +1040,15 @@ onClose={() => {setIsAddBusOpen(false)
         :radioselected === "Safety of Operation"?
         <>
          
-      <div style={{marginTop:"20px"}}></div>
+     
       {aftersearch && (
   <div style={{ display: 'flex',width: "100%",justifyContent: "center",
   // backgroundColor: "#267871",
   paddingBottom: "50px",
-  paddingTop: "20px", }}>
+  paddingTop: "20px",background:"linear-gradient(to right, #267871, #136a8a)" }}>
 
-    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54"}}>
+    <div style={{display: "flex",marginRight: "20px",width: "50%",flexDirection: "column", alignItems: "center",
+    color: "aliceblue"}}>
      <h2>Minor Accidents</h2>
      {minorIncidents.length==0?<div> No Data </div>:
       <table className="accident-table">
@@ -1097,8 +1097,8 @@ onClose={() => {setIsAddBusOpen(false)
 
 
     {/* Major Accident Table */}
-    <div style={{display: "flex",marginRight: "20px",width: "40%",flexDirection: "column", alignItems: "center",
-    backgroundColor: "#136a8a54" }}>
+    <div style={{display: "flex",marginRight: "20px",width: "50%",flexDirection: "column", alignItems: "center",
+    color: "aliceblue"  }}>
    <h2>Major Accidents</h2>
      {majorIncidents.length==0?<div>No Data</div>:
  <table className="accident-table">
@@ -1185,28 +1185,25 @@ onClose={() => {setIsAddBusOpen(false)
 
     {/* Add styling for the tables */}
     <style jsx>{`
-      .accident-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-      }
-      .accident-table th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-        background-color: #f2f2f2;
-      }
-
-      .accident-table td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-        
-      }
-     
-      .accident-table tbody tr:hover {
-        background-color: #ddd;
-      }
+     .accident-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .accident-table th, .accident-table td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    .accident-table th {
+      background-color: #f2f2f2;
+      color:black
+    }
+   
+    .accident-table tbody tr:hover {
+      background-color: #ddd;
+      color:black;
+    }
     `}</style>
   </div>
 )}
