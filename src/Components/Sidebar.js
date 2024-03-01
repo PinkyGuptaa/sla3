@@ -52,7 +52,7 @@ import WarningMaster from '../Master/WarningMaster/WarningMaster'
 import Report from '../Master/Report/Report';
 import HalfYearlyReport from '../Master/Report/HalfyearlyReport';
 import InstanceReport from '../Master/Report/InstanceReport';
-import DateWiseReport from '../Master/Report/DateWiseReport';
+import MonthlyReport from '../Master/ReportGenerate/MonthlyReport';
 import Busavailablematrics from "../Master/BusAvailableMatrics/BusAvailableMatrics";
 import Busdetails from "../Master/Busdetails/Busdetails";
 import Formula from "../Master/Formulas/Formula";
@@ -60,6 +60,7 @@ import { AccountCircle, ChevronLeft, ChevronRight, MenuBook, MenuOutlined, StarB
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import Environment from '../Environment/Environment.json'; 
 import { ToastContainer } from 'react-toastify';
+import ParameterReport from "../Master/ReportGenerate/ParameterWise";
 
   const drawerWidth = 240;
 
@@ -123,12 +124,13 @@ import { ToastContainer } from 'react-toastify';
       const [ptocheckbox,setPtocheckbox] = useState(false);
       const [ptodetails,setPtodetails] = useState([])
       const Base_Url = Environment.Base_Url;
+      const Base_Url1 = Environment.Base_Url1;
     useEffect(()=>{
       sessionStorage.setItem("entryby","Pinky");
       sessionStorage.setItem("depotId","D01");
     },[])
     useEffect(()=>{
-      axios.get(`${Base_Url}/busperformance/getpto`).then((res)=>{
+      axios.get(`${Base_Url1}/busperformance/getpto`).then((res)=>{
           setPtodetails(res.data);
           
       }).catch((err)=>{
@@ -585,26 +587,27 @@ import { ToastContainer } from 'react-toastify';
         {openReport ? <ChevronRight /> : <ChevronLeft />}
       </ListItemButton>
       <Collapse in={openReport} timeout="auto" unmountOnExit>
-      <List component="div" disablePadding>
-          <NavLink to="/datewisereport" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,5)}>
+      <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===24?"lightgrey":""}}>
+          <NavLink to="/monthlyreport" style={{color:"black",textDecoration:"None",background:activeid===24?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,24)}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary=" Date-Wise Report " />
+            <ListItemText primary=" Monthly Report " />
           </ListItemButton>
           </NavLink>
             </List>
-      <List component="div" disablePadding>
-          <NavLink to="/report" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,5)}>
+       <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===25?"lightgrey":""}}>
+          <NavLink to="/parameterreport" style={{color:"black",textDecoration:"None",background:activeid===25?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,25)}>
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary=" Quaterly Report " />
+            <ListItemText primary=" Parameter-Wise Report " />
           </ListItemButton>
           </NavLink>
             </List>
+            {/*
             <List component="div" disablePadding>
           <NavLink to="/halfyearlyreport" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
           <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,5)}>
@@ -624,7 +627,7 @@ import { ToastContainer } from 'react-toastify';
             <ListItemText primary="Instance Report" />
           </ListItemButton>
           </NavLink>
-            </List>
+            </List> */}
    </Collapse>
             </List>
             <div
@@ -709,10 +712,10 @@ import { ToastContainer } from 'react-toastify';
                <Route path="dmapproval" exact element = {<Dmapproval/>} />
                {/* <Route path="spapproval" exact element = {<ServiceProvider/>} /> */}
                 <Route path="customercomplaint" exact element = {<CustomerComplaint/>} />
-                <Route path="datewisereport" exact element = {<DateWiseReport/>} />
-                <Route path="report" exact element = {<Report/>} />
-                <Route path="halfyearlyreport" exact element = {<HalfYearlyReport/>} />
-                <Route path="instancereport" exact element = {<InstanceReport/>} />
+                <Route path="monthlyreport" exact element = {<MonthlyReport/>} />
+                <Route path="parameterreport" exact element = {<ParameterReport/>} />
+                {/* <Route path="halfyearlyreport" exact element = {<HalfYearlyReport/>} /> */}
+                {/* <Route path="instancereport" exact element = {<InstanceReport/>} /> */}
                 <Route path="busavailablematrics" exact element={<Busavailablematrics pto={pto}/>} />
                 <Route path="busdetails" exact element={<Busdetails pto={pto} /> } />
                 <Route path="formulas" exact element={<Formula pto={pto} /> } />

@@ -1,0 +1,18 @@
+/* print-styles.css */
+@media print {
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 12px; /* Adjust font size for printing */
+  }
+
+  .datatable-container {
+    width: 100%; /* Adjust width for printing */
+    margin: 0 auto;
+  }
+
+  .table {
+    /* Add styles for DataTable component */
+  }
+
+  /* Add any additional styles for printing */
+}

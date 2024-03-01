@@ -85,7 +85,7 @@ function Approval(props) {
     const penaltyPercentage = props.updatedetails.penaltypercentage;
     const fixedAmount = 200000; // 2 lakh
     const penaltyAmount = (fixedAmount * penaltyPercentage)/100;
-    const amountToPay = fixedAmount+penaltyAmount
+    const amountToPay = fixedAmount-penaltyAmount
    
   console.log(amountToPay);
     return amountToPay;
@@ -95,7 +95,7 @@ const calculateIncentive = () => {
   const incentivePercentage = props.updatedetails.incentivepercentage;
   const fixedAmount = 200000; // 2 lakh
   const incentiveAmount = (fixedAmount * incentivePercentage)/100;
-  const amountToPay = fixedAmount-incentiveAmount
+  const amountToPay = fixedAmount+incentiveAmount
   
   return amountToPay;
 };

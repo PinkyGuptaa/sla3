@@ -92,7 +92,7 @@ function Addbus(props) {
 const [isActionChecked, setIsActionChecked] = useState(false);
 const [isGenericPenaltyChecked, setIsGenericPenaltyChecked] = useState(false);
 const Base_Url = Environment.Base_Url;
-
+const Base_Url1 = Environment.Base_Url1;
   useEffect(()=>{
     if(cleanform){
       // setbus('');
@@ -244,7 +244,7 @@ useEffect(() => {
 }, [qualitytype]);
 
 useEffect(()=>{
-  axios.get(`${Base_Url}/busperformance/getpto`).then((res)=>{
+  axios.get(`${Base_Url1}/busperformance/getpto`).then((res)=>{
       setPtodetails(res.data);
       
   }).catch((err)=>{

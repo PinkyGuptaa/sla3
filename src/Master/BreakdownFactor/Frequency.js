@@ -92,8 +92,9 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       });
   }
   const fetchTripData = async (startDate, endDate) => {
-    const apiUrl = `http://10.226.33.132:9100/busperformance/getMergeDataSum/${startDate}/${endDate}`;
-  
+    // const apiUrl = `http://10.226.33.132:9100/busperformance/getMergeDataSum/${startDate}/${endDate}`;
+    //shahzadi
+    const apiUrl = `http://10.226.33.131:9191/busperformance/getMergeDataSum/${startDate}/${endDate}`;
     try {
       const response = await fetch(apiUrl, {
         method: 'GET',
@@ -174,7 +175,7 @@ const [totalCoveredDistance, setTotalCoveredDistance] = useState(0);
       else {
         setAllreadyfilledtripfrq(false);
       }
-      
+   
     }
 
     if(filtervalue==="buswise")

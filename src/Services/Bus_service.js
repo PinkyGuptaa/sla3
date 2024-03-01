@@ -1,7 +1,7 @@
 import axios from "axios";
 import Environment from '../Environment/Environment.json'
 const MASTER_API_URL = Environment.Base_Url;
-
+const MASTER_API_URL1 = Environment.Base_Url1;
 class Bus_service {
     getAll = async() => {
         return await axios.get(`${MASTER_API_URL}/busperformance/list`)
@@ -45,19 +45,19 @@ class Bus_service {
     }
    
     getAllBus = async() => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getAllBus`)
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getAllBus`)
     }
     getdatabybusnodate = async(busno, dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getDataByBus/${busno}/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getDataByBus/${busno}/${dateto}/${datefrom}`);
     }
     // getdatabybusnodate = async(busno, dateto,datefrom) => {
     //     return await axios.get(`${MASTER_API_URL}/busperformance/getData/${busno}/${dateto}/${datefrom}`);
     // }
     getdatabydate = async(date) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getDatabyDate/${date}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getDatabyDate/${date}`);
     }
     datewisedata = async(dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetween/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getDataBetween/${dateto}/${datefrom}`);
     }
     
     getSLANames = async() => {
@@ -69,17 +69,17 @@ class Bus_service {
     }
     //bypto
     getAllbusbypto = async(pto) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getAllVehicle/${pto}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getAllVehicle/${pto}`);
     }
     datewisedatapto = async(pto,dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getWaybillDataBetweenDate/${dateto}/${datefrom}/${pto}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getWaybillDataBetweenDate/${dateto}/${datefrom}/${pto}`);
     }
     // Frequency - Bus km  //getAllData
     getAllData = async(dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getDataBy/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getDataBy/${dateto}/${datefrom}`);
     }
     getAllMergeData = async(dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getMergeData/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getMergeData/${dateto}/${datefrom}`);
     }
 
 
@@ -95,31 +95,40 @@ class Bus_service {
    
     
     getAllAccidentswithpto = async(pto,dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getData/${dateto}/${datefrom}/${pto}`)
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getData/${dateto}/${datefrom}/${pto}`)
     }
     
     getAllAccidents = async(dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/dataBetweenDates/${dateto}/${datefrom}`)
+        return await axios.get(`${MASTER_API_URL1}/busperformance/dataBetweenDates/${dateto}/${datefrom}`)
     }
     //For Frequency -- bus details
     getFrequencyData = async(busno, dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/ByBusNo/${busno}/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/ByBusNo/${busno}/${dateto}/${datefrom}`);
     }
     
     getTripFrequencyData = async(regno, dateto,datefrom) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getMergeMultipleApi/${regno}/${dateto}/${datefrom}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getMergeMultipleApi/${regno}/${dateto}/${datefrom}`);
     }
-
-   
     //for safety of operation
     getSafetyOperationData = async(regno, startDate,endDate) => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}`);
+        return await axios.get(`${MASTER_API_URL1}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}`);
     }
-
     getSafetyOperationDatawithpto = async(regno, startDate,endDate,pto) => {
         return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}/${pto}`);
     }
+    //get count of penalty 
+    getpenaltycount = async() => {
+        return await axios.get(`${MASTER_API_URL}/busperformance/getQualityTypeCount`);
+    }
+    //get incentive count
+    getincentivecount = async() => {
+        return await axios.get(`${MASTER_API_URL}/pincentive/getQualityTypeCount`);
+    }
 
-
+//parameter report 
+// http://10.226.33.132:9100/pincentive/getPDetails/2023/Reliability (BF)
+getparameterReport = async(year, parameter) => {
+    return await axios.get(`${MASTER_API_URL}/pincentive/getPDetails/${year}/${parameter}`);
+}
 }
 export default new Bus_service();
