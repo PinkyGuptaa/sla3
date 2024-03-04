@@ -117,12 +117,12 @@ class Bus_service {
         return await axios.get(`${MASTER_API_URL}/busperformance/getDataBetweenDateByBusNo/${regno}/${startDate}/${endDate}/${pto}`);
     }
     //get count of penalty 
-    getpenaltycount = async() => {
-        return await axios.get(`${MASTER_API_URL}/busperformance/getQualityTypeCount`);
+    getpenaltycount = async(startDate,endDate) => {
+        return await axios.get(`${MASTER_API_URL}/report/getQualityTypeCount/${startDate}/${endDate}`);
     }
     //get incentive count
-    getincentivecount = async() => {
-        return await axios.get(`${MASTER_API_URL}/pincentive/getQualityTypeCount`);
+    getincentivecount = async(startDate,endDate) => {
+        return await axios.get(`${MASTER_API_URL}/report/getQualityTypeCountByDateWise/${startDate}/${endDate}`);
     }
 
 //parameter report 

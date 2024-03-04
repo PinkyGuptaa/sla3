@@ -127,6 +127,7 @@ const [totalActualDistance, setTotalActualDistance] = useState(0);
   const [qualityTypes, setQualityTypes] = useState([]);
   const [penaltydetails,setpenaltydetails] = useState([]);
   const [incrementdetails,setIncrementdetails] = useState([]);
+  const [modifiedBusDetails, setModifiedBusDetails] = useState([]);
   const componentRef = useRef();
 
   const styles = {
@@ -175,6 +176,7 @@ const checkpenalty = (type) =>{
   penaltydetails.map((data)=>{
    if(data.quality==type){
        value = data.totalCountPenalty;
+       console.log(value)
    }
   })
   return value;
@@ -208,21 +210,22 @@ const checkincrement = (type) =>{
 },
 {
   name: 'Penalty',
-  selector: row => {
-    const penaltyDetail = penaltydetails.find(detail => detail.quality === row.qualityType);
-    return penaltyDetail ? penaltyDetail.totalCountPenalty : 0;
-},
-  
+//   selector: row => {
+//     const penaltyDetail = penaltydetails.find(detail => detail.quality === row.qualityType);
+//     return penaltyDetail ? penaltyDetail.totalCountPenalty : 0;
+// },
+selector: 'penaltyCount',
   sortable:true,
   center:true,
   wrap:true
 },
 {
   name: 'Incentive',
-  selector:  row => {
-    const incrementDetail = incrementdetails.find(detail => detail.quality === row.qualityType);
-    return incrementDetail ? incrementDetail.totalCountIncentive : 0;
-},
+//   selector:  row => {
+//     const incrementDetail = incrementdetails.find(detail => detail.quality === row.qualityType);
+//     return incrementDetail ? incrementDetail.totalCountIncentive : 0;
+// },
+selector: 'incentiveCount',
   sortable:true,
   center:true,
   wrap:true
@@ -246,11 +249,7 @@ const checkincrement = (type) =>{
 
     if(filtervalue==="buswise")
        {
-
-     
         }
-      
-   
         else if (filtervalue === 'monthwise' || filtervalue === 'quarterly' || filtervalue === 'halfyearly') {
           // let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
          
@@ -267,15 +266,22 @@ const checkincrement = (type) =>{
                   Bus_service.getpenaltycount(startDate, endDate),
                   Bus_service.getincentivecount(startDate, endDate)
               ]);
-              const data = {
-                qualitytype: qualityTypes,
-                penaltyCount: penaltyResponse.data,
-                incentiveCount: incentiveResponse.data
-            };
-      console.log(penaltyResponse.data)
-      console.log(incentiveResponse.data)
-          
-    console.log(data);
+              const penaltyCounts = penaltyResponse.data;
+              const incentiveCounts = incentiveResponse.data;
+              console.log(penaltyCounts)
+              const modifiedDetails = qualityTypes.map(qualityType => {
+                  const penaltyDetail = penaltyCounts.find(detail => detail.quality === qualityType);
+                  const incentiveDetail = incentiveCounts.find(detail => detail.quality === qualityType);
+                  console.log(penaltyDetail, incentiveDetail)
+                  return {
+                      qualityType,
+                      penaltyCount: penaltyDetail ? penaltyDetail.totalCountPenalty : 0,
+                      incentiveCount: incentiveDetail ? incentiveDetail.totalCountIncentive : 0
+                  };
+              });
+
+              setModifiedBusDetails(modifiedDetails);
+              console.log(modifiedDetails)
             setAftersearch(true);
               setLoading(false);
           } catch (err) {
@@ -328,15 +334,31 @@ const handleEyeClick = () => {
     setOpensnack(false);
   }; 
 
-  // const modifiedBusDetails = allbusdetails.map((busDetail, index) => ({
-  //   // ...busDetail,
-  //   qualityType: qualityTypes[index] || '', 
-  
-  // }));
-  const modifiedBusDetails = qualityTypes.map((qualityType, index) => ({
-    qualityType: qualityType,
-}));
+ 
+//   const modifiedBusDetails = qualityTypes.map((qualityType, index) => ({
+//     qualityType: qualityType,
+// }));
 
+const handleDownloadCSV = () => {
+  const csvData = generateCSV(modifiedBusDetails);
+  const blob = new Blob([csvData], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'report.csv');
+  document.body.appendChild(link);
+  link.click();
+  window.URL.revokeObjectURL(url);
+};
+const generateCSV = (data) => {
+  const header = Object.keys(data[0]).join(',') + '\n';
+  const rows = data.map((item) => {
+      return Object.values(item).join(',');
+  }).join('\n');
+  const csv = header + rows;
+
+  return csv;
+};
 
 
   return (
@@ -561,10 +583,13 @@ const handleEyeClick = () => {
 </div>
 <div style={{marginLeft: '50%',
     margiinRight: '50%',
-    borderRadius:'10px'}}><ReactToPrint
+    borderRadius:'10px'}}>
+    <ReactToPrint
   trigger={() => <button style={{backgroundColor:'#267871', color:'white', width: '80px', padding:'10px',borderRadius:'10px',marginTop:'20px',marginBottom:'20px'}}>Print</button>}
   content={() => componentRef.current}
-/></div>
+/>
+<button onClick={handleDownloadCSV} style={{backgroundColor:'#267871', color:'white', width: '150px', padding:'10px', borderRadius:'10px', marginTop:'10px', marginLeft: '10px'}}>Download CSV</button>
+</div>
 
            
 </>

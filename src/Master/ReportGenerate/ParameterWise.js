@@ -262,7 +262,26 @@ const handleEyeClick = () => {
     setOpensnack(false);
   }; 
 
+  const handleDownloadCSV = () => {
+    const csvData = generateCSV(reportData);
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.csv');
+    document.body.appendChild(link);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  };
+  const generateCSV = (data) => {
+    const header = Object.keys(data[0]).join(',') + '\n';
+    const rows = data.map((item) => {
+        return Object.values(item).join(',');
+    }).join('\n');
+    const csv = header + rows;
   
+    return csv;
+  };
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
        <Snackbar ContentProps={{
@@ -487,7 +506,10 @@ const handleEyeClick = () => {
     borderRadius:'10px'}}><ReactToPrint
   trigger={() => <button style={{backgroundColor:'#267871', color:'white', width: '80px', padding:'10px',borderRadius:'10px', marginTop:'20px',marginBottom:'20px'}}>Print</button>}
   content={() => componentRef.current}
-/></div>      
+/>
+<button onClick={handleDownloadCSV} style={{backgroundColor:'#267871', color:'white', width: '150px', padding:'10px', borderRadius:'10px', marginTop:'10px', marginLeft: '10px'}}>Download CSV</button>
+
+</div>      
 </>
      :aftersearch && allbusdetails.length==0?
      <>
