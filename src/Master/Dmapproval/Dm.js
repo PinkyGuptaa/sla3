@@ -293,7 +293,7 @@ const [printcancel,setPrintcancel] = useState(false)
   
   const getSLABus = async (id) => {
     try {
-      const response = await axios.get(`http://10.226.33.132:9100/busperformance/list`);d
+      const response = await axios.get(`http://10.226.33.132:9100/busperformance/list`);
       return response.data;
      
     } catch (error) {
