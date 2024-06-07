@@ -1,4 +1,4 @@
-import { Check, Close, Delete, Edit, Label } from '@mui/icons-material';
+import { Check, Close, Delete, Edit, Label,LocalPrintshop,Print } from '@mui/icons-material';
 import { FormControl, FormControlLabel, Radio, RadioGroup, Snackbar, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Checkbox, Grid, MenuItem, TextField } from '@mui/material';
@@ -16,7 +16,11 @@ import Incentivemaster_service from '../../Services/Incentivemaster_service';
 import { teal } from '@mui/material/colors';
 import IncentiveMaster from '../IncentiveMaster/IncentiveMaster';
 import {customStyles} from '../../datatable.js'; 
+import {  Modal } from '@mui/material';
 
+import image from './cdac_logo.png'
+
+import PrintInvoice from './printInvoice.js';
 // const customStyles = {
 //   header: {
 // 		style: {
@@ -87,6 +91,22 @@ function Dm(props) {
   const [rowDataForEdit, setRowDataForEdit] = useState({});
   const [selectedRowId, setSelectedRowId] = useState(null); 
   const [approvalType, setApprovalType] = useState("penalty");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [invoiceNo, setInvoiceNo] = useState('');
+const [invoiceDate, setInvoiceDate] = useState('');
+const [amount,setAmount] = useState("");
+const [printcancel,setPrintcancel] = useState(false)
+
+
+  const openModal = (rowData) => {
+    setSelectedRowData(rowData);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   
   const keys = ["details", "penalty"];
@@ -161,8 +181,13 @@ function Dm(props) {
     }
   };
   useEffect(() => {
-    fetchData(); // Fetch data when component mounts or approval type changes
-  }, [approvalType]);
+   if(approvalType || printcancel==true){
+    fetchData();
+   }
+     // Fetch data when component mounts or approval type changes
+  }, [approvalType,printcancel]);
+
+
 
   useEffect(()=>{
     Slaformaster_service.getAll().then((res)=>{
@@ -268,7 +293,7 @@ function Dm(props) {
   
   const getSLABus = async (id) => {
     try {
-      const response = await axios.get(`http://10.226.33.132:9100/busperformance/list`);
+      const response = await axios.get(`http://10.226.33.132:9100/busperformance/list`);d
       return response.data;
      
     } catch (error) {
@@ -327,22 +352,62 @@ function Dm(props) {
   }
   
   }
-  
 
+  const openprint = ()=>{
+    const printContent = document.getElementById('printContent').innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+
+    // Trigger printing
+    window.print();
+
+    // Restore the original content
+    document.body.innerHTML = originalContent;
+    setPrintcancel(true);
+    window.location.reload();
+  }
+  
+// get current date 
+const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  // const formatdate = `${year}.${month}.${day}`
+  // console.log(formatdate);
+
+  return `${year}-${month}-${day}`;
+ 
+};
+
+const currentDate = formatDate(new Date());
 
   const deletedata = (id) =>{
     setDeleteid(id);
     setDeleteodalopen(true)
 
   }
-  const handleEdit = (row) => {
+
+  const handleprint = (row)=>{
+    console.log(row);
+    setPrintcancel(false)
+      setInvoiceNo(row.invoiceno)
+      setInvoiceDate(row.invoicedate)
+      setAmount(row.premium)
+      console.log("Invoice",row.invoiceno)
+      console.log(invoiceNo)
+      openprint()
+
+  }
+    const handleEdit = (row) => {
     const { penalty, penaltypercentage, incentive, incentivepercentage } = row;
     setRowDataForEdit(row);
     setEditDialogOpen(true);
     setUpdatedetails({ penalty: row.penalty, penaltypercentage: row.penaltypercentage, incentive: row.incentive, incentivepercentage: row.incentivepercentage }, () => {
       console.log("Updated Details in callback:", updatedetails);
     });
-console.log(penalty)
+    console.log(penalty)
   };
   const columns = [
    
@@ -402,7 +467,106 @@ console.log(penalty)
   name: 'Status',
   cell: (row) => {
     if (row.isapproved === true && row.isvalid === true) {
-      return <span style={{ color: 'green' }}>Approved</span>;
+      return (
+      <> <span style={{ color: 'green' }}>Approved</span>
+         <LocalPrintshop  onClick={()=>{
+          console.log(row);
+          handleprint(row)
+         }}/>
+           <div id="printContent" style={{ display: "none" }}>
+                <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ borderBottom: '2px solid black', paddingBottom: '10px' }}>
+        <img
+          src={image}
+          alt="CDAC Logo"
+          style={{ float: 'right', marginLeft: '10px',marginRight: '10px', width: '100px', height: 'auto' }}
+        />
+        <div style={{ textAlign: 'center' , marginTop: '20px' , marginBottom: '10px' }}>
+          <div>प्रगत संगणक विकास केंद्र</div>
+          <div>CENTRE FOR DEVELOPMENT OF ADVANCED COMPUTING</div>
+          
+        </div>
+        <div style={{ clear: 'both' }}></div>
+      </div>
+      <div style={{textAlign: 'center'}}> इलेक्ट्रॉनिक्स और सूचना प्रौद्योगिकी मंत्रालय, भारत सरकार की एक वैज्ञानिक संस्था</div>
+      <div style={{textAlign: 'center'}}>
+            A Scientific Society of the Ministry of Electronics and Information
+            Technology, Govt. of India
+          </div>
+          
+      <div style={{ marginTop: '20px' }}>
+        <div style={{ fontWeight: 'bold' }}>No.: {row.invoiceno}</div>
+        <div>Date: {currentDate}</div>
+      </div>
+      
+      <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
+        Sub: Invoice No. {row.invoiceno} Dated {currentDate}
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        Dear Sir,
+        <br />
+        Please find enclosed the following Invoices:-
+      </div>
+      <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid black', padding: '5px' }}>S. No.</th>
+            <th style={{ border: '1px solid black', padding: '5px' }}>Invoice No.</th>
+            <th style={{ border: '1px solid black', padding: '5px' }}>Invoice Date</th>
+            <th style={{ border: '1px solid black', padding: '5px' }}>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ border: '1px solid black', padding: '5px', textAlign: 'center' }}>1</td>
+            <td style={{ border: '1px solid black', padding: '5px' }}>{row.invoiceno}</td>
+            <td style={{ border: '1px solid black', padding: '5px' }}>{row.invoicedate}</td>
+            <td style={{ border: '1px solid black', padding: '5px' }}>{row.premium}</td>
+            {/* <td style={{ border: '1px solid black', padding: '5px' }}>
+              FMS (2<sup>nd</sup> to 5<sup>th</sup> Yrs) Phase-II at Sardar Patel Med. Bikaner for the period of 01.03.18 to 30.04.18
+            </td> */}
+            {/* <td style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>55146</td> */}
+          </tr>
+         
+         
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan="3" style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>TOTAL:</td>
+            <td style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>{row.premium}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div style={{ marginTop: '20px' }}>
+        We request you to please pay by Cheque / Demand Draft or RTG's transfer of Rs. {row.premium}/- in favour of CDAC, Noida.
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <div style={{ fontWeight: 'bold' }}>Particulars of Bank are as under:</div>
+        <div>Account Name: C-DAC, Noida</div>
+        <div>Name of the Bank: ORIENTAL BANK OF COMMERCE</div>
+        <div>Branch/Address of the Bank: B-31, INSTITUTIONAL AREA, SECTOR-62, NOIDA.</div>
+        <div>Account No.: XXXXX                                                                                                                                                                                                                                        XXXXX</div>
+        <div>Account Type: SAVING</div>
+        <div>IFSC of Bank: XXXX XXXXXX</div>
+        <div>MICR Code of Bank: XXXXXXXXX</div>
+      </div>
+      {/* <div style={{ marginTop: '40px', textAlign: 'right' }}>
+        Yours faithfully,
+        <br />
+        <br />
+        <br />
+        (Shikha Gupta)
+        <br />
+        Senior Finance Officer
+      </div> */}
+      <div style={{ marginTop: '20px', borderTop: '2px solid black', paddingTop: '10px' }}>
+        <div>Note: This is a system generated document and does not require a signature.</div>
+      </div>
+      
+    </div>
+            </div>
+      </>)
+      
     } else if (row.isapproved === false && row.isvalid === false) {
       return <span style={{ color: 'red' }}>Rejected</span>;
     } else {
@@ -431,6 +595,52 @@ console.log(penalty)
   button: true,
   width: '150px'
 },
+
+
+// {
+//   name: 'Status',
+//   cell: (row) => {
+//     const isApproved = row.isapproved === true && row.isvalid === true;
+//     const isRejected = row.isapproved === false && row.isvalid === false;
+//     console.log(isApproved);
+//     return (
+//       <div style={{ display: 'flex', alignItems: 'center' }}>
+//         <span style={{ color: isApproved ? 'green' : 'red' }}>
+//           {isApproved ? 'Approved' : 'Rejected'}
+//         </span>
+//         {(isApproved || isRejected) && (
+//           <Button
+//             onClick={() => openprint(row)}
+//             style={{ marginLeft: '10px', minWidth: 'auto', padding: 0 }}
+//           >
+//             <Print />
+//           </Button>
+//         )}
+//         {!row.isapproved && !row.isresolved && row.isvalid && (
+//           <Edit
+//             className={`editbutton ${!row.isapproved && !row.isresolved && row.isvalid ? '' : 'disabled'}`}
+//             onClick={() => {
+//               if (!row.isapproved && !row.isresolved && row.isvalid) {
+//                 updatedata(row.id);
+//                 setSelectedRowData(row);
+//               }
+//             }}
+//             style={{
+//               color: '#yourEnabledColor',
+//             }}
+//           />
+//         )}
+//       </div>
+//     );
+//   },
+//   ignoreRowClick: true,
+//   allowOverflow: true,
+//   button: true,
+//   width: '150px',
+// }
+
+
+
 // {
 //   name: 'Approve/Reject',
 //   cell: (row) => {
@@ -582,15 +792,36 @@ return (
             onRowClicked={(row) => handleEdit(row)} 
         />
        
-      <Approval 
+    {modalopen?  <Approval 
       open={modalopen}  
       onClose={handlemodalclose} 
       updateid={updateid} 
       updatedetails ={updatedetails}
      
-      />
+      />:""}
+
+<div>
 
 
+
+     
+      
+      {/* <Modal open={isModalOpen} onClose={closeModal}>
+        <div>
+          {selectedRowData && (
+            <PrintInvoice
+              remarks="Some remarks"
+              approvalid="12345"
+              busmasterdetails={() => console.log('Bus Master Details')}
+              rejectDetails={() => console.log('Reject Details')}
+              image="path/to/logo.png"
+              rowData={selectedRowData}
+              closeModal={closeModal}
+            />
+          )}
+        </div>
+      </Modal> */}
+    </div>
 
   </Grid>
   

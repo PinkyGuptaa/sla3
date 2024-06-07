@@ -124,7 +124,6 @@ class Bus_service {
     getincentivecount = async(startDate,endDate) => {
         return await axios.get(`${MASTER_API_URL}/report/getQualityTypeCountByDateWise/${startDate}/${endDate}`);
     }
-
 //parameter report 
 // http://10.226.33.132:9100/pincentive/getPDetails/2023/Reliability (BF)
 getparameterReport = async(year, parameter) => {

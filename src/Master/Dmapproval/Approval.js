@@ -1,16 +1,16 @@
 import { Box, Button, Checkbox, CircularProgress, Fade, FormControlLabel, Grid, MenuItem, Modal, Radio, RadioGroup, Select, Snackbar, TextField, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Bus_service from '../../Services/Bus_service';
 import Conductor_service from '../../Services/Conductor_service';
 import Driver_service from '../../Services/Driver_service';
-
+import image from './cdac_logo.png'
 import axios from 'axios';
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 800,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -49,17 +49,24 @@ function Approval(props) {
   const [loading,setLoading] = useState(false)
   const [slaOptions, setSlaOptions] = useState([]);
   const [slafortype,setSlafortype] = useState("");
-  
+  const [amount,setAmount] = useState("");
   const cleanform = !props.updateid && props.open ;
+  const ivn = useRef();
+  const ivnd = useRef();
+  const [approvesuc,setApprovesuc] = useState(false);
 
   const { updateid } = props.updateid;
-
+const [invoiceNo, setInvoiceNo] = useState('');
+const [invoiceDate, setInvoiceDate] = useState('');
   useEffect(()=>{
     const penaltyPercentage = props.updatedetails.penaltypercentage;
     const fixedAmount = 200000; // 2 lakh
     const penaltyAmount = (fixedAmount * penaltyPercentage)/100;
     const amountToPay = fixedAmount+penaltyAmount
     setPremium(amountToPay);
+console.log(premium)
+console.log(props.updatedetails)
+props.updatedetails.penalty?calculatePenalty():calculateIncentive();
 
   },[])  // console.log(props.updatedetails)
 
@@ -78,7 +85,7 @@ function Approval(props) {
       setcomplaintid('')
     }
   },[cleanform])
-
+  let amountToPay;
   const calculatePenalty = () => {
     console.log("first")
     // Assuming penaltypercentage is in decimal (e.g., 0.05 for 5%)
@@ -86,40 +93,76 @@ function Approval(props) {
     const fixedAmount = 200000; // 2 lakh
     const penaltyAmount = (fixedAmount * penaltyPercentage)/100;
     const amountToPay = fixedAmount-penaltyAmount
-   
   console.log(amountToPay);
-    return amountToPay;
+   setAmount(amountToPay)
+  
 };
+
 const calculateIncentive = () => {
 
   const incentivePercentage = props.updatedetails.incentivepercentage;
   const fixedAmount = 200000; // 2 lakh
   const incentiveAmount = (fixedAmount * incentivePercentage)/100;
   const amountToPay = fixedAmount+incentiveAmount
-  
-  return amountToPay;
+  console.log(amountToPay)
+  setAmount(amountToPay)
+ 
 };
   const busmasterdetails = (id) =>{
     // console.log('clicked');
     // console.log("g",approvalid);
     // const penaltyAmount = calculatePenalty();
     // console.log("Penalty to Pay:", penaltyAmount);
-    const penaltyPercentage = props.updatedetails.penaltypercentage;
-    const fixedAmount = 200000; // 2 lakh
-    const penaltyAmount = (fixedAmount * penaltyPercentage) / 100;
-    const amountToPay = fixedAmount + penaltyAmount;
-    
-    axios.put(`http://10.226.33.132:9100/busperformance/setisapproved/${approvalid}/${remarks}/${amountToPay}`).then((res)=>{
-        props.onClose();
+    // const penaltyPercentage = props.updatedetails.penaltypercentage;
+    // const fixedAmount = 200000; // 2 lakh
+    // const penaltyAmount = (fixedAmount * penaltyPercentage) / 100;
+    // const amountToPay = fixedAmount + penaltyAmount;
+    const details = {
+      id: approvalid,             
+      remarks: remarks,
+      premium: amount
+      ,       
+      invoicedate: currentDate
+
+    };
+    // axios.put(`http://10.226.33.132:9100/busperformance/setisapproved/${approvalid}/${remarks}/${amountToPay}`).then((res)=>{
+      axios.put(`http://10.226.33.132:9100/busperformance/setisapproved/${approvalid}`, details).then((res)=>{
+        // props.onClose();
         setSnackcolor("#458a32");
         setErrormessage(" Approved ")
         setOpensnack(true);
+        console.log(res.data)
+        const { invoiceno, invoicedate } = res.data;
+        setInvoiceNo(res.data.invoiceno);
+        setInvoiceDate(res.data.invoicedate);
+        setApprovesuc(true);
+console.log(invoiceno,invoicedate)
+        console.log(res.data.invoiceno)
+        ivn.current = res.data.invoiceno;
+        ivnd.current = res.data.invoicedate;
+        sessionStorage.setItem("inv",res.data.invoiceno)
+        sessionStorage.setItem("invdate",res.data.invoicedate)
+
+        
+        // const printContent = document.getElementById('printContentapproval').innerHTML;
+        // const originalContent = document.body.innerHTML;
+    
+        // document.body.innerHTML = printContent;
+    
+        // // Trigger printing
+        // window.print();
+    
+        // // Restore the original content
+        // document.body.innerHTML = originalContent;
+        // window.location.reload();
+  
       }).catch(err=>{
         console.log(err);
         setSnackcolor("#e34242");
         setErrormessage("Not able to update data. Please try again later !")
         setOpensnack(true);
-        props.onClose();
+        
+        // props.onClose();
       })
     // var details = remarks;
     return (e) => {
@@ -139,11 +182,28 @@ const calculateIncentive = () => {
     //   })
     };
   };
+
+  const handleprint = ()=>{
+    console.log(invoiceNo)
+    const printContent = document.getElementById('printContentapproval').innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = printContent;
+
+    // Trigger printing
+    window.print();
+
+    // Restore the original content
+    document.body.innerHTML = originalContent;
+    window.location.reload();
+  }
+
+  
   const rejectDetails = (id) =>{
     console.log('clicked');
     console.log("g",approvalid);
 
-    axios.put(`http://10.226.33.132:9100/busperformance/setisreject/${approvalid}/${remarks}`).then((res)=>{
+    axios.put(`http://10.226.33.132:9100/busperformance/setisreject/${approvalid}/${remarks}/${amount}`).then((res)=>{
         props.onClose();
         setSnackcolor("#FF0000");
         setErrormessage(" Rejected ")
@@ -172,6 +232,33 @@ const calculateIncentive = () => {
     //     props.onClose();
     //   })
     };
+  };
+  const handleAccept = () => {
+    // Perform any necessary actions before printing
+    console.log("Accept button clicked");
+    // Call busmasterdetails function if needed
+    busmasterdetails();
+    // const printWindow = window.open('', '_blank');
+    // printWindow.document.write('<html><head><title>Custom Print Page</title></head><body>');
+    // printWindow.document.write(document.getElementById('printContent').innerHTML);
+    // printWindow.document.write('</body></html>');
+    // printWindow.document.close();
+    
+    // // Trigger printing
+    // printWindow.print();
+    
+
+    // const printContent = document.getElementById('printContent').innerHTML;
+    // const originalContent = document.body.innerHTML;
+
+    // document.body.innerHTML = printContent;
+
+    
+    // window.print();
+
+    
+    // document.body.innerHTML = originalContent;
+    // window.location.reload();
   };
 
   const handleApproval = async (id) => {
@@ -222,16 +309,52 @@ const calculateIncentive = () => {
     console.log('new',approvalid);
 }, [props.updateid])
 
+
+// get current date 
+const formatDate = (date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  // const formatdate = `${year}.${month}.${day}`
+  // console.log(formatdate);
+
+  return `${year}-${month}-${day}`;
+ 
+};
+
+const currentDate = formatDate(new Date());
+
+
 const submitbutton = () => {
   const fieldempty = remarks;
   if (fieldempty) {
     console.log("Row ID:", approvalid);
     return (
-      <div>
+    
+      approvesuc?
+      <Button
+      size="large"
+      variant="contained"
+      // onClick={busmasterdetails}
+      // onClick={() => {
+      //   busmasterdetails();
+      // }}
+      onClick={handleprint}
+    //   onClick={handleApproval.bind(this, props.rowId)}
+      style={{ marginBottom: "20px", marginRight: "10px" }}
+    >
+      Print
+    </Button>:
+     <div>
         <Button
           size="large"
           variant="contained"
-          onClick={busmasterdetails}
+          // onClick={busmasterdetails}
+          // onClick={() => {
+          //   busmasterdetails();
+          // }}
+          onClick={handleAccept}
         //   onClick={handleApproval.bind(this, props.rowId)}
           style={{ marginBottom: "20px", marginRight: "10px" }}
         >
@@ -245,8 +368,10 @@ const submitbutton = () => {
         >
           Reject
         </Button>
+
        
       </div>
+    
     );
   } else return null;
 };
@@ -337,10 +462,10 @@ const submitbutton = () => {
        <strong>Penalty Percentage:</strong> {props.updatedetails.penaltypercentage}
      </Typography>
      <Typography variant="body1" style={{ marginBottom: "8px" }}>
-       <strong>Monthly Cost:</strong> 2,00,000
+       <strong>Monthly Amount:</strong> 2,00,000
      </Typography>
      <Typography variant="body1" style={{ marginBottom: "8px" }}>
-       <strong>Premium:</strong> {calculatePenalty()}
+       <strong>Premium:</strong> {amount}
      </Typography>
      </>:""
   }
@@ -358,7 +483,7 @@ const submitbutton = () => {
        <strong>Monthly Cost:</strong> 2,00,000
      </Typography>
      <Typography variant="body1" style={{ marginBottom: "8px" }}>
-       <strong>Premium:</strong> {calculateIncentive()}
+       <strong>Premium:</strong> {amount}
      </Typography>
      </>
   
@@ -400,6 +525,103 @@ const submitbutton = () => {
         </div>
     </Grid>
     </Grid>
+
+    <div id="printContentapproval" style={{ display: "none" }}>
+                <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ borderBottom: '2px solid black', paddingBottom: '10px' }}>
+        <img
+          src={image}
+          alt="CDAC Logo"
+          style={{ float: 'right', marginLeft: '10px',marginRight: '10px', width: '100px', height: 'auto' }}
+        />
+        <div style={{ textAlign: 'center' , marginTop: '20px' , marginBottom: '10px' }}>
+          <div>प्रगत संगणक विकास केंद्र</div>
+          <div>CENTRE FOR DEVELOPMENT OF ADVANCED COMPUTING</div>
+          
+        </div>
+        <div style={{ clear: 'both' }}></div>
+      </div>
+      <div style={{textAlign: 'center'}}> इलेक्ट्रॉनिक्स और सूचना प्रौद्योगिकी मंत्रालय, भारत सरकार की एक वैज्ञानिक संस्था</div>
+      <div style={{textAlign: 'center'}}>
+            A Scientific Society of the Ministry of Electronics and Information
+            Technology, Govt. of India
+          </div>
+          
+      <div style={{ marginTop: '20px' }}>
+        <div style={{ fontWeight: 'bold' }}>No.: {invoiceNo}</div>
+        <div>Date: {currentDate}</div>
+      </div>
+      
+      <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
+        Sub: Invoice No. {invoiceNo} Dated {currentDate}
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        Dear Sir,
+        <br />
+        Please find enclosed the following Invoices:-
+      </div>
+      <table style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid black', padding: '5px' }}>S. No.</th>
+            <th style={{ border: '1px solid black', padding: '5px' }}>Invoice No.</th>
+            <th style={{ border: '1px solid black', padding: '5px' }}>Invoice Date</th>
+
+            {/* <th style={{ border: '1px solid black', padding: '5px' }}>Penalty Percentage</th> */}
+            <th style={{ border: '1px solid black', padding: '5px' }}>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={{ border: '1px solid black', padding: '5px', textAlign: 'center' }}>1</td>
+            <td style={{ border: '1px solid black', padding: '5px' }}>{invoiceNo}</td>
+            <td style={{ border: '1px solid black', padding: '5px' }}>{invoiceDate}</td>
+
+            {/* <th style={{ border: '1px solid black', padding: '5px' }}>{penaltypercentage}</th> */}
+            <td style={{ border: '1px solid black', padding: '5px' }}>{amount}</td>
+            {/* <td style={{ border: '1px solid black', padding: '5px' }}>
+              FMS (2<sup>nd</sup> to 5<sup>th</sup> Yrs) Phase-II at Sardar Patel Med. Bikaner for the period of 01.03.18 to 30.04.18
+            </td> */}
+            {/* <td style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>55146</td> */}
+          </tr>
+         
+         
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan="3" style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>TOTAL:</td>
+            <td style={{ border: '1px solid black', padding: '5px', textAlign: 'right' }}>{amount}</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div style={{ marginTop: '20px' }}>
+        We request you to please pay by Cheque / Demand Draft or RTG's transfer of Rs. {amount}/- in favour of CDAC, Noida.
+      </div>
+      <div style={{ marginTop: '20px' }}>
+        <div style={{ fontWeight: 'bold' }}>Particulars of Bank are as under:</div>
+        <div>Account Name: C-DAC, Noida</div>
+        <div>Name of the Bank: ORIENTAL BANK OF COMMERCE</div>
+        <div>Branch/Address of the Bank: B-31, INSTITUTIONAL AREA, SECTOR-62, NOIDA.</div>
+        <div>Account No.: XXXXXXXXXX</div>
+        <div>Account Type: SAVING</div>
+        <div>IFSC of Bank: XXXX XXXXXX</div>
+        <div>MICR Code of Bank: XXXXXXXXX</div>
+      </div>
+      {/* <div style={{ marginTop: '40px', textAlign: 'right' }}>
+        Yours faithfully,
+        <br />
+        <br />
+        <br />
+        (Shikha Gupta)
+        <br />
+        Senior Finance Officer
+      </div> */}
+      <div style={{ marginTop: '20px', borderTop: '2px solid black', paddingTop: '10px' }}>
+        <div>Note: This is a system generated document and does not require a signature.</div>
+      </div>
+      
+    </div>
+            </div>
   </Box>
 
 </Modal>
@@ -407,3 +629,7 @@ const submitbutton = () => {
     );
 }
 export default Approval
+
+
+
+

@@ -80,7 +80,7 @@ function Slatypemaster(props) {
 
   useEffect(()=>{
     Slatypemaster_service.getAll().then((response)=>{
-       console.log(response.data);
+      //  console.log(response.data);
        setslatypedetails(response.data);
        setslatypedetailsfiltered(response.data)
       
@@ -107,7 +107,7 @@ function Slatypemaster(props) {
         sortable:true,
         center: true, 
         wrap: true
-        // width:"250px",
+        //width:"250px",
         
     },
   {

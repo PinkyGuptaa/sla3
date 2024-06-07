@@ -201,6 +201,8 @@ const [totalActualDistance, setTotalActualDistance] = useState(0);
           // let dateArray = filtervalue === 'monthwise' ? month.split('_') : filtervalue === 'quarterly' ? quarter.split('_') : halfyearly.split('_');
          
           if (qualityTypes && year) {
+
+            
             let startDate = `${year}-${month.split('_')[0]}`;
             let endDate = `${year}-${month.split('_')[1]}`;
             console.log(year,qualityTypes);
@@ -210,7 +212,6 @@ const [totalActualDistance, setTotalActualDistance] = useState(0);
             setReportData(res.data)
             console.log(reportData)
             setAftersearch(true);
-           
               setLoading(false);
           } catch (err) {
             console.log(err);

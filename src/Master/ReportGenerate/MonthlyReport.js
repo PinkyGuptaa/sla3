@@ -360,7 +360,6 @@ const generateCSV = (data) => {
   return csv;
 };
 
-
   return (
     <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
        <Snackbar ContentProps={{
@@ -598,8 +597,18 @@ const generateCSV = (data) => {
        <div style={{marginTop:"30px",display:"flex",justifyContent:"center"}}>No Data Available</div>
      </>:""
     }
-
-
+    <style>
+        {`
+          @media print {
+            body {
+              margin: 1cm;
+              border: 1px solid black;
+            }
+           
+          
+          }
+        `}
+      </style>+
      </div>
      
    );

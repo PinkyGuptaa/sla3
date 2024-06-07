@@ -81,7 +81,7 @@ function Slaformaster(props) {
 
   useEffect(()=>{
     Slaformaster_service.getAll().then((response)=>{
-       console.log(response.data);
+      //  console.log(response.data);
        setslafordetails(response.data);
        setslafordetailsfiltered(response.data)
     }).catch(err=>console.log(err))

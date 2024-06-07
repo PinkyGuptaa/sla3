@@ -61,7 +61,8 @@ import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices
 import Environment from '../Environment/Environment.json'; 
 import { ToastContainer } from 'react-toastify';
 import ParameterReport from "../Master/ReportGenerate/ParameterWise";
-
+import Invoicedetails from "../Master/InvoiceDetails/Invoicedetails.js";
+import Invoice from "../Master/Invoice/Invoice.js"
   const drawerWidth = 240;
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -280,7 +281,324 @@ import ParameterReport from "../Master/ReportGenerate/ParameterWise";
                 </ListItem>
                 </NavLink>
             <Divider />
-          <ListItemButton onClick={handleClick}>
+          {/* <ListItemButton onClick={handleClick}>
+        <ListItemIcon>
+          <PersonRounded />
+        </ListItemIcon>
+        <ListItemText primary=" Master " />
+        {open ? <ChevronRight /> : <ChevronLeft />}
+      </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+      
+      <List component="div" disablePadding  style={{color:"black",textDecoration:"None",
+          background:activeid===2?"lightgrey":""}}>
+          <NavLink to="/slaformaster" 
+          style={{color:"black",textDecoration:"None",
+          background:activeid===2?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} 
+          onClick={changeactiveid.bind(this,2)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA For Entities " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===10?"lightgrey":""}}>
+          <NavLink to="/slatypemaster" style={{color:"black",textDecoration:"None",background:activeid===10?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,10)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA Type Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+        <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===11?"lightgrey":""}}>
+          <NavLink to="/slamaster" style={{color:"black",textDecoration:"None",background:activeid===11?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,11)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+          
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===5?"lightgrey":""}} >
+          <NavLink to="/genericpenaltymaster" style={{color:"black",textDecoration:"None",background:activeid===5?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,5)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Generic Penalty Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===6?"lightgrey":""}}>
+          <NavLink to="/penaltymaster" style={{color:"black",textDecoration:"None",background:activeid===6?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,6)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA Penalty" />
+          </ListItemButton>
+          </NavLink>
+            </List>
+        
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===25?"lightgrey":""}}>
+          <NavLink to="/incentivemaster" style={{color:"black",textDecoration:"None",background:activeid===25?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,25)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA Incentive" />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===12?"lightgrey":""}}>
+          <NavLink to="/qcmaster" style={{color:"black",textDecoration:"None",background:activeid===12?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,12)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Generic Quality Check " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+ 
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===13?"lightgrey":""}}>
+          <NavLink to="/qualitystandardmaster" style={{color:"black",textDecoration:"None",background:activeid===13?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,13)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" SLA Quality Parameter " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{background: activeid === 3 ? "lightgrey" : ""}}>
+          <NavLink to="/agencymaster" style={{color:"black",textDecoration:"None",background:activeid===3?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,3)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Agency Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding  style={{color:"black",textDecoration:"None",background:activeid===4?"lightgrey":""}}>
+          <NavLink to="/warningmaster" style={{color:"black",textDecoration:"None",background:activeid===4?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,4)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Warning Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===7?"lightgrey":""}}>
+          <NavLink to="/actionmaster" style={{color:"black",textDecoration:"None",background:activeid===7?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,7)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Action Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===8?"lightgrey":""}}>
+          <NavLink to="/reasonmaster" style={{color:"black",textDecoration:"None",background:activeid===8?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,8)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Reason Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===9?"lightgrey":""}}>
+          <NavLink to="/outcomemaster" style={{color:"black",textDecoration:"None",background:activeid===9?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,9)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Outcome Master " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+            </Collapse> */}
+            {/* <Divider/> */}
+            <ListItemButton onClick={handleServicesClick}>
+        <ListItemIcon>
+          <MiscellaneousServicesIcon />
+        </ListItemIcon>
+        <ListItemText primary=" Services " />
+        {openServices ? <ChevronRight /> : <ChevronLeft />}
+      </ListItemButton>
+      <Collapse in={openServices} timeout="auto" unmountOnExit>
+      <List component="div" disablePadding style={{background: activeid === 24 ? "lightgrey" : ""}}>
+                    <NavLink
+                      to="/formulas"
+                      style={{
+                        color: "black",
+                        textDecoration: "None",
+                        background: activeid ===24 ? "lightgrey" : "",
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{ pl: 4 }}
+                        onClick={changeactiveid.bind(this, 24)}
+                      >
+                        <ListItemIcon>
+                          <LabelImportant />
+                        </ListItemIcon>
+                        <ListItemText primary="All Formulas Used " />
+                      </ListItemButton>
+                    </NavLink>
+                  </List>
+      <List component="div" disablePadding style={{background: activeid === 23 ? "lightgrey" : ""}}>
+                    <NavLink
+                      to="/busdetails"
+                      style={{
+                        color: "black",
+                        textDecoration: "None",
+                        background: activeid ===23 ? "lightgrey" : "",
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{ pl: 4 }}
+                        onClick={changeactiveid.bind(this, 23)}
+                      >
+                        <ListItemIcon>
+                        <LabelImportant />
+                        </ListItemIcon>
+                        <ListItemText primary=" Bus Details " />
+                      </ListItemButton>
+                    </NavLink>
+                  </List>
+
+                  
+      <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===14?"lightgrey":""}}>
+          <NavLink to="/breakdownfactor" style={{color:"black",textDecoration:"None",background:activeid===14?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,14)}>
+            <ListItemIcon>
+            <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Reliability " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}}>
+          <NavLink to="/busavailablematrics" style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,16)}>
+            <ListItemIcon>
+                <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Operational Availability " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}}>
+          <NavLink to="/schedulematrics" style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,15)}>
+            <ListItemIcon>
+               <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Bus Schedule Metrics " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}}>
+          <NavLink to="/frequency" style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,19)}>
+            <ListItemIcon>
+              <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Frequency " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}}>
+          <NavLink to="/safetyoperation" style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,20)}>
+            <ListItemIcon>
+               <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Safety of Operation " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+    
+            
+      {/* <List component="div" disablePadding>
+          <NavLink to="/performancematrics" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,10)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Performance Metrics " />
+          </ListItemButton>
+          </NavLink>
+            </List> */}
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===17?"lightgrey":""}}>
+          <NavLink to="/dmapproval" style={{color:"black",textDecoration:"None",background:activeid===17?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,17)}>
+            <ListItemIcon>
+            <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Approval " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+
+
+            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===26?"lightgrey":""}}>
+          <NavLink to="/invoice" style={{color:"black",textDecoration:"None",background:activeid===26?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,26)}>
+            <ListItemIcon>
+            <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Invoice Details " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+
+            {/* <List component="div" disablePadding>
+          <NavLink to="/spapproval" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,11)}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary=" Service Provider Approval" />
+          </ListItemButton>
+          </NavLink>
+            </List> */}
+             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===18?"lightgrey":""}}>
+          <NavLink to="/customercomplaint" style={{color:"black",textDecoration:"None",background:activeid===18?"lightgrey":""}} >
+          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,18)}>
+            <ListItemIcon>
+            <LabelImportant />
+            </ListItemIcon>
+            <ListItemText primary=" Customer Complaint " />
+          </ListItemButton>
+          </NavLink>
+            </List>
+           
+            </Collapse>
+            <Divider/>
+
+
+
+
+            <ListItemButton onClick={handleClick}>
         <ListItemIcon>
           <PersonRounded />
         </ListItemIcon>
@@ -430,155 +748,7 @@ import ParameterReport from "../Master/ReportGenerate/ParameterWise";
             </List>
             </Collapse>
             <Divider/>
-            <ListItemButton onClick={handleServicesClick}>
-        <ListItemIcon>
-          <MiscellaneousServicesIcon />
-        </ListItemIcon>
-        <ListItemText primary=" Services " />
-        {openServices ? <ChevronRight /> : <ChevronLeft />}
-      </ListItemButton>
-      <Collapse in={openServices} timeout="auto" unmountOnExit>
-      <List component="div" disablePadding style={{background: activeid === 24 ? "lightgrey" : ""}}>
-                    <NavLink
-                      to="/formulas"
-                      style={{
-                        color: "black",
-                        textDecoration: "None",
-                        background: activeid ===24 ? "lightgrey" : "",
-                      }}
-                    >
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        onClick={changeactiveid.bind(this, 24)}
-                      >
-                        <ListItemIcon>
-                          <LabelImportant />
-                        </ListItemIcon>
-                        <ListItemText primary="All Formulas Used " />
-                      </ListItemButton>
-                    </NavLink>
-                  </List>
-      <List component="div" disablePadding style={{background: activeid === 23 ? "lightgrey" : ""}}>
-                    <NavLink
-                      to="/busdetails"
-                      style={{
-                        color: "black",
-                        textDecoration: "None",
-                        background: activeid ===23 ? "lightgrey" : "",
-                      }}
-                    >
-                      <ListItemButton
-                        sx={{ pl: 4 }}
-                        onClick={changeactiveid.bind(this, 23)}
-                      >
-                        <ListItemIcon>
-                        <LabelImportant />
-                        </ListItemIcon>
-                        <ListItemText primary=" Bus Details " />
-                      </ListItemButton>
-                    </NavLink>
-                  </List>
 
-                  
-      <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===14?"lightgrey":""}}>
-          <NavLink to="/breakdownfactor" style={{color:"black",textDecoration:"None",background:activeid===14?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,14)}>
-            <ListItemIcon>
-            <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Reliability " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}}>
-          <NavLink to="/busavailablematrics" style={{color:"black",textDecoration:"None",background:activeid===16?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,16)}>
-            <ListItemIcon>
-                <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Operational Availability " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}}>
-          <NavLink to="/schedulematrics" style={{color:"black",textDecoration:"None",background:activeid===15?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,15)}>
-            <ListItemIcon>
-               <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Bus Schedule Metrics " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}}>
-          <NavLink to="/frequency" style={{color:"black",textDecoration:"None",background:activeid===19?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,19)}>
-            <ListItemIcon>
-              <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Frequency " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}}>
-          <NavLink to="/safetyoperation" style={{color:"black",textDecoration:"None",background:activeid===20?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,20)}>
-            <ListItemIcon>
-               <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Safety of Operation " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-    
-            
-      {/* <List component="div" disablePadding>
-          <NavLink to="/performancematrics" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,10)}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary=" Performance Metrics " />
-          </ListItemButton>
-          </NavLink>
-            </List> */}
-            <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===17?"lightgrey":""}}>
-          <NavLink to="/dmapproval" style={{color:"black",textDecoration:"None",background:activeid===17?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,17)}>
-            <ListItemIcon>
-            <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Approval " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-            {/* <List component="div" disablePadding>
-          <NavLink to="/spapproval" style={{color:"black",textDecoration:"None",background:activeid===2?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,11)}>
-            <ListItemIcon>
-              <StarBorder />
-            </ListItemIcon>
-            <ListItemText primary=" Service Provider Approval" />
-          </ListItemButton>
-          </NavLink>
-            </List> */}
-             <List component="div" disablePadding style={{color:"black",textDecoration:"None",background:activeid===18?"lightgrey":""}}>
-          <NavLink to="/customercomplaint" style={{color:"black",textDecoration:"None",background:activeid===18?"lightgrey":""}} >
-          <ListItemButton sx={{ pl: 4 }} onClick={changeactiveid.bind(this,18)}>
-            <ListItemIcon>
-            <LabelImportant />
-            </ListItemIcon>
-            <ListItemText primary=" Customer Complaint " />
-          </ListItemButton>
-          </NavLink>
-            </List>
-           
-            </Collapse>
-            <Divider/>
             <ListItemButton onClick={handleReportClick}>
         <ListItemIcon>
           <MenuBook />
@@ -710,6 +880,8 @@ import ParameterReport from "../Master/ReportGenerate/ParameterWise";
                <Route path="frequency" exact element = {<Frequency/>} />
                <Route path="safetyoperation" exact element = {<SafetyOperation/>} />
                <Route path="dmapproval" exact element = {<Dmapproval/>} />
+               {/* <Route path="invoice" exact element = {<Invoicedetails/>} /> */}
+               <Route path="invoice" exact element = {<Invoice/>}/>
                {/* <Route path="spapproval" exact element = {<ServiceProvider/>} /> */}
                 <Route path="customercomplaint" exact element = {<CustomerComplaint/>} />
                 <Route path="monthlyreport" exact element = {<MonthlyReport/>} />

@@ -82,7 +82,7 @@ function BusPerformance(props) {
   }, [search, combinedData]);
   
 
-  // Fetch data from BusPerformance table
+
 const fetchBusData = async () => {
   try {
     const response = await Bus_service.getAll();
@@ -92,6 +92,7 @@ const fetchBusData = async () => {
     return [];
   }
 };
+
 
 //
 

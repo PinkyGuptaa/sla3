@@ -85,7 +85,7 @@ function Addsla(props) {
   useEffect(()=>{
     Agencymaster_service.getAll().then((res)=>{
       setagencydetails(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     }).catch(err=>console.log(err))
   },[])
 
